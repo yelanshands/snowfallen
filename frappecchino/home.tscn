@@ -1,0 +1,164 @@
+[gd_scene load_steps=14 format=3 uid="uid://mlr277p0vj6k"]
+
+[ext_resource type="Script" uid="uid://d0qicxcwe28so" path="res://home.gd" id="1_1ey7h"]
+[ext_resource type="Theme" uid="uid://sr8bi06fqgm8" path="res://UI.tres" id="1_tt30a"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1ey7h"]
+albedo_color = Color(0.54, 0.632, 1, 1)
+
+[sub_resource type="BoxMesh" id="BoxMesh_o1ld7"]
+material = SubResource("StandardMaterial3D_1ey7h")
+size = Vector3(2000, 100, 2000)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_2ayvv"]
+size = Vector3(2000, 100, 2000)
+
+[sub_resource type="BoxMesh" id="BoxMesh_1ey7h"]
+size = Vector3(150, 150, 150)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_o1ld7"]
+size = Vector3(150, 150, 150)
+
+[sub_resource type="Gradient" id="Gradient_1ey7h"]
+colors = PackedColorArray(1, 1, 1, 0.196078, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_o1ld7"]
+gradient = SubResource("Gradient_1ey7h")
+width = 1280
+height = 100
+
+[sub_resource type="Gradient" id="Gradient_2ayvv"]
+colors = PackedColorArray(1, 1, 1, 0.196078, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_w1mvj"]
+gradient = SubResource("Gradient_2ayvv")
+width = 1280
+height = 100
+
+[sub_resource type="Gradient" id="Gradient_o1ld7"]
+colors = PackedColorArray(1, 1, 1, 0.196078, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2ayvv"]
+gradient = SubResource("Gradient_o1ld7")
+width = 1280
+height = 100
+
+[node name="Home" type="CanvasLayer"]
+script = ExtResource("1_1ey7h")
+tween_intensity = 1.07
+tween_duration = 0.2
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.645458, -0.483774, 0.591056, 0, 0.77384, 0.633381, -0.763796, 0.408821, -0.499481, 0, 0, 0)
+shadow_enabled = true
+
+[node name="Background" type="Node3D" parent="."]
+
+[node name="Ground" type="StaticBody3D" parent="Background"]
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Background/Ground"]
+mesh = SubResource("BoxMesh_o1ld7")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Background/Ground"]
+shape = SubResource("BoxShape3D_2ayvv")
+
+[node name="Box" type="RigidBody3D" parent="Background"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 272.984, 0)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Background/Box"]
+mesh = SubResource("BoxMesh_1ey7h")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Background/Box"]
+shape = SubResource("BoxShape3D_o1ld7")
+
+[node name="SubViewportContainer" type="SubViewportContainer" parent="Background"]
+custom_minimum_size = Vector2(1920, 1080)
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="SubViewport" type="SubViewport" parent="Background/SubViewportContainer"]
+size = Vector2i(1920, 1080)
+
+[node name="Camera3D" type="Camera3D" parent="Background/SubViewportContainer/SubViewport"]
+transform = Transform3D(1, 0, 0, 0, 0.677069, 0.73592, 0, -0.73592, 0.677069, 0, 528.032, 579.723)
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 0
+offset_right = 40.0
+offset_bottom = 40.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+offset_right = 1920.0
+offset_bottom = 1080.0
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+theme = ExtResource("1_tt30a")
+theme_override_font_sizes/normal_font_size = 70
+text = "Frappecchino"
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 300)
+layout_mode = 2
+
+[node name="playButton" type="TextureButton" parent="Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_hover = SubResource("GradientTexture2D_o1ld7")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/MarginContainer/VBoxContainer/playButton"]
+custom_minimum_size = Vector2(1280, 100)
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme = ExtResource("1_tt30a")
+theme_override_font_sizes/normal_font_size = 50
+text = " Play"
+vertical_alignment = 1
+
+[node name="settingsButton" type="TextureButton" parent="Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(1280, 100)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_hover = SubResource("GradientTexture2D_w1mvj")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/MarginContainer/VBoxContainer/settingsButton"]
+custom_minimum_size = Vector2(1280, 100)
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme = ExtResource("1_tt30a")
+theme_override_font_sizes/normal_font_size = 50
+text = " Settings"
+vertical_alignment = 1
+
+[node name="quitButton" type="TextureButton" parent="Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_hover = SubResource("GradientTexture2D_2ayvv")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/MarginContainer/VBoxContainer/quitButton"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme = ExtResource("1_tt30a")
+theme_override_font_sizes/normal_font_size = 50
+text = " Quit"
+vertical_alignment = 1
+
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/quitButton" to="." method="_on_quit_button_pressed"]
