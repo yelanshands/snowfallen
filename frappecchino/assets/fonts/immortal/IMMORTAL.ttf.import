@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://fd30c4ps4rty"
-path="res://.godot/imported/IMMRTLT_.ttf-6fdc10cdce6ddcbfa7d6eadb0255111c.fontdata"
+uid="uid://c0ox2v115c0rl"
+path="res://.godot/imported/IMMORTAL.ttf-8447b1eaf4d2b90ce397533fde1c901a.fontdata"
 
 [deps]
 
-source_file="res://images/fonts/immortal/IMMRTLT_.ttf"
-dest_files=["res://.godot/imported/IMMRTLT_.ttf-6fdc10cdce6ddcbfa7d6eadb0255111c.fontdata"]
+source_file="res://assets/fonts/immortal/IMMORTAL.ttf"
+dest_files=["res://.godot/imported/IMMORTAL.ttf-8447b1eaf4d2b90ce397533fde1c901a.fontdata"]
 
 [params]
 

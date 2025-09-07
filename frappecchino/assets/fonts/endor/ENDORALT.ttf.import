@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://c0ox2v115c0rl"
-path="res://.godot/imported/IMMORTAL.ttf-51940ed576c05385edecbf15bfd53e4e.fontdata"
+uid="uid://b0beltsv4n0r8"
+path="res://.godot/imported/ENDORALT.ttf-3cab377a233bc843ea1f054db14ca48c.fontdata"
 
 [deps]
 
-source_file="res://images/fonts/immortal/IMMORTAL.ttf"
-dest_files=["res://.godot/imported/IMMORTAL.ttf-51940ed576c05385edecbf15bfd53e4e.fontdata"]
+source_file="res://assets/fonts/endor/ENDORALT.ttf"
+dest_files=["res://.godot/imported/ENDORALT.ttf-3cab377a233bc843ea1f054db14ca48c.fontdata"]
 
 [params]
 

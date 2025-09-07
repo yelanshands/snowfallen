@@ -2,13 +2,13 @@
 
 importer="font_data_dynamic"
 type="FontFile"
-uid="uid://b0beltsv4n0r8"
-path="res://.godot/imported/ENDORALT.ttf-bcad2470cef76bee5395f7d5e908ece1.fontdata"
+uid="uid://fd30c4ps4rty"
+path="res://.godot/imported/IMMRTLT_.ttf-1b04d6ed6d9be5ed414211d2c737e7b9.fontdata"
 
 [deps]
 
-source_file="res://images/fonts/endor/ENDORALT.ttf"
-dest_files=["res://.godot/imported/ENDORALT.ttf-bcad2470cef76bee5395f7d5e908ece1.fontdata"]
+source_file="res://assets/fonts/immortal/IMMRTLT_.ttf"
+dest_files=["res://.godot/imported/IMMRTLT_.ttf-1b04d6ed6d9be5ed414211d2c737e7b9.fontdata"]
 
 [params]
 

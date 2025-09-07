@@ -3,12 +3,12 @@
 importer="font_data_dynamic"
 type="FontFile"
 uid="uid://cnhsk0eq3io83"
-path="res://.godot/imported/ENDOR___.ttf-5a0c9d7e3de09db3f54a81f9727d681c.fontdata"
+path="res://.godot/imported/ENDOR___.ttf-c2a1a604ef176f2639ae201e7f825a7f.fontdata"
 
 [deps]
 
-source_file="res://images/fonts/endor/ENDOR___.ttf"
-dest_files=["res://.godot/imported/ENDOR___.ttf-5a0c9d7e3de09db3f54a81f9727d681c.fontdata"]
+source_file="res://assets/fonts/endor/ENDOR___.ttf"
+dest_files=["res://.godot/imported/ENDOR___.ttf-c2a1a604ef176f2639ae201e7f825a7f.fontdata"]
 
 [params]
 
