@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=3 uid="uid://daiyf82t58v7s"]
+
+[ext_resource type="Script" uid="uid://bwhyes7j5e77m" path="res://player.gd" id="1_onrkg"]
+[ext_resource type="PackedScene" uid="uid://bl4ue4lvsx2v2" path="res://pewpew.tscn" id="2_i3pqv"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_tb2lt"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_cfc7e"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_gh0px"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_7jktm"]
+size = Vector3(3, 3, 10)
+
+[node name="Player" type="CharacterBody3D"]
+script = ExtResource("1_onrkg")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, -4.06495, 7.77131, 3.44861)
+mesh = SubResource("CapsuleMesh_tb2lt")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(8, 0, 0, 0, 8, 0, 0, 0, 8, -4.06495, 7.77131, 3.44861)
+shape = SubResource("CapsuleShape3D_cfc7e")
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -5.66697, 10.08, 6.71715)
+mesh = SubResource("SphereMesh_gh0px")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="."]
+transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, -2.20608, 10.08, 6.71715)
+mesh = SubResource("SphereMesh_gh0px")
+
+[node name="SpringArmPivot" type="Node3D" parent="."]
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -14, 14, 4)
+
+[node name="SpringArm3D" type="SpringArm3D" parent="SpringArmPivot"]
+spring_length = 20.0
+
+[node name="SpringPosition" type="Node3D" parent="SpringArmPivot/SpringArm3D"]
+
+[node name="PlayerCamera" type="Camera3D" parent="SpringArmPivot"]
+
+[node name="Line" type="Marker3D" parent="SpringArmPivot/PlayerCamera"]
+
+[node name="Pewpew" parent="." instance=ExtResource("2_i3pqv")]
+transform = Transform3D(0.994615, 0, -0.103643, 0, 1, 0, 0.103643, 0, 0.994615, -10.6928, 8.65258, 5.77713)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Pewpew"]
+mesh = SubResource("BoxMesh_7jktm")

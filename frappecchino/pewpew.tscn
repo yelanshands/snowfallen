@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://bl4ue4lvsx2v2"]
+
+[ext_resource type="Script" uid="uid://r8gvsdpbo2bv" path="res://pewpew.gd" id="1_pd8vq"]
+
+[node name="Pewpew" type="Node3D"]
+script = ExtResource("1_pd8vq")
+
+[node name="Timer" type="Timer" parent="."]
+one_shot = true

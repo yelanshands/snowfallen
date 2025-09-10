@@ -1,8 +1,9 @@
-[gd_scene load_steps=95 format=4 uid="uid://mlr277p0vj6k"]
+[gd_scene load_steps=96 format=4 uid="uid://mlr277p0vj6k"]
 
 [ext_resource type="Script" uid="uid://d0qicxcwe28so" path="res://home.gd" id="1_1ey7h"]
 [ext_resource type="Theme" uid="uid://sr8bi06fqgm8" path="res://UI.tres" id="1_tt30a"]
 [ext_resource type="Texture2D" uid="uid://ddqvntm0oc6d1" path="res://assets/models/structures/skyscraper_0.png" id="2_o1ld7"]
+[ext_resource type="AudioStream" uid="uid://yi6t8unvbaio" path="res://assets/audio/calm-night-312296.mp3" id="4_2ayvv"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_o1ld7"]
 sky_top_color = Color(0.0617302, 0.00643286, 0.177529, 1)
@@ -1270,6 +1271,14 @@ theme = ExtResource("1_tt30a")
 theme_override_font_sizes/normal_font_size = 50
 text = " Quit"
 vertical_alignment = 1
+
+[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -35.7012, 61.2377, 171.796)
+stream = ExtResource("4_2ayvv")
+volume_db = 7.0
+autoplay = true
+max_distance = 1092.27
+parameters/looping = true
 
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/playButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/quitButton" to="." method="_on_quit_button_pressed"]
