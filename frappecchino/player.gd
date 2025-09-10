@@ -35,9 +35,9 @@ func _input(event):
 			get_viewport().set_input_as_handled()
 
 func _process(delta):
-	camera.position.x = lerp(camera.position.x, spring_pos.position.x, delta*lerp_value)
-	camera.position.z = lerp(camera.position.z, spring_pos.position.z, delta*lerp_value)
-	camera.position.y = lerp(camera.position.y, spring_pos.position.y - PI/4 - (camera.rotation.x + PI/4)*3, delta*lerp_value)
+	camera.position.x = spring_pos.position.x
+	camera.position.z = spring_pos.position.z
+	camera.position.y = spring_pos.position.y - PI/4 - (camera.rotation.x + PI/4)*3
 
 func get_input():
 	var input = Input.get_vector("strafe_left", "strafe_right", "move_forward", "move_back")
