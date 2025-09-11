@@ -4,6 +4,7 @@ const bullet = preload("res://bullet.tscn")
 @onready var timer : Timer = $Timer
 @onready var camera_end : Node3D = get_parent().get_node("SpringArmPivot/PlayerCamera/Line")
 @onready var camera : Camera3D = get_parent().get_node("SpringArmPivot/PlayerCamera")
+@onready var sound: AudioStreamPlayer3D = $AudioStreamPlayer3D
 
 var cam_sens := 0.0025
 var pewpew_roty := 0.0
@@ -16,7 +17,10 @@ func _physics_process(_delta: float) -> void:
 			var attack = bullet.instantiate()
 			camera.add_child(attack)
 			attack.position = camera.global_position
-			attack.rotation = camera.global_rotation			
+			attack.rotation = camera.global_rotation	
+			if sound.is_playing():
+				sound.stop()
+			sound.play()
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:

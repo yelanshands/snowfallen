@@ -1,8 +1,9 @@
-[gd_scene load_steps=82 format=4 uid="uid://bc8j31swr481q"]
+[gd_scene load_steps=83 format=4 uid="uid://bc8j31swr481q"]
 
 [ext_resource type="Texture2D" uid="uid://ddqvntm0oc6d1" path="res://assets/models/structures/skyscraper_0.png" id="1_80nbo"]
 [ext_resource type="PackedScene" uid="uid://daiyf82t58v7s" path="res://player.tscn" id="3_fc0e3"]
 [ext_resource type="Texture2D" uid="uid://rs66kiv43jvu" path="res://assets/images/crosshair.png" id="3_feb5d"]
+[ext_resource type="PackedScene" uid="uid://ro3nbpeyv3v5" path="res://npc.tscn" id="4_7jktm"]
 [ext_resource type="AudioStream" uid="uid://yi6t8unvbaio" path="res://assets/audio/calm-night-312296.mp3" id="4_fc0e3"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e2o6t"]
@@ -1128,7 +1129,10 @@ shape = SubResource("ConvexPolygonShape3D_mljfx")
 shape = SubResource("BoxShape3D_qpefm")
 
 [node name="Player" parent="." instance=ExtResource("3_fc0e3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 100, 150.104)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 150.104)
+
+[node name="Ploop" parent="." groups=["attackable"] instance=ExtResource("4_7jktm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 75)
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.11656, 61.2377, -14.56)
@@ -1137,3 +1141,12 @@ volume_db = 7.0
 autoplay = true
 max_distance = 1092.27
 parameters/looping = true
+
+[node name="Ploop2" parent="." groups=["attackable"] instance=ExtResource("4_7jktm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, -43.4849)
+
+[node name="Ploop3" parent="." groups=["attackable"] instance=ExtResource("4_7jktm")]
+transform = Transform3D(0.75192, 0, -0.659254, 0, 1, 0, 0.659254, 0, 0.75192, 45.7428, 50, 12.12)
+
+[node name="Ploop4" parent="." groups=["attackable"] instance=ExtResource("4_7jktm")]
+transform = Transform3D(-0.403258, 0, 0.915086, 0, 1, 0, -0.915086, 0, -0.403258, -47.995, 50, 25.5516)

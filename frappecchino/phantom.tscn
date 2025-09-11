@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://p7icktmr4byh"]
+
+[ext_resource type="PackedScene" uid="uid://c4vni08qv1dhr" path="res://assets/models/phantom.gltf" id="1_4xxuh"]
+
+[node name="phantom" instance=ExtResource("1_4xxuh")]

@@ -5,10 +5,16 @@ extends CharacterBody3D
 @onready var spring_pos: Node3D = $SpringArmPivot/SpringArm3D/SpringPosition
 @onready var crosshair_cont: MarginContainer = $/root/Game/CanvasLayer/MarginContainer
 @onready var crosshair: TextureRect = crosshair_cont.get_child(0)
-
+@onready var audio: AudioStreamPlayer3D = $Audio
 @export var fov: float = 75.0
 @export var friction: float = 0.25
 @export var cam_sens := 0.0025
+
+#const running_stream = preload("res://assets/audio/concrete-footsteps-1-6265.mp3")
+#const landing_stream = preload("res://assets/audio/human-impact-on-ground-6982.mp3")
+const footstep_stream = preload("res://assets/audio/concrete-footsteps-6752.mp3")
+const landing_stream = preload("res://assets/audio/land2-43790.mp3")
+const jump_up = preload("res://assets/audio/jump-up.mp3")
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")*9.8
 var default_speed = 40.0  
@@ -23,6 +29,8 @@ var crosshair_crouch = 80.0
 var target_cam_rotx = 0.0
 var target_cam_roty = 0.0
 var player_rot = 0.0
+var in_air = false
+var walking = false
 
 func _init():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -45,20 +53,24 @@ func get_input():
 	var movement_dir = transform.basis * Vector3(input.x, 0, input.y)
 	
 	if Input.is_action_pressed("sprint"):
-		speed = lerp(speed, default_speed * sprint_mult, 0.4)
+		speed = default_speed * sprint_mult
 		camera.fov = lerp(camera.fov, fov * sprint_mult, 0.2)
 		crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_sprint, 0.3), lerp(crosshair.size.y, crosshair_sprint, 0.3)))
 	elif Input.is_action_pressed("crouch"):
-		speed = lerp(speed, default_speed * crouch_mult, 0.4)
+		speed = default_speed * crouch_mult
 		camera.fov = lerp(camera.fov, fov * crouch_mult, 0.2)
 		crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_crouch, 0.3), lerp(crosshair.size.y, crosshair_crouch, 0.3)))
 	else:
-		speed = lerp(speed, default_speed, 0.4)
+		speed = default_speed
 		camera.fov = lerp(camera.fov, fov, 0.2)
 		crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_size, 0.3), lerp(crosshair.size.y, crosshair_size, 0.3)))
-		
+	
 	if Input.is_action_pressed("jump") and is_on_floor():
 		velocity.y = jump_speed
+		audio.stop()
+		walking = false
+		audio.stream = jump_up
+		audio.play()
 		
 	crosshair.position.x = crosshair_cont.size.x/2.0-(crosshair.size.x/2.0)
 	crosshair.position.y = crosshair_cont.size.y/2.0-(crosshair.size.y/2.0)
@@ -71,6 +83,22 @@ func get_input():
 		velocity.z = -movement_dir.z * speed
 	
 func _physics_process(delta):
+	if not is_on_floor():
+		in_air = true
+	if in_air and is_on_floor():
+		in_air = false
+		audio.stream = landing_stream
+		audio.play()
+		
+	if (velocity.x or velocity.z) and is_on_floor() and not walking:
+		if not audio.is_playing():
+			walking = true
+			audio.stream = footstep_stream
+			audio.play()
+	if (not (velocity.x or velocity.z)) and walking:
+		audio.stop()
+		walking = false
+		
 	velocity.y += -gravity * delta
 	get_input()
 	move_and_slide()
