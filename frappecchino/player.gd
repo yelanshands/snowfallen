@@ -3,7 +3,8 @@ extends CharacterBody3D
 @onready var camera: Camera3D = $SpringArmPivot/PlayerCamera
 @onready var spring_arm: SpringArm3D = $SpringArmPivot/SpringArm3D
 @onready var spring_pos: Node3D = $SpringArmPivot/SpringArm3D/SpringPosition
-@onready var crosshair: TextureRect = $/root/Game/Control/Crosshair
+@onready var crosshair_cont: MarginContainer = $/root/Game/CanvasLayer/MarginContainer
+@onready var crosshair: TextureRect = crosshair_cont.get_child(0)
 
 @export var fov: float = 75.0
 @export var friction: float = 0.25
@@ -34,7 +35,7 @@ func _input(event):
 			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 			get_viewport().set_input_as_handled()
 
-func _process(delta):
+func _process(_delta):
 	camera.position.x = spring_pos.position.x
 	camera.position.z = spring_pos.position.z
 	camera.position.y = spring_pos.position.y - PI/4 - (camera.rotation.x + PI/4)*3
@@ -59,8 +60,8 @@ func get_input():
 	if Input.is_action_pressed("jump") and is_on_floor():
 		velocity.y = jump_speed
 		
-	crosshair.position.x = DisplayServer.window_get_size()[0]/2.0-(crosshair.size.x/2.0)
-	crosshair.position.y = DisplayServer.window_get_size()[1]/2.0-(crosshair.size.y/2.0)
+	crosshair.position.x = crosshair_cont.size.x/2.0-(crosshair.size.x/2.0)
+	crosshair.position.y = crosshair_cont.size.y/2.0-(crosshair.size.y/2.0)
 	
 	if not Input.get_vector("strafe_left", "strafe_right", "move_forward", "move_back"):
 		velocity.x = lerp(velocity.x, 0.0, friction)

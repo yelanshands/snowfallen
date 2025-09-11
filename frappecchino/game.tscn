@@ -875,27 +875,18 @@ points = PackedVector3Array(-42.9688, 0, -89.8438, -42.9688, 0, -82.0313, -42.96
 
 [node name="Game" type="Node3D"]
 
-[node name="Control" type="Control" parent="."]
-layout_mode = 3
-anchors_preset = 0
-offset_right = 128.0
-offset_bottom = 128.0
-mouse_filter = 2
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
 
-[node name="Crosshair" type="TextureRect" parent="Control"]
-clip_contents = true
-layout_mode = 1
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
-offset_left = -64.0
-offset_top = -64.0
-offset_right = -4.0
-offset_bottom = -4.0
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+
+[node name="Crosshair" type="TextureRect" parent="CanvasLayer/MarginContainer"]
+clip_contents = true
+layout_mode = 2
 mouse_filter = 2
 texture = ExtResource("3_feb5d")
 expand_mode = 1
