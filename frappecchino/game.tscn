@@ -1128,7 +1128,7 @@ shape = SubResource("ConvexPolygonShape3D_mljfx")
 shape = SubResource("BoxShape3D_qpefm")
 
 [node name="Player" parent="." instance=ExtResource("3_fc0e3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 150.104)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 100, 150.104)
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.11656, 61.2377, -14.56)
