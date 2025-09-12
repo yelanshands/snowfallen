@@ -31,6 +31,7 @@ var target_cam_roty = 0.0
 var player_rot = 0.0
 var in_air = false
 var walking = false
+var clamped = false
 
 func _init():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -106,10 +107,11 @@ func _physics_process(delta):
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
 		player_rot -= event.relative.x * cam_sens
-		rotation.y = player_rot - rotation.angle_to(camera.position)
+		rotation.y = lerp_angle(rotation.y, player_rot, 0.2) 
 		
 		camera.rotation.x -= event.relative.y * cam_sens
 		camera.rotation.x = clamp(camera.rotation.x, -PI/4, PI/2) 
+		clamped = camera.rotation.x <= -PI/4 or camera.rotation.x >= PI/2
 		
 	if event.is_action_pressed("wheel_up"):
 		spring_arm.spring_length -= 1

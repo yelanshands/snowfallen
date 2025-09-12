@@ -13,8 +13,14 @@ func _physics_process(delta: float) -> void:
 	if is_colliding():
 		global_position = get_collision_point()
 		set_physics_process(false)
+		print(collided.name)
+		if collided.name == "head":
+			damage_amount = 100
+		elif collided.name == "body":
+			damage_amount = 25
+		elif collided.name == "leg":
+			damage_amount = 20
 		while current:
-			#print(current.name)
 			if current.is_in_group("attackable"):
 				if current.has_method("apply_damage"):
 					current.apply_damage(damage_amount)

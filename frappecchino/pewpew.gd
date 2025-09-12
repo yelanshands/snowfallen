@@ -5,6 +5,7 @@ const bullet = preload("res://bullet.tscn")
 @onready var camera_end : Node3D = get_parent().get_node("SpringArmPivot/PlayerCamera/Line")
 @onready var camera : Camera3D = get_parent().get_node("SpringArmPivot/PlayerCamera")
 @onready var sound: AudioStreamPlayer3D = $AudioStreamPlayer3D
+@onready var player: CharacterBody3D = get_parent()
 
 var cam_sens := 0.0025
 var pewpew_roty := 0.0
@@ -24,5 +25,6 @@ func _physics_process(_delta: float) -> void:
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
-		pewpew_rotx += event.relative.y * cam_sens
-		rotation.x = pewpew_rotx - rotation.angle_to(camera_end.position)
+		if not player.clamped:
+			pewpew_rotx += event.relative.y * cam_sens
+			rotation.x = pewpew_rotx - rotation.angle_to(camera_end.position)

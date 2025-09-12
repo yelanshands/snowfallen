@@ -55,104 +55,104 @@ points = PackedVector3Array(0.78125, -5.96046e-08, 2.34375, 0.78125, -0.9375, 2.
 
 [node name="player_model" instance=ExtResource("1_qge56")]
 
-[node name="humanoid" type="StaticBody3D" parent="Node/all/head2/head" index="0"]
+[node name="head" type="StaticBody3D" parent="Node/all/head2/head" index="0"]
 collision_layer = 3
 
-[node name="body" type="CollisionShape3D" parent="Node/all/head2/head/humanoid" index="0"]
+[node name="body" type="CollisionShape3D" parent="Node/all/head2/head/head" index="0"]
 shape = SubResource("ConcavePolygonShape3D_qge56")
 
-[node name="humanoid" type="StaticBody3D" parent="Node/all/head2/neck" index="0"]
+[node name="neck" type="StaticBody3D" parent="Node/all/head2/neck" index="0"]
 collision_layer = 3
 
-[node name="body" type="CollisionShape3D" parent="Node/all/head2/neck/humanoid" index="0"]
+[node name="body" type="CollisionShape3D" parent="Node/all/head2/neck/neck" index="0"]
 shape = SubResource("ConcavePolygonShape3D_sc24m")
 
-[node name="humanoid" type="StaticBody3D" parent="Node/all/head2/torso/upper" index="0"]
+[node name="body" type="StaticBody3D" parent="Node/all/head2/torso/upper" index="0"]
 collision_layer = 3
 
-[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/upper/humanoid" index="0"]
+[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/upper/body" index="0"]
 shape = SubResource("ConcavePolygonShape3D_yqb6h")
 
-[node name="humanoid" type="StaticBody3D" parent="Node/all/head2/torso/lower" index="0"]
+[node name="body" type="StaticBody3D" parent="Node/all/head2/torso/lower" index="0"]
 collision_layer = 3
 
-[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/lower/humanoid" index="0"]
+[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/lower/body" index="0"]
 shape = SubResource("ConcavePolygonShape3D_rf0w2")
 
-[node name="humanoid" type="StaticBody3D" parent="Node/all/head2/torso/mid" index="0"]
+[node name="body" type="StaticBody3D" parent="Node/all/head2/torso/mid" index="0"]
 collision_layer = 3
 
-[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/mid/humanoid" index="0"]
+[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/mid/body" index="0"]
 shape = SubResource("ConcavePolygonShape3D_rkbkj")
 
-[node name="humanoid" type="StaticBody3D" parent="Node/all/head2/torso/leftarm/arm left" index="0"]
+[node name="body" type="StaticBody3D" parent="Node/all/head2/torso/leftarm/arm left" index="0"]
 collision_layer = 3
 
-[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/leftarm/arm left/humanoid" index="0"]
+[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/leftarm/arm left/body" index="0"]
 shape = SubResource("ConvexPolygonShape3D_6jjb2")
 
-[node name="humanoid" type="StaticBody3D" parent="Node/all/head2/torso/leftarm/forearm/forearm left" index="0"]
+[node name="body" type="StaticBody3D" parent="Node/all/head2/torso/leftarm/forearm/forearm left" index="0"]
 collision_layer = 3
 
-[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/leftarm/forearm/forearm left/humanoid" index="0"]
+[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/leftarm/forearm/forearm left/body" index="0"]
 shape = SubResource("ConvexPolygonShape3D_majja")
 
-[node name="humanoid" type="StaticBody3D" parent="Node/all/head2/torso/leftarm/forearm/hand/hand left" index="0"]
+[node name="body" type="StaticBody3D" parent="Node/all/head2/torso/leftarm/forearm/hand/hand left" index="0"]
 collision_layer = 3
 
-[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/leftarm/forearm/hand/hand left/humanoid" index="0"]
+[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/leftarm/forearm/hand/hand left/body" index="0"]
 shape = SubResource("ConvexPolygonShape3D_n3g43")
 
-[node name="humanoid" type="StaticBody3D" parent="Node/all/head2/torso/leftleg/thigh left" index="0"]
+[node name="leg" type="StaticBody3D" parent="Node/all/head2/torso/leftleg/thigh left" index="0"]
 collision_layer = 3
 
-[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/leftleg/thigh left/humanoid" index="0"]
+[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/leftleg/thigh left/leg" index="0"]
 shape = SubResource("ConvexPolygonShape3D_cylvw")
 
-[node name="humanoid" type="StaticBody3D" parent="Node/all/head2/torso/leftleg/calf left" index="0"]
+[node name="leg" type="StaticBody3D" parent="Node/all/head2/torso/leftleg/calf left" index="0"]
 collision_layer = 3
 
-[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/leftleg/calf left/humanoid" index="0"]
+[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/leftleg/calf left/leg" index="0"]
 shape = SubResource("ConvexPolygonShape3D_8fagi")
 
-[node name="humanoid" type="StaticBody3D" parent="Node/all/head2/torso/leftleg/foot left" index="0"]
+[node name="leg" type="StaticBody3D" parent="Node/all/head2/torso/leftleg/foot left" index="0"]
 collision_layer = 3
 
-[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/leftleg/foot left/humanoid" index="0"]
+[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/leftleg/foot left/leg" index="0"]
 shape = SubResource("ConvexPolygonShape3D_skrtr")
 
-[node name="humanoid" type="StaticBody3D" parent="Node/all/head2/torso/rightarm/arm left2" index="0"]
+[node name="body" type="StaticBody3D" parent="Node/all/head2/torso/rightarm/arm left2" index="0"]
 collision_layer = 3
 
-[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/rightarm/arm left2/humanoid" index="0"]
+[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/rightarm/arm left2/body" index="0"]
 shape = SubResource("ConvexPolygonShape3D_l0pls")
 
-[node name="humanoid" type="StaticBody3D" parent="Node/all/head2/torso/rightarm/forearm2/forearm left2" index="0"]
+[node name="body" type="StaticBody3D" parent="Node/all/head2/torso/rightarm/forearm2/forearm left2" index="0"]
 collision_layer = 3
 
-[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/rightarm/forearm2/forearm left2/humanoid" index="0"]
+[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/rightarm/forearm2/forearm left2/body" index="0"]
 shape = SubResource("ConvexPolygonShape3D_leyyw")
 
-[node name="humanoid" type="StaticBody3D" parent="Node/all/head2/torso/rightarm/forearm2/hand2/hand left2" index="0"]
+[node name="body" type="StaticBody3D" parent="Node/all/head2/torso/rightarm/forearm2/hand2/hand left2" index="0"]
 collision_layer = 3
 
-[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/rightarm/forearm2/hand2/hand left2/humanoid" index="0"]
+[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/rightarm/forearm2/hand2/hand left2/body" index="0"]
 shape = SubResource("ConvexPolygonShape3D_71t5f")
 
-[node name="humanoid" type="StaticBody3D" parent="Node/all/head2/torso/rightleg/thigh left2" index="0"]
+[node name="leg" type="StaticBody3D" parent="Node/all/head2/torso/rightleg/thigh left2" index="0"]
 collision_layer = 3
 
-[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/rightleg/thigh left2/humanoid" index="0"]
+[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/rightleg/thigh left2/leg" index="0"]
 shape = SubResource("ConvexPolygonShape3D_3wl88")
 
-[node name="humanoid" type="StaticBody3D" parent="Node/all/head2/torso/rightleg/calf left2" index="0"]
+[node name="leg" type="StaticBody3D" parent="Node/all/head2/torso/rightleg/calf left2" index="0"]
 collision_layer = 3
 
-[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/rightleg/calf left2/humanoid" index="0"]
+[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/rightleg/calf left2/leg" index="0"]
 shape = SubResource("ConvexPolygonShape3D_rd0kb")
 
-[node name="humanoid" type="StaticBody3D" parent="Node/all/head2/torso/rightleg/foot left2" index="0"]
+[node name="leg" type="StaticBody3D" parent="Node/all/head2/torso/rightleg/foot left2" index="0"]
 collision_layer = 3
 
-[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/rightleg/foot left2/humanoid" index="0"]
+[node name="body" type="CollisionShape3D" parent="Node/all/head2/torso/rightleg/foot left2/leg" index="0"]
 shape = SubResource("ConvexPolygonShape3D_t4yv4")
