@@ -7,7 +7,6 @@
 size = Vector3(0, 0, 0)
 
 [node name="NPC" type="StaticBody3D"]
-collision_layer = 3
 script = ExtResource("1_xxcha")
 metadata/dialogue = false
 metadata/attackable = false

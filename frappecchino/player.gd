@@ -91,12 +91,12 @@ func _physics_process(delta):
 		audio.stream = landing_stream
 		audio.play()
 		
-	if (velocity.x or velocity.z) and is_on_floor() and not walking:
+	if ((velocity.x > 0.1 or velocity.x < -0.1) or (velocity.y > 0.1 or velocity.y < -0.1)) and is_on_floor() and not walking:
 		if not audio.is_playing():
 			walking = true
 			audio.stream = footstep_stream
 			audio.play()
-	if (not (velocity.x or velocity.z)) and walking:
+	if (not (velocity.x > 0.1 or velocity.x < -0.1) or (velocity.y > 0.1 or velocity.y < -0.1)) and walking:
 		audio.stop()
 		walking = false
 		
