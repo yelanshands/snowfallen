@@ -13,7 +13,6 @@ func _physics_process(delta: float) -> void:
 	if is_colliding():
 		global_position = get_collision_point()
 		set_physics_process(false)
-		print(collided.name)
 		if collided.name == "head":
 			damage_amount = 100
 		elif collided.name == "body":

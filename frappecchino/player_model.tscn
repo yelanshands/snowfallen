@@ -61,10 +61,10 @@ collision_layer = 3
 [node name="body" type="CollisionShape3D" parent="Node/all/head2/head/head" index="0"]
 shape = SubResource("ConcavePolygonShape3D_qge56")
 
-[node name="neck" type="StaticBody3D" parent="Node/all/head2/neck" index="0"]
+[node name="head" type="StaticBody3D" parent="Node/all/head2/neck" index="0"]
 collision_layer = 3
 
-[node name="body" type="CollisionShape3D" parent="Node/all/head2/neck/neck" index="0"]
+[node name="body" type="CollisionShape3D" parent="Node/all/head2/neck/head" index="0"]
 shape = SubResource("ConcavePolygonShape3D_sc24m")
 
 [node name="body" type="StaticBody3D" parent="Node/all/head2/torso/upper" index="0"]
