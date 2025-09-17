@@ -106,8 +106,7 @@ func _physics_process(delta):
 	
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
-		player_rot -= event.relative.x * cam_sens
-		rotation.y = lerp_angle(rotation.y, player_rot, 0.2) 
+		rotation.y -= event.relative.x * cam_sens
 		
 		camera.rotation.x -= event.relative.y * cam_sens
 		camera.rotation.x = clamp(camera.rotation.x, -PI/4, PI/2) 
