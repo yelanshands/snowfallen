@@ -61,10 +61,8 @@ tween_duration = 0.2
 [node name="Node2D" type="Node2D" parent="."]
 
 [node name="TextureRect" type="TextureRect" parent="Node2D"]
-offset_left = -170.0
-offset_top = -170.0
-offset_right = 1343.0
-offset_bottom = 964.75
+offset_right = 1513.0
+offset_bottom = 1134.75
 scale = Vector2(1.5, 1.5)
 texture = ExtResource("2_2ayvv")
 expand_mode = 5

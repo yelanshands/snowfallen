@@ -32,10 +32,12 @@ var player_rot = 0.0
 var in_air = false
 var walking = false
 var clamped = false
+var max_slope_angle = deg_to_rad(20.0)
 
 func _init():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-
+	set_floor_max_angle(PI/8)
+	
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
@@ -99,9 +101,15 @@ func _physics_process(delta):
 	if (not (velocity.x > 0.1 or velocity.x < -0.1) or (velocity.y > 0.1 or velocity.y < -0.1)) and walking:
 		audio.stop()
 		walking = false
-		
+	
 	velocity.y += -gravity * delta
 	get_input()
+	if is_on_floor():
+		var floor_normal = get_floor_normal()
+		var slope_angle = acos(floor_normal.dot(Vector3.UP))
+		if slope_angle > max_slope_angle:
+			velocity = velocity.slide(floor_normal)
+			print(velocity)
 	move_and_slide()
 	
 func _unhandled_input(event):

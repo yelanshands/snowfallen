@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://bjg81lounr6s7"]
+
+[ext_resource type="Script" uid="uid://bec4bo0xf3vc1" path="res://intro.gd" id="1_s2ta7"]
+
+[node name="Intro" type="Control"]
+layout_mode = 3
+anchors_preset = 0
+script = ExtResource("1_s2ta7")
+
+[node name="VideoStreamPlayer" type="VideoStreamPlayer" parent="."]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+autoplay = true
+
+[connection signal="finished" from="VideoStreamPlayer" to="." method="_on_video_stream_player_finished"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=83 format=4 uid="uid://bc8j31swr481q"]
+[gd_scene load_steps=85 format=4 uid="uid://bc8j31swr481q"]
 
 [ext_resource type="Texture2D" uid="uid://ddqvntm0oc6d1" path="res://assets/models/structures/skyscraper_0.png" id="1_80nbo"]
 [ext_resource type="PackedScene" uid="uid://daiyf82t58v7s" path="res://player.tscn" id="3_fc0e3"]
@@ -874,6 +874,13 @@ points = PackedVector3Array(-42.9688, 0, -89.8438, -42.9688, 0, -82.0313, -42.96
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_qpefm"]
 
+[sub_resource type="PrismMesh" id="PrismMesh_7jktm"]
+left_to_right = 1.0
+size = Vector3(500, 150, 300)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ryrav"]
+points = PackedVector3Array(-250, -75, -150, -250, -75, 150, 250, 75, -150, 250, -75, -150, 250, -75, 150, 250, 75, 150)
+
 [node name="Game" type="Node3D"]
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
@@ -1125,6 +1132,15 @@ shape = SubResource("ConvexPolygonShape3D_mljfx")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Background/skyscraper1"]
 shape = SubResource("BoxShape3D_qpefm")
+
+[node name="Slope" type="StaticBody3D" parent="Background"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -437.874, 125, 74.021)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Background/Slope"]
+mesh = SubResource("PrismMesh_7jktm")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Background/Slope"]
+shape = SubResource("ConvexPolygonShape3D_ryrav")
 
 [node name="Player" parent="." instance=ExtResource("3_fc0e3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 150.104)
