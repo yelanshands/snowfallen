@@ -18,7 +18,7 @@ shape = SubResource("BoxShape3D_i3pqv")
 [node name="player_model" parent="CollisionShape3D" instance=ExtResource("2_hqtel")]
 
 [node name="SpringArmPivot" type="Node3D" parent="."]
-transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -7.98346, 18.2485, 4)
+transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -6, 18.249, 4)
 
 [node name="SpringArm3D" type="SpringArm3D" parent="SpringArmPivot"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.12774, 0, 2.28317)

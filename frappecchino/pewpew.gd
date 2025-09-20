@@ -25,6 +25,4 @@ func _physics_process(_delta: float) -> void:
 
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
-		if not player.clamped:
-			pewpew_rotx += event.relative.y * cam_sens
-			rotation.x = pewpew_rotx - rotation.angle_to(camera_end.position)
+		rotation.x = -camera.rotation.x - rotation.angle_to(camera_end.position)
