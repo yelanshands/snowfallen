@@ -6,7 +6,9 @@
 [sub_resource type="BoxShape3D" id="BoxShape3D_xxcha"]
 size = Vector3(0, 0, 0)
 
-[node name="NPC" type="StaticBody3D"]
+[node name="NPC" type="CharacterBody3D" groups=["attackable"]]
+collision_layer = 7
+collision_mask = 7
 script = ExtResource("1_xxcha")
 metadata/dialogue = false
 metadata/attackable = false

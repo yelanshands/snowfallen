@@ -1,21 +1,19 @@
-extends Node3D
-const silhouette = preload("res://assets/images/frappie_pfp.png")
-const frappie = preload("res://assets/images/frappie_silhouette_pfp.png")
-@export var hp : int = 100
-@export var dialogue = [["???", silhouette, "Make it quick."],
-	["Player", frappie, "Of course."],
-	["???", silhouette, "Good luck."]
-]
+extends CharacterBody3D
 
-var current_dialogue := 0
+@export var hp : int = 100
+var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
+var vel = Vector3(0, 0, 0)
 
 func _process(_delta):
 	if hp <= 0:
 		queue_free() 
-	if is_in_group("dialogue") and Input.is_action_pressed("interact"):
-		pass
 		
-
+func _physics_process(delta):
+	if not is_on_floor():
+		velocity.y -= gravity * delta
+	else:
+		velocity.y = 0.0
+	move_and_slide()
 	
 func apply_damage(damage_amount):
 	hp -= damage_amount

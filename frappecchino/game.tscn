@@ -1,10 +1,13 @@
-[gd_scene load_steps=85 format=4 uid="uid://bc8j31swr481q"]
+[gd_scene load_steps=89 format=4 uid="uid://bc8j31swr481q"]
 
 [ext_resource type="Texture2D" uid="uid://ddqvntm0oc6d1" path="res://assets/models/structures/skyscraper_0.png" id="1_80nbo"]
+[ext_resource type="Script" uid="uid://csvim2fw7hoyd" path="res://game.gd" id="1_ryrav"]
+[ext_resource type="FontFile" uid="uid://c0ox2v115c0rl" path="res://assets/fonts/immortal/IMMORTAL.ttf" id="2_ryrav"]
 [ext_resource type="PackedScene" uid="uid://daiyf82t58v7s" path="res://player.tscn" id="3_fc0e3"]
 [ext_resource type="Texture2D" uid="uid://rs66kiv43jvu" path="res://assets/images/crosshair.png" id="3_feb5d"]
-[ext_resource type="PackedScene" uid="uid://ro3nbpeyv3v5" path="res://npc.tscn" id="4_7jktm"]
 [ext_resource type="AudioStream" uid="uid://yi6t8unvbaio" path="res://assets/audio/calm-night-312296.mp3" id="4_fc0e3"]
+[ext_resource type="FontFile" uid="uid://b2n6a2bqt1rdk" path="res://assets/fonts/NotoSansSymbols-VariableFont_wght.ttf" id="4_j5wjh"]
+[ext_resource type="AudioStream" uid="uid://dxpcidya168dw" path="res://assets/audio/music.mp3" id="7_eow3j"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e2o6t"]
 sky_top_color = Color(0.0617302, 0.00643286, 0.177529, 1)
@@ -881,7 +884,11 @@ size = Vector3(500, 150, 300)
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ryrav"]
 points = PackedVector3Array(-250, -75, -150, -250, -75, 150, 250, 75, -150, 250, -75, -150, 250, -75, 150, 250, 75, 150)
 
+[sub_resource type="PlaneMesh" id="PlaneMesh_7jktm"]
+size = Vector2(450, 250)
+
 [node name="Game" type="Node3D"]
+script = ExtResource("1_ryrav")
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
@@ -900,6 +907,36 @@ texture = ExtResource("3_feb5d")
 expand_mode = 1
 stretch_mode = 3
 
+[node name="ScoreContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+
+[node name="Score" type="Label" parent="CanvasLayer/MarginContainer/ScoreContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_ryrav")
+theme_override_font_sizes/font_size = 48
+text = "
+   0"
+
+[node name="Header" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+theme_override_constants/separation = -170
+
+[node name="Dice" type="Label" parent="CanvasLayer/MarginContainer/Header"]
+modulate = Color(1, 1, 1, 0.78431374)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_j5wjh")
+theme_override_font_sizes/font_size = 140
+text = "⚀⚁⚂⚃⚄⚅"
+horizontal_alignment = 1
+
+[node name="Arrow" type="Label" parent="CanvasLayer/MarginContainer/Header"]
+modulate = Color(1, 1, 1, 0.39215687)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("4_j5wjh")
+theme_override_font_sizes/font_size = 140
+text = "⮝"
+horizontal_alignment = 1
+
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = SubResource("Environment_fc0e3")
 
@@ -914,13 +951,25 @@ shadow_enabled = true
 [node name="Ground" type="StaticBody3D" parent="Background"]
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Background/Ground"]
+visible = false
 mesh = SubResource("BoxMesh_e2o6t")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Background/Ground"]
 shape = SubResource("BoxShape3D_feb5d")
+disabled = true
+
+[node name="Wall" type="StaticBody3D" parent="Background"]
+transform = Transform3D(0.3, 0, 0, 0, -1.3113417e-08, -0.3, 0, 0.3, -1.3113417e-08, 0, 0, 500)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Background/Wall"]
+mesh = SubResource("BoxMesh_e2o6t")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Background/Wall"]
+shape = SubResource("BoxShape3D_feb5d")
 
 [node name="skyscraper1" type="RigidBody3D" parent="Background"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 0)
+visible = false
 
 [node name="Node" type="Node3D" parent="Background/skyscraper1"]
 
@@ -1134,7 +1183,9 @@ shape = SubResource("ConvexPolygonShape3D_mljfx")
 shape = SubResource("BoxShape3D_qpefm")
 
 [node name="Slope" type="StaticBody3D" parent="Background"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -437.874, 125, 74.021)
+transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, 0, 150, 0)
+collision_layer = 7
+collision_mask = 7
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Background/Slope"]
 mesh = SubResource("PrismMesh_7jktm")
@@ -1142,25 +1193,23 @@ mesh = SubResource("PrismMesh_7jktm")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Background/Slope"]
 shape = SubResource("ConvexPolygonShape3D_ryrav")
 
-[node name="Player" parent="." instance=ExtResource("3_fc0e3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 150.104)
+[node name="plane" type="MeshInstance3D" parent="Background/Slope"]
+transform = Transform3D(0.9578225, -0.28736052, 0, 0.28736052, 0.9578225, 0, 0, 0, 1, 0, 10.742676, 0)
+visible = false
+mesh = SubResource("PlaneMesh_7jktm")
 
-[node name="Ploop" parent="." groups=["attackable"] instance=ExtResource("4_7jktm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, 75)
+[node name="Player" parent="." instance=ExtResource("3_fc0e3")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.898148, 130.3738, 150.104)
 
 [node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.11656, 61.2377, -14.56)
 stream = ExtResource("4_fc0e3")
 volume_db = 7.0
-autoplay = true
 max_distance = 1092.27
 parameters/looping = true
 
-[node name="Ploop2" parent="." groups=["attackable"] instance=ExtResource("4_7jktm")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 50, -43.4849)
-
-[node name="Ploop3" parent="." groups=["attackable"] instance=ExtResource("4_7jktm")]
-transform = Transform3D(0.75192, 0, -0.659254, 0, 1, 0, 0.659254, 0, 0.75192, 45.7428, 50, 12.12)
-
-[node name="Ploop4" parent="." groups=["attackable"] instance=ExtResource("4_7jktm")]
-transform = Transform3D(-0.403258, 0, 0.915086, 0, 1, 0, -0.915086, 0, -0.403258, -47.995, 50, 25.5516)
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_eow3j")
+volume_db = -10.0
+autoplay = true
+parameters/looping = true

@@ -1,9 +1,10 @@
-[gd_scene load_steps=17 format=3 uid="uid://mlr277p0vj6k"]
+[gd_scene load_steps=18 format=3 uid="uid://mlr277p0vj6k"]
 
 [ext_resource type="Script" uid="uid://d0qicxcwe28so" path="res://home.gd" id="1_1ey7h"]
 [ext_resource type="Theme" uid="uid://sr8bi06fqgm8" path="res://UI.tres" id="1_tt30a"]
 [ext_resource type="Texture2D" uid="uid://cohx5mp4q0v5q" path="res://assets/images/bg.png" id="2_2ayvv"]
 [ext_resource type="Script" uid="uid://ck64fms703vym" path="res://homescreencam.gd" id="4_2ayvv"]
+[ext_resource type="AudioStream" uid="uid://yi6t8unvbaio" path="res://assets/audio/calm-night-312296.mp3" id="5_w1mvj"]
 
 [sub_resource type="Gradient" id="Gradient_2ayvv"]
 colors = PackedColorArray(1, 1, 1, 0.784314, 1, 1, 1, 0)
@@ -157,6 +158,12 @@ theme = ExtResource("1_tt30a")
 theme_override_font_sizes/normal_font_size = 50
 text = " Quit"
 vertical_alignment = 1
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_w1mvj")
+volume_db = -10.0
+autoplay = true
+parameters/looping = true
 
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/playButton" to="." method="_on_play_button_pressed"]
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/quitButton" to="." method="_on_quit_button_pressed"]

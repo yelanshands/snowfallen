@@ -2,6 +2,7 @@ extends RayCast3D
 
 @export var speed := 50.0
 @onready var remote_transform := RemoteTransform3D.new()
+@onready var player: CharacterBody3D = $/root/Game/Player
 var damage_amount := 25.0
 
 func _physics_process(delta: float) -> void:
@@ -22,6 +23,7 @@ func _physics_process(delta: float) -> void:
 		while current:
 			if current.is_in_group("attackable"):
 				if current.has_method("apply_damage"):
+					player.update_score(damage_amount if current.hp >= damage_amount else current.hp)
 					current.apply_damage(damage_amount)
 					collided = current
 				break

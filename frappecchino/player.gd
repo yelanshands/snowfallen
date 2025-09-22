@@ -4,8 +4,10 @@ extends CharacterBody3D
 @onready var spring_arm: SpringArm3D = $SpringArmPivot/SpringArm3D
 @onready var spring_pos: Node3D = $SpringArmPivot/SpringArm3D/SpringPosition
 @onready var crosshair_cont: MarginContainer = $/root/Game/CanvasLayer/MarginContainer
-@onready var crosshair: TextureRect = crosshair_cont.get_child(0)
+@onready var crosshair: TextureRect = crosshair_cont.get_node("Crosshair")
 @onready var audio: AudioStreamPlayer3D = $SpringArmPivot/PlayerCamera/Audio
+@onready var score_label: Label = $/root/Game/CanvasLayer/MarginContainer/ScoreContainer/Score
+
 @export var fov: float = 75.0
 @export var friction: float = 0.25
 @export var cam_sens: float = 0.0025
@@ -34,13 +36,14 @@ var in_air = false
 var walking = false
 var floor_normal: Vector3
 var slope_angle: float
+var score: int = 0
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	set_floor_snap_length(floor_snap)
-	set_floor_stop_on_slope_enabled(false)
-	safe_margin = 0.25
-	floor_block_on_wall = true
+	floor_stop_on_slope = false
+	floor_snap_length = floor_snap
+	#safe_margin = 0.15
+	#floor_block_on_wall = true
 	
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
@@ -98,7 +101,7 @@ func _physics_process(delta):
 		floor_normal = get_floor_normal()
 		slope_angle = acos(floor_normal.dot(Vector3.UP))
 		slope_dir = (Vector3.DOWN - floor_normal * Vector3.DOWN.dot(floor_normal)).normalized()
-		if rad_to_deg(slope_angle) > max_slope_angle:
+		if slope_angle > max_slope_angle:
 			velocity += slope_dir * slide_accel
 		else:
 			velocity.y = 0.0
@@ -121,6 +124,7 @@ func _physics_process(delta):
 		audio.play()
 	
 	#print(velocity)
+	#apply_floor_snap()
 	move_and_slide()
 	
 func _unhandled_input(event):
@@ -135,3 +139,7 @@ func _unhandled_input(event):
 	if event.is_action_pressed("wheel_down"):
 		spring_arm.spring_length += 1
 	spring_arm.spring_length = clamp(spring_arm.spring_length, 10, 45)
+
+func update_score(amount: int):
+	score += amount
+	score_label.text = "\n   " + str(score)
