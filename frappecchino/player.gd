@@ -5,7 +5,7 @@ extends CharacterBody3D
 @onready var spring_pos: Node3D = $SpringArmPivot/SpringArm3D/SpringPosition
 @onready var crosshair_cont: MarginContainer = $/root/Game/CanvasLayer/MarginContainer
 @onready var crosshair: TextureRect = crosshair_cont.get_child(0)
-@onready var audio: AudioStreamPlayer3D = $Audio
+@onready var audio: AudioStreamPlayer3D = $SpringArmPivot/PlayerCamera/Audio
 @export var fov: float = 75.0
 @export var friction: float = 0.25
 @export var cam_sens: float = 0.0025
@@ -39,7 +39,7 @@ func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	set_floor_snap_length(floor_snap)
 	set_floor_stop_on_slope_enabled(false)
-	safe_margin = 0.3
+	safe_margin = 0.25
 	floor_block_on_wall = true
 	
 func _input(event):
@@ -75,17 +75,6 @@ func _physics_process(delta):
 	var slope_dir: Vector3
 	var input = Input.get_vector("strafe_left", "strafe_right", "move_forward", "move_back")
 	var movement_dir = (transform.basis * Vector3(input.x, 0, input.y)).normalized()
-	
-	if not is_on_floor():
-		velocity.y += -gravity * delta
-	else:
-		floor_normal = get_floor_normal()
-		slope_angle = acos(floor_normal.dot(Vector3.UP))
-		if rad_to_deg(slope_angle) > max_slope_angle:
-			slope_dir = (Vector3.DOWN - floor_normal * Vector3.DOWN.dot(floor_normal)).normalized()
-			velocity += slope_dir * slide_accel
-		else:
-			velocity.y = 0.0
 			
 	if Input.is_action_pressed("sprint"):
 		speed = default_speed * sprint_mult
@@ -100,15 +89,19 @@ func _physics_process(delta):
 		camera.fov = lerp(camera.fov, fov, 0.2)
 		crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_size, 0.3), lerp(crosshair.size.y, crosshair_size, 0.3)))
 	
-	if Input.is_action_pressed("jump") and is_on_floor():
-		velocity.y = jump_speed
-		audio.stop()
-		walking = false
-		audio.stream = jump_up
-		audio.play()
-	
 	crosshair.position.x = crosshair_cont.size.x/2.0-(crosshair.size.x/2.0)
 	crosshair.position.y = crosshair_cont.size.y/2.0-(crosshair.size.y/2.0)
+	
+	if not is_on_floor():
+		velocity.y += -gravity * delta
+	else:
+		floor_normal = get_floor_normal()
+		slope_angle = acos(floor_normal.dot(Vector3.UP))
+		slope_dir = (Vector3.DOWN - floor_normal * Vector3.DOWN.dot(floor_normal)).normalized()
+		if rad_to_deg(slope_angle) > max_slope_angle:
+			velocity += slope_dir * slide_accel
+		else:
+			velocity.y = 0.0
 	
 	if not input:
 		if is_on_floor():
@@ -116,15 +109,17 @@ func _physics_process(delta):
 			velocity.z = lerp(velocity.z, 0.0, friction)
 	else:
 		if is_on_floor():
-			movement_dir = (movement_dir - floor_normal * movement_dir.dot(floor_normal)).normalized()
-			var slope_factor = 1.0 - (slope_angle / deg_to_rad(max_slope_angle))
-			var slope_speed = speed * clamp(slope_factor, 0.2, 1.0)
+			movement_dir = movement_dir - (slope_dir * friction)
+		velocity.x = -movement_dir.x * speed
+		velocity.z = -movement_dir.z * speed
+			
+	if Input.is_action_pressed("jump") and is_on_floor():
+		velocity.y = jump_speed
+		audio.stop()
+		walking = false
+		audio.stream = jump_up
+		audio.play()
 	
-			velocity.x = -movement_dir.x * slope_speed
-			velocity.z = -movement_dir.z * slope_speed
-		else:
-			velocity.x = -movement_dir.x * speed
-			velocity.z = -movement_dir.z * speed
 	#print(velocity)
 	move_and_slide()
 	

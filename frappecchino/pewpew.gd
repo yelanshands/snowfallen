@@ -2,10 +2,10 @@ extends Node3D
 
 const bullet = preload("res://bullet.tscn")
 @onready var timer : Timer = $Timer
-@onready var camera_end : Node3D = get_parent().get_node("SpringArmPivot/PlayerCamera/Line")
-@onready var camera : Camera3D = get_parent().get_node("SpringArmPivot/PlayerCamera")
-@onready var sound: AudioStreamPlayer3D = $AudioStreamPlayer3D
 @onready var player: CharacterBody3D = get_parent()
+@onready var camera_end : Node3D = player.get_node("SpringArmPivot/PlayerCamera/Line")
+@onready var camera : Camera3D = player.get_node("SpringArmPivot/PlayerCamera")
+@onready var sound: AudioStreamPlayer3D = player.get_node("SpringArmPivot/PlayerCamera/PewpewAudio")
 
 var cam_sens := 0.0025
 var pewpew_roty := 0.0

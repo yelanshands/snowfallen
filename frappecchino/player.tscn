@@ -1,8 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://daiyf82t58v7s"]
+[gd_scene load_steps=8 format=3 uid="uid://daiyf82t58v7s"]
 
 [ext_resource type="Script" uid="uid://bwhyes7j5e77m" path="res://player.gd" id="1_onrkg"]
 [ext_resource type="PackedScene" uid="uid://dhfl87xl2laua" path="res://assets/models/player.gltf" id="2_hqtel"]
 [ext_resource type="PackedScene" uid="uid://bl4ue4lvsx2v2" path="res://pewpew.tscn" id="2_i3pqv"]
+[ext_resource type="AudioStream" uid="uid://y2ef6e4yn2mw" path="res://assets/audio/silenced-gunshot-81063.mp3" id="4_2hs0m"]
 [ext_resource type="PackedScene" uid="uid://c4vni08qv1dhr" path="res://assets/models/phantom.gltf" id="4_hqtel"]
 [ext_resource type="AudioStream" uid="uid://bmydrycv0wre7" path="res://assets/audio/concrete-footsteps-1-6265.mp3" id="5_sweqy"]
 
@@ -32,11 +33,17 @@ current = true
 
 [node name="Line" type="Marker3D" parent="SpringArmPivot/PlayerCamera"]
 
+[node name="Audio" type="AudioStreamPlayer3D" parent="SpringArmPivot/PlayerCamera"]
+transform = Transform3D(-1, 0, 8.74228e-08, 0, 1, 0, -8.74228e-08, 0, -1, 0, 0, 0)
+stream = ExtResource("5_sweqy")
+max_db = 0.5
+
+[node name="PewpewAudio" type="AudioStreamPlayer3D" parent="SpringArmPivot/PlayerCamera"]
+stream = ExtResource("4_2hs0m")
+max_db = -1.0
+
 [node name="Pewpew" parent="." instance=ExtResource("2_i3pqv")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -3.54852, 12.901, 3.49396)
 
 [node name="phantom" parent="Pewpew" instance=ExtResource("4_hqtel")]
 transform = Transform3D(-1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0)
-
-[node name="Audio" type="AudioStreamPlayer3D" parent="."]
-stream = ExtResource("5_sweqy")
