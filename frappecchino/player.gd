@@ -39,14 +39,11 @@ var walking = false
 var floor_normal: Vector3
 var slope_angle: float
 var score: int = 0
-var default_hitbox_ypos: float = 11.3
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	floor_stop_on_slope = false
 	floor_snap_length = floor_snap
-	#safe_margin = 0.15
-	#floor_block_on_wall = true
 	
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
@@ -59,15 +56,15 @@ func _input(event):
 func _process(_delta):
 	camera.position.x = spring_pos.position.x
 	camera.position.z = spring_pos.position.z
-	camera.position.y = spring_pos.position.y - PI/4 - (camera.rotation.x + PI/4)*3
-
+	if animation.current_animation == "riflecrouchrun" or (animation.current_animation == "riflecrouchruntostop" and animation.get_playing_speed() < 0):
+		camera.position.y = lerp(camera.position.y, (spring_pos.position.y - PI/4 - (camera.rotation.x + PI/4)*3) + 10, 0.005)
+	else:
+		camera.position.y = lerp(camera.position.y, (spring_pos.position.y - PI/4 - (camera.rotation.x + PI/4)*3), 0.035)
+	
 func _physics_process(delta):
 	if not is_on_floor():
 		in_air = true
-		#if not animation.is_playing():
-			#animation.play("jumploop")
 	if in_air and is_on_floor():
-		#animation.play_section("riflecrouchruntostop", 1)
 		in_air = false
 		audio.stream = landing_stream
 		audio.play()
@@ -87,10 +84,6 @@ func _physics_process(delta):
 			if velocity.z < 0 and (animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation != "riflecrouchruntostop") or animation.current_animation == "riflecrouchrun":
 				animation.play("riflecrouchrun")
 				
-				#animation.play_backwards("riflecrouchruntostop")
-			#if velocity.z < 0 and ((animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation_position == 0) or animation.current_animation == "riflecrouchrun"):
-				#animation.play("riflecrouchrun")
-				
 	if (not (velocity.x > 0.1 or velocity.x < -0.1) or (velocity.y > 0.1 or velocity.y < -0.1)):
 		if velocity.z >= 0:
 			if walking:
@@ -100,15 +93,6 @@ func _physics_process(delta):
 				animation.play("riflecrouchruntostop", 1)
 			elif animation.assigned_animation != "riflecrouchruntostop" or (animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation_position == 0):
 				animation.play("riflecrouchruntostop")
-	
-		#if animation.assigned_animation != "riflecrouchruntostop" or (animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation_position == 0):
-			#if (animation.assigned_animation == "jumpup" and animation.current_animation != "jumpup"):
-				#animation.play_section("riflecrouchruntostop", 1, 1.66, 1)
-			#elif velocity.z >= 0 and (animation.current_animation != "riflecrouchruntostop"):
-				#animation.play("riflecrouchruntostop", 0, 1.66, 1)
-				#
-		#if animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation_position >= 1.65:
-			#animation.play_backwards("riflecrouchruntostop")
 	
 	print(animation.current_animation, " ", velocity.z, " ", animation.current_animation_position)
 	
