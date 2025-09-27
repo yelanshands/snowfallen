@@ -1,11 +1,10 @@
-[gd_scene load_steps=89 format=4 uid="uid://bc8j31swr481q"]
+[gd_scene load_steps=88 format=4 uid="uid://bc8j31swr481q"]
 
 [ext_resource type="Texture2D" uid="uid://ddqvntm0oc6d1" path="res://assets/models/structures/skyscraper_0.png" id="1_80nbo"]
 [ext_resource type="Script" uid="uid://csvim2fw7hoyd" path="res://game.gd" id="1_ryrav"]
 [ext_resource type="FontFile" uid="uid://c0ox2v115c0rl" path="res://assets/fonts/immortal/IMMORTAL.ttf" id="2_ryrav"]
 [ext_resource type="PackedScene" uid="uid://daiyf82t58v7s" path="res://player.tscn" id="3_fc0e3"]
 [ext_resource type="Texture2D" uid="uid://rs66kiv43jvu" path="res://assets/images/crosshair.png" id="3_feb5d"]
-[ext_resource type="AudioStream" uid="uid://yi6t8unvbaio" path="res://assets/audio/calm-night-312296.mp3" id="4_fc0e3"]
 [ext_resource type="FontFile" uid="uid://b2n6a2bqt1rdk" path="res://assets/fonts/NotoSansSymbols-VariableFont_wght.ttf" id="4_j5wjh"]
 [ext_resource type="AudioStream" uid="uid://dxpcidya168dw" path="res://assets/audio/music.mp3" id="7_eow3j"]
 
@@ -918,6 +917,7 @@ text = "
    0"
 
 [node name="Header" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
+visible = false
 layout_mode = 2
 theme_override_constants/separation = -170
 
@@ -1200,13 +1200,6 @@ mesh = SubResource("PlaneMesh_7jktm")
 
 [node name="Player" parent="." instance=ExtResource("3_fc0e3")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.898148, 130.3738, 150.104)
-
-[node name="AudioStreamPlayer3D" type="AudioStreamPlayer3D" parent="."]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 4.11656, 61.2377, -14.56)
-stream = ExtResource("4_fc0e3")
-volume_db = 7.0
-max_distance = 1092.27
-parameters/looping = true
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_eow3j")

@@ -7,6 +7,8 @@ extends CharacterBody3D
 @onready var crosshair: TextureRect = crosshair_cont.get_node("Crosshair")
 @onready var audio: AudioStreamPlayer3D = $SpringArmPivot/PlayerCamera/Audio
 @onready var score_label: Label = $/root/Game/CanvasLayer/MarginContainer/ScoreContainer/Score
+@onready var animation: AnimationPlayer = $frappie/AnimationPlayer
+@onready var hitbox: CollisionShape3D = $CollisionShape3D
 
 @export var fov: float = 75.0
 @export var friction: float = 0.25
@@ -37,6 +39,7 @@ var walking = false
 var floor_normal: Vector3
 var slope_angle: float
 var score: int = 0
+var default_hitbox_ypos: float = 11.3
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -61,19 +64,37 @@ func _process(_delta):
 func _physics_process(delta):
 	if not is_on_floor():
 		in_air = true
+		#if not animation.is_playing():
+			#animation.play("jumploop")
 	if in_air and is_on_floor():
+		#animation.play_section("riflecrouchruntostop", 1)
 		in_air = false
 		audio.stream = landing_stream
 		audio.play()
-		
-	if ((velocity.x > 0.1 or velocity.x < -0.1) or (velocity.y > 0.1 or velocity.y < -0.1)) and is_on_floor() and not walking:
-		if not audio.is_playing():
-			walking = true
-			audio.stream = footstep_stream
-			audio.play()
-	if (not (velocity.x > 0.1 or velocity.x < -0.1) or (velocity.y > 0.1 or velocity.y < -0.1)) and walking:
-		audio.stop()
-		walking = false
+	
+	if ((velocity.x > 0.1 or velocity.x < -0.1) or (velocity.y > 0.1 or velocity.y < -0.1)) and is_on_floor():
+		if velocity.z < 0:
+			if not walking and not audio.is_playing():
+				walking = true
+				audio.stream = footstep_stream
+				audio.play()
+				animation.play_backwards("riflecrouchruntostop")
+			if (animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation_position == 0) or animation.current_animation == "riflecrouchrun":
+				animation.play("riflecrouchrun")
+
+	if (not (velocity.x > 0.1 or velocity.x < -0.1) or (velocity.y > 0.1 or velocity.y < -0.1)):
+		if velocity.z >= 0 and walking:
+			audio.stop()
+			walking = false
+		if animation.assigned_animation != "riflecrouchruntostop" or (animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation_position == 0):
+			if (animation.assigned_animation == "jumpup" and animation.current_animation != "jumpup"):
+				animation.play_section("riflecrouchruntostop", 1)
+			elif velocity.z >= 0:
+				animation.play("riflecrouchruntostop")
+		#if animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation_position >= 1.65:
+			#animation.play_backwards("riflecrouchruntostop")
+	
+	print(animation.current_animation, " ", velocity.z, " ", animation.current_animation_position)
 	
 	var slope_dir: Vector3
 	var input = Input.get_vector("strafe_left", "strafe_right", "move_forward", "move_back")
@@ -116,15 +137,14 @@ func _physics_process(delta):
 		velocity.x = -movement_dir.x * speed
 		velocity.z = -movement_dir.z * speed
 			
-	if Input.is_action_pressed("jump") and is_on_floor():
+	if Input.is_action_pressed("jump") and is_on_floor() and animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation_position >= 1.1:
 		velocity.y = jump_speed
+		animation.play_section("jumpup", 0.1, 0.5333, 1)
 		audio.stop()
 		walking = false
 		audio.stream = jump_up
 		audio.play()
 	
-	#print(velocity)
-	#apply_floor_snap()
 	move_and_slide()
 	
 func _unhandled_input(event):
