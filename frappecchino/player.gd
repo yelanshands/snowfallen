@@ -9,12 +9,13 @@ extends CharacterBody3D
 @onready var score_label: Label = $/root/Game/CanvasLayer/MarginContainer/ScoreContainer/Score
 @onready var animation: AnimationPlayer = $frappie/AnimationPlayer
 @onready var hitbox: CollisionShape3D = $CollisionShape3D
+@onready var skeleton: Skeleton3D = $frappie.get_node("Node/Armature/Skeleton3D")
 
 @export var fov: float = 75.0
 @export var friction: float = 0.25
 @export var cam_sens: float = 0.0025
 @export var slide_accel: float = 10.0
-@export var max_slope_angle: float = deg_to_rad(15.0)
+@export var max_slope_angle: float = 0.2
 @export var floor_snap: float = 2.5
 
 const footstep_stream = preload("res://assets/audio/concrete-footsteps-6752.mp3")
@@ -55,13 +56,14 @@ func _input(event):
 			get_viewport().set_input_as_handled()
 
 func _process(_delta):
-	camera.position.x = spring_pos.position.x
-	camera.position.z = spring_pos.position.z
-	if animation.current_animation == "riflecrouchrun" or (animation.current_animation == "riflecrouchruntostop" and animation.get_playing_speed() < 0):
-		camera.position.y = lerp(camera.position.y, (spring_pos.position.y - PI/4 - (camera.rotation.x + PI/4)*3) + 10, 0.005)
+	var head_bone = skeleton.get_node("mixamorigHeadTop_End")
+	var camera_zrot = camera.global_rotation.z
+	spring_pos.global_position = head_bone.global_position
+	if animation.current_animation == "runslide":
+		camera.global_rotation.z = lerp(camera_zrot, clamp(-head_bone.global_rotation.z, -0.2, 0.05), 0.05)
 	else:
-		camera.position.y = lerp(camera.position.y, (spring_pos.position.y - PI/4 - (camera.rotation.x + PI/4)*3), 0.035)
-	
+		camera.global_rotation.z = lerp(camera_zrot, 0.0, 0.05)
+
 func _physics_process(delta):
 	if not is_on_floor():
 		in_air = true
@@ -102,28 +104,28 @@ func _physics_process(delta):
 	var input = Input.get_vector("strafe_left", "strafe_right", "move_forward", "move_back")
 	var movement_dir = (transform.basis * Vector3(input.x, 0, input.y)).normalized()
 			
-	if Input.is_action_pressed("sprint") and animation.current_animation != "runslide":
+	if Input.is_action_just_pressed("sprint") and animation.current_animation != "runslide":
 		animation.play_section("runslide", 0, 1.1)
 		if is_on_floor():
 			velocity += global_transform.basis.z.normalized() * sprint_length 
 		else:
 			velocity += global_transform.basis.z.normalized() * sprint_length/4 
 	if animation.current_animation == "runslide":
-		camera.fov = lerp(camera.fov, fov * sprint_mult, 0.2)
-		crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_sprint, 0.3), lerp(crosshair.size.y, crosshair_sprint, 0.3)))
+		camera.fov = lerp(camera.fov, fov * sprint_mult, 0.1)
+		crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_sprint, 0.15), lerp(crosshair.size.y, crosshair_sprint, 0.15)))
 	if Input.is_action_pressed("crouch"):
 		speed = default_speed * crouch_mult
-		camera.fov = lerp(camera.fov, fov * crouch_mult, 0.2)
-		crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_crouch, 0.3), lerp(crosshair.size.y, crosshair_crouch, 0.3)))
+		camera.fov = lerp(camera.fov, fov * crouch_mult, 0.15)
+		crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_crouch, 0.15), lerp(crosshair.size.y, crosshair_crouch, 0.15)))
 	elif animation.current_animation != "runslide":
 		speed = default_speed
-		camera.fov = lerp(camera.fov, fov, 0.2)
-		crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_size, 0.3), lerp(crosshair.size.y, crosshair_size, 0.3)))
+		camera.fov = lerp(camera.fov, fov, 0.05)
+		crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_size, 0.15), lerp(crosshair.size.y, crosshair_size, 0.15)))
 	crosshair.position.x = crosshair_cont.size.x/2.0-(crosshair.size.x/2.0)
 	crosshair.position.y = crosshair_cont.size.y/2.0-(crosshair.size.y/2.0)
 	
 	#print(animation.current_animation, "  ", animation.current_animation_position)
-	print(velocity)
+	#print(velocity)
 	
 	if not is_on_floor():
 		velocity.y += -gravity * delta
