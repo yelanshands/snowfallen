@@ -111,7 +111,7 @@ func _physics_process(delta):
 	if animation.current_animation == "runslide":
 		camera.fov = lerp(camera.fov, fov * sprint_mult, 0.2)
 		crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_sprint, 0.3), lerp(crosshair.size.y, crosshair_sprint, 0.3)))
-	if Input.is_action_pressed("right_click"):
+	if Input.is_action_pressed("crouch"):
 		speed = default_speed * crouch_mult
 		camera.fov = lerp(camera.fov, fov * crouch_mult, 0.2)
 		crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_crouch, 0.3), lerp(crosshair.size.y, crosshair_crouch, 0.3)))
