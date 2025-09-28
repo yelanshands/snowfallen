@@ -9,7 +9,7 @@ top_radius = 0.3
 top_level = true
 collision_mask = 7
 script = ExtResource("1_v7oki")
-speed = 900.0
+speed = 2000.0
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 0, 0)
