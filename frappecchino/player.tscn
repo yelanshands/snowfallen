@@ -1,10 +1,13 @@
-[gd_scene load_steps=7 format=3 uid="uid://daiyf82t58v7s"]
+[gd_scene load_steps=10 format=3 uid="uid://daiyf82t58v7s"]
 
 [ext_resource type="Script" uid="uid://bwhyes7j5e77m" path="res://player.gd" id="1_onrkg"]
 [ext_resource type="PackedScene" uid="uid://bl4ue4lvsx2v2" path="res://pewpew.tscn" id="2_i3pqv"]
 [ext_resource type="AudioStream" uid="uid://y2ef6e4yn2mw" path="res://assets/audio/silenced-gunshot-81063.mp3" id="4_2hs0m"]
 [ext_resource type="AudioStream" uid="uid://bmydrycv0wre7" path="res://assets/audio/concrete-footsteps-1-6265.mp3" id="5_sweqy"]
+[ext_resource type="Texture2D" uid="uid://rs66kiv43jvu" path="res://assets/images/crosshair.png" id="6_2hs0m"]
 [ext_resource type="PackedScene" uid="uid://clpai68dck2yo" path="res://frappie.tscn" id="7_1jxqw"]
+[ext_resource type="FontFile" uid="uid://c0ox2v115c0rl" path="res://assets/fonts/immortal/IMMORTAL.ttf" id="7_dw050"]
+[ext_resource type="FontFile" uid="uid://b2n6a2bqt1rdk" path="res://assets/fonts/NotoSansSymbols-VariableFont_wght.ttf" id="8_b26j0"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2hs0m"]
 radius = 3.0
@@ -48,9 +51,57 @@ max_db = -1.0
 [node name="frappie" parent="." instance=ExtResource("7_1jxqw")]
 
 [node name="camera_attach" type="BoneAttachment3D" parent="frappie/Node/Armature/Skeleton3D" index="17"]
-transform = Transform3D(0.8864182, -0.46283153, 0.007053986, 0.4308695, 0.81944346, -0.37797332, 0.16915777, 0.33808172, 0.9257896, -1.1199043, 11.261181, 2.7069983)
+transform = Transform3D(0.997778, 0.057849776, -0.03305327, -0.062330697, 0.9857339, -0.15634415, 0.023537293, 0.15805697, 0.9871495, 0.16192989, 18.439795, 2.4153342)
 bone_name = "mixamorigHead"
 bone_idx = 68
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Crosshair" type="TextureRect" parent="CanvasLayer/MarginContainer"]
+clip_contents = true
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("6_2hs0m")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="ScoreContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
+layout_mode = 2
+
+[node name="Score" type="Label" parent="CanvasLayer/MarginContainer/ScoreContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_dw050")
+theme_override_font_sizes/font_size = 48
+text = "
+   0"
+
+[node name="Header" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
+visible = false
+layout_mode = 2
+theme_override_constants/separation = -170
+
+[node name="Dice" type="Label" parent="CanvasLayer/MarginContainer/Header"]
+modulate = Color(1, 1, 1, 0.78431374)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8_b26j0")
+theme_override_font_sizes/font_size = 140
+text = "⚀⚁⚂⚃⚄⚅"
+horizontal_alignment = 1
+
+[node name="Arrow" type="Label" parent="CanvasLayer/MarginContainer/Header"]
+modulate = Color(1, 1, 1, 0.39215687)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("8_b26j0")
+theme_override_font_sizes/font_size = 140
+text = "⮝"
+horizontal_alignment = 1
 
 [editable path="Pewpew"]
 [editable path="frappie"]

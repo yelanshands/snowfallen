@@ -3,10 +3,10 @@ extends CharacterBody3D
 @onready var camera: Camera3D = $SpringArmPivot/PlayerCamera
 @onready var spring_arm: SpringArm3D = $SpringArmPivot/SpringArm3D
 @onready var spring_pos: Node3D = $SpringArmPivot/SpringArm3D/SpringPosition
-@onready var crosshair_cont: MarginContainer = $/root/Game/CanvasLayer/MarginContainer
+@onready var crosshair_cont: MarginContainer = $CanvasLayer/MarginContainer
 @onready var crosshair: TextureRect = crosshair_cont.get_node("Crosshair")
 @onready var audio: AudioStreamPlayer3D = $SpringArmPivot/PlayerCamera/Audio
-@onready var score_label: Label = $/root/Game/CanvasLayer/MarginContainer/ScoreContainer/Score
+@onready var score_label: Label = $CanvasLayer/MarginContainer/ScoreContainer/Score
 @onready var animation: AnimationPlayer = $frappie/AnimationPlayer
 @onready var hitbox: CollisionShape3D = $CollisionShape3D
 @onready var skeleton: Skeleton3D = $frappie.get_node("Node/Armature/Skeleton3D")
@@ -17,6 +17,7 @@ extends CharacterBody3D
 @export var slide_accel: float = 10.0
 @export var max_slope_angle: float = 0.2
 @export var floor_snap: float = 2.5
+@export var in_game: bool = true
 
 const footstep_stream = preload("res://assets/audio/concrete-footsteps-6752.mp3")
 const landing_stream = preload("res://assets/audio/land2-43790.mp3")
@@ -71,35 +72,51 @@ func _physics_process(delta):
 		in_air = false
 		audio.stream = landing_stream
 		audio.play()
+	
+	if in_game:
+		if ((velocity.x > 0.1 or velocity.x < -0.1) or (velocity.y > 0.1 or velocity.y < -0.1)):
+			if velocity.z < 0:
+				if animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation_position >= 1.66 and animation.current_animation != "riflecrouchrun":
+					animation.play_backwards("riflecrouchruntostop", 0.25)
+				elif animation.assigned_animation == "jumpup" and not animation.current_animation:
+					animation.play("riflecrouchruntostop", 0.5)
+			if is_on_floor():
+				if not walking and not audio.is_playing():
+					if velocity.z < 0:
+						walking = true
+						audio.stream = footstep_stream
+						audio.play()
+				if velocity.z < 0 and (animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation != "riflecrouchruntostop") or animation.current_animation == "riflecrouchrun":
+					animation.play("riflecrouchrun")
+					
+		if (not (velocity.x > 0.1 or velocity.x < -0.1) or (velocity.y > 0.1 or velocity.y < -0.1)):
+			if velocity.z >= 0:
+				if walking:
+					audio.stop()
+					walking = false
+				if not animation.current_animation and not is_on_floor() and animation.assigned_animation == "jumpup":
+					animation.play("riflecrouchruntostop", 0.5)
+				elif animation.assigned_animation != "runslide" and animation.assigned_animation != "riflecrouchruntostop" or (animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation_position == 0):
+					animation.play("riflecrouchruntostop", 0.5)
+					
+		if animation.assigned_animation == "runslide" and not animation.current_animation:
+			animation.play("riflecrouchruntostop", 0.25)
+	else:
+		if ((velocity.x > 0.1 or velocity.x < -0.1) or (velocity.y > 0.1 or velocity.y < -0.1)):
+			if (animation.assigned_animation == "riflecrouchruntostop" and not animation.current_animation) or (animation.assigned_animation == "riflecrouchrun") or (animation.assigned_animation == "runslide" and not animation.current_animation):
+				animation.play("riflecrouchrun", 0.5)
+			elif is_on_floor():
+				animation.play_backwards("riflecrouchruntostop", 0.5)
+					
+		if (not (velocity.x > 0.1 or velocity.x < -0.1) or (velocity.y > 0.1 or velocity.y < -0.1)):
+			#if animation.assigned_animation != "riflecrouchruntostop" and not animation.current_animation:
+				animation.play("riflecrouchruntostop", 0.25)
 				
-	if ((velocity.x > 0.1 or velocity.x < -0.1) or (velocity.y > 0.1 or velocity.y < -0.1)):
-		if velocity.z < 0:
-			if animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation_position >= 1.66 and animation.current_animation != "riflecrouchrun":
-				animation.play_backwards("riflecrouchruntostop", 0.25)
-			elif animation.assigned_animation == "jumpup" and not animation.current_animation:
-				animation.play("riflecrouchruntostop", 0.5)
-		if is_on_floor():
-			if not walking and not audio.is_playing():
-				if velocity.z < 0:
-					walking = true
-					audio.stream = footstep_stream
-					audio.play()
-			if velocity.z < 0 and (animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation != "riflecrouchruntostop") or animation.current_animation == "riflecrouchrun":
-				animation.play("riflecrouchrun")
-				
-	if (not (velocity.x > 0.1 or velocity.x < -0.1) or (velocity.y > 0.1 or velocity.y < -0.1)):
-		if velocity.z >= 0:
-			if walking:
-				audio.stop()
-				walking = false
-			if not animation.current_animation and not is_on_floor() and animation.assigned_animation == "jumpup":
-				animation.play("riflecrouchruntostop", 0.5)
-			elif animation.assigned_animation != "runslide" and animation.assigned_animation != "riflecrouchruntostop" or (animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation_position == 0):
-				animation.play("riflecrouchruntostop", 0.5)
-				
-	if animation.assigned_animation == "runslide" and not animation.current_animation:
-		animation.play("riflecrouchruntostop", 0.25)
+		if animation.current_animation and animation.current_animation != "runslide" and not audio.is_playing():
+			audio.play()
 			
+		print(animation.current_animation)
+				
 	var slope_dir: Vector3
 	var input = Input.get_vector("strafe_left", "strafe_right", "move_forward", "move_back")
 	var movement_dir = (transform.basis * Vector3(input.x, 0, input.y)).normalized()

@@ -1,7 +1,7 @@
 extends Node3D
 const NPC = preload("uid://ro3nbpeyv3v5")
 @onready var enemy_plane: MeshInstance3D = $Background/Slope/plane
-@onready var arrow_label: Label = $CanvasLayer/MarginContainer/Header/Arrow
+@onready var arrow_label: Label = $Player.get_node("CanvasLayer/MarginContainer/Header/Arrow")
 
 var enemies: Array = []
 
