@@ -25,12 +25,13 @@ var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")*9.8
 var default_speed = 40.0  
 var speed = default_speed
 var jump_speed = 40.0
-var sprint_mult = 1.25
-var crouch_mult = 0.75
+var sprint_length = 200.0
+var sprint_mult = 1.5
+var crouch_mult = 0.60
 var lerp_value = 8.0
 var crosshair_size = 60.0
 var crosshair_sprint = 40.0
-var crosshair_crouch = 80.0
+var crosshair_crouch = 100.0
 var target_cam_rotx = 0.0
 var target_cam_roty = 0.0
 var player_rot = 0.0
@@ -72,9 +73,9 @@ func _physics_process(delta):
 	if ((velocity.x > 0.1 or velocity.x < -0.1) or (velocity.y > 0.1 or velocity.y < -0.1)):
 		if velocity.z < 0:
 			if animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation_position >= 1.66 and animation.current_animation != "riflecrouchrun":
-				animation.play_backwards("riflecrouchruntostop")
+				animation.play_backwards("riflecrouchruntostop", 0.25)
 			elif animation.assigned_animation == "jumpup" and not animation.current_animation:
-				animation.play("riflecrouchruntostop", 1)
+				animation.play("riflecrouchruntostop", 0.5)
 		if is_on_floor():
 			if not walking and not audio.is_playing():
 				if velocity.z < 0:
@@ -89,32 +90,40 @@ func _physics_process(delta):
 			if walking:
 				audio.stop()
 				walking = false
-			if not is_on_floor() and animation.assigned_animation == "jumpup" and not animation.current_animation:
-				animation.play("riflecrouchruntostop", 1)
-			elif animation.assigned_animation != "riflecrouchruntostop" or (animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation_position == 0):
-				animation.play("riflecrouchruntostop")
-	
-	print(animation.current_animation, " ", velocity.z, " ", animation.current_animation_position)
-	
+			if not animation.current_animation and not is_on_floor() and animation.assigned_animation == "jumpup":
+				animation.play("riflecrouchruntostop", 0.5)
+			elif animation.assigned_animation != "runslide" and animation.assigned_animation != "riflecrouchruntostop" or (animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation_position == 0):
+				animation.play("riflecrouchruntostop", 0.5)
+				
+	if animation.assigned_animation == "runslide" and not animation.current_animation:
+		animation.play("riflecrouchruntostop", 0.25)
+			
 	var slope_dir: Vector3
 	var input = Input.get_vector("strafe_left", "strafe_right", "move_forward", "move_back")
 	var movement_dir = (transform.basis * Vector3(input.x, 0, input.y)).normalized()
 			
-	if Input.is_action_pressed("sprint"):
-		speed = default_speed * sprint_mult
+	if Input.is_action_pressed("sprint") and animation.current_animation != "runslide":
+		animation.play_section("runslide", 0, 1.1)
+		if is_on_floor():
+			velocity += global_transform.basis.z.normalized() * sprint_length 
+		else:
+			velocity += global_transform.basis.z.normalized() * sprint_length/4 
+	if animation.current_animation == "runslide":
 		camera.fov = lerp(camera.fov, fov * sprint_mult, 0.2)
 		crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_sprint, 0.3), lerp(crosshair.size.y, crosshair_sprint, 0.3)))
-	elif Input.is_action_pressed("crouch"):
+	if Input.is_action_pressed("right_click"):
 		speed = default_speed * crouch_mult
 		camera.fov = lerp(camera.fov, fov * crouch_mult, 0.2)
 		crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_crouch, 0.3), lerp(crosshair.size.y, crosshair_crouch, 0.3)))
-	else:
+	elif animation.current_animation != "runslide":
 		speed = default_speed
 		camera.fov = lerp(camera.fov, fov, 0.2)
 		crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_size, 0.3), lerp(crosshair.size.y, crosshair_size, 0.3)))
-	
 	crosshair.position.x = crosshair_cont.size.x/2.0-(crosshair.size.x/2.0)
 	crosshair.position.y = crosshair_cont.size.y/2.0-(crosshair.size.y/2.0)
+	
+	#print(animation.current_animation, "  ", animation.current_animation_position)
+	print(velocity)
 	
 	if not is_on_floor():
 		velocity.y += -gravity * delta
@@ -139,7 +148,7 @@ func _physics_process(delta):
 			
 	if Input.is_action_pressed("jump") and is_on_floor() and animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation_position >= 1.1:
 		velocity.y = jump_speed
-		animation.play_section("jumpup", 0.1, 0.5333)
+		animation.play_section("jumpup", 0.1, 0.5333, 0.5)
 		audio.stop()
 		walking = false
 		audio.stream = jump_up
