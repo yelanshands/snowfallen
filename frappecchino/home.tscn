@@ -99,7 +99,7 @@ custom_minimum_size = Vector2(0, 100)
 layout_mode = 2
 theme = ExtResource("1_tt30a")
 theme_override_font_sizes/normal_font_size = 70
-text = "Temp Name"
+text = "Temp Name "
 
 [node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(0, 250)
@@ -157,6 +157,19 @@ mouse_filter = 2
 theme = ExtResource("1_tt30a")
 theme_override_font_sizes/normal_font_size = 50
 text = " Quit"
+vertical_alignment = 1
+
+[node name="RichTextLabel2" type="RichTextLabel" parent="Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(300, 300)
+layout_mode = 2
+mouse_filter = 2
+theme = ExtResource("1_tt30a")
+theme_override_font_sizes/normal_font_size = 35
+text = "temporary instructions:
+WASD to move 
+Shift to slide, C to crouch
+Left click to shoot
+(pls try the slide its fun)"
 vertical_alignment = 1
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
