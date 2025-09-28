@@ -1135,7 +1135,7 @@ shape = SubResource("ConvexPolygonShape3D_mljfx")
 shape = SubResource("BoxShape3D_qpefm")
 
 [node name="Slope" type="StaticBody3D" parent="Background"]
-transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, 0, 150, 0)
+transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, 0, 150, -196)
 collision_layer = 7
 collision_mask = 7
 
@@ -1152,11 +1152,12 @@ visible = false
 mesh = SubResource("PlaneMesh_7jktm")
 
 [node name="snow" parent="Background/Slope" instance=ExtResource("6_j5wjh")]
-transform = Transform3D(-2.1855694e-08, -0.104809284, -0.48889163, 0, 0.48889163, -0.104809284, 0.5, -4.5813593e-09, -2.1370132e-08, 0, -0.5, 0)
+transform = Transform3D(-6.5567085e-09, -0.104809284, -0.34222415, 0, 0.48889163, -0.0733665, 0.15, -4.5813593e-09, -1.4959092e-08, 0, -0.5, 0)
 skeleton = NodePath("../../..")
 
 [node name="Player" parent="." instance=ExtResource("3_fc0e3")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.898148, 194.35236, -183.49664)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 8.898148, 282.35236, -716.49664)
+slide_accel = 7.0
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("7_eow3j")
