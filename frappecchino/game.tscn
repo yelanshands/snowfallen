@@ -1,7 +1,8 @@
-[gd_scene load_steps=87 format=4 uid="uid://bc8j31swr481q"]
+[gd_scene load_steps=88 format=4 uid="uid://bc8j31swr481q"]
 
 [ext_resource type="Texture2D" uid="uid://ddqvntm0oc6d1" path="res://assets/models/structures/skyscraper_0.png" id="1_80nbo"]
 [ext_resource type="Script" uid="uid://csvim2fw7hoyd" path="res://game.gd" id="1_ryrav"]
+[ext_resource type="FontFile" uid="uid://c0ox2v115c0rl" path="res://assets/fonts/immortal/IMMORTAL.ttf" id="2_ryrav"]
 [ext_resource type="PackedScene" uid="uid://daiyf82t58v7s" path="res://player.tscn" id="3_fc0e3"]
 [ext_resource type="PackedScene" uid="uid://dhgsv5tanr7eu" path="res://assets/models/structures/snow.glb" id="6_j5wjh"]
 [ext_resource type="AudioStream" uid="uid://dxpcidya168dw" path="res://assets/audio/music.mp3" id="7_eow3j"]
@@ -1164,3 +1165,17 @@ stream = ExtResource("7_eow3j")
 volume_db = -10.0
 autoplay = true
 parameters/looping = true
+
+[node name="Node" type="Node" parent="."]
+
+[node name="Label3D" type="Label3D" parent="Node"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 162, 62)
+billboard = 1
+modulate = Color(0, 0, 0, 1)
+outline_modulate = Color(1, 1, 1, 0)
+text = "Gameplay is a work 
+in progress!
+Stay tuned :)"
+font = ExtResource("2_ryrav")
+font_size = 3500
+outline_size = 100

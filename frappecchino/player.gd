@@ -10,6 +10,8 @@ extends CharacterBody3D
 @onready var animation: AnimationPlayer = $frappie/AnimationPlayer
 @onready var hitbox: CollisionShape3D = $CollisionShape3D
 @onready var skeleton: Skeleton3D = $frappie.get_node("Node/Armature/Skeleton3D")
+@onready var fade_animation = $CanvasLayer/AnimationPlayer
+@onready var fade_rect = $CanvasLayer/ColorRect
 
 @export var fov: float = 75.0
 @export var friction: float = 0.25
@@ -17,7 +19,6 @@ extends CharacterBody3D
 @export var slide_accel: float = 10.0
 @export var max_slope_angle: float = 0.2
 @export var floor_snap: float = 2.5
-@export var in_game: bool = true
 
 const footstep_stream = preload("res://assets/audio/concrete-footsteps-6752.mp3")
 const landing_stream = preload("res://assets/audio/land2-43790.mp3")
@@ -28,7 +29,7 @@ var cam_sens: float = default_cam_sens
 var default_speed = 40.0  
 var speed = default_speed
 var jump_speed = 40.0
-var sprint_length = 200.0
+var sprint_length = 1000.0
 var sprint_mult = 1.5
 var crouch_mult = 0.60
 var lerp_value = 8.0
@@ -44,11 +45,13 @@ var floor_normal: Vector3
 var slope_angle: float
 var score: int = 0
 var prev_floor_normal: Vector3 = Vector3.ZERO
+var head_bone: Node
 
 func _ready():
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	floor_stop_on_slope = false
 	floor_snap_length = floor_snap
+	head_bone = skeleton.get_node("mixamorigHeadTop_End")
 	
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
@@ -59,7 +62,6 @@ func _input(event):
 			get_viewport().set_input_as_handled()
 
 func _process(_delta):
-	var head_bone = skeleton.get_node("mixamorigHeadTop_End")
 	var camera_zrot = camera.global_rotation.z
 	spring_pos.global_position = head_bone.global_position
 	if animation.current_animation == "runslide":
@@ -129,7 +131,12 @@ func _physics_process(delta):
 		if is_on_floor():
 			velocity += global_transform.basis.z.normalized() * sprint_length 
 		else:
-			velocity += global_transform.basis.z.normalized() * sprint_length/4 
+			velocity += global_transform.basis.z.normalized() * sprint_length/5
+			
+	var hitbox_height = (head_bone.global_position.y - global_position.y) + 1
+	$CollisionShape3D.shape.height = hitbox_height
+	$CollisionShape3D.position.y = hitbox_height/2
+			
 	if animation.current_animation == "runslide":
 		camera.fov = lerp(camera.fov, fov * sprint_mult, 0.1)
 		crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_sprint, 0.15), lerp(crosshair.size.y, crosshair_sprint, 0.15)))
@@ -195,8 +202,22 @@ func _unhandled_input(event):
 	if event.is_action_pressed("wheel_down"):
 		spring_arm.spring_length += 1
 	spring_arm.spring_length = clamp(spring_arm.spring_length, 10, 45)
-	#print(spring_arm.spring_length)
 
 func update_score(amount: int):
-	score += amount
+	if amount == 0:
+		score = 0
+	else:
+		score += amount
 	score_label.text = "\n   " + str(score)
+
+func _on_area_3d_body_entered(body: Node3D) -> void:
+	if body.name == "glass" and animation.current_animation == "runslide":
+		body.free()
+		update_score(0)
+		fade_and_change_scene("res://game.tscn")
+		
+
+func fade_and_change_scene(scene_path: String):
+	fade_animation.play("fade_out")
+	await fade_animation.animation_finished
+	get_tree().change_scene_to_file(scene_path)
