@@ -1,6 +1,7 @@
-[gd_scene load_steps=9 format=3 uid="uid://cuh2x5ayh8f80"]
+[gd_scene load_steps=10 format=3 uid="uid://cuh2x5ayh8f80"]
 
 [ext_resource type="PackedScene" uid="uid://daiyf82t58v7s" path="res://player.tscn" id="1_7n6eb"]
+[ext_resource type="PackedScene" uid="uid://ro3nbpeyv3v5" path="res://npc.tscn" id="2_yb1ct"]
 
 [sub_resource type="BoxMesh" id="BoxMesh_cgksj"]
 size = Vector3(500, 1, 500)
@@ -9,19 +10,19 @@ size = Vector3(500, 1, 500)
 points = PackedVector3Array(-250, -0.5, -250, -250, 0.5, -250, 250, -0.5, -250, -250, -0.5, 250, -250, 0.5, 250, 250, 0.5, -250, 250, -0.5, 250, 250, 0.5, 250)
 
 [sub_resource type="BoxMesh" id="BoxMesh_7n6eb"]
-size = Vector3(1, 41, 500)
+size = Vector3(5, 41, 500)
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ehuit"]
-points = PackedVector3Array(-0.5, -20.5, -250, 0.5, -20.5, -250, -0.5, -20.5, 250, -0.5, 20.5, -250, 0.5, 20.5, -250, 0.5, -20.5, 250, -0.5, 20.5, 250, 0.5, 20.5, 250)
+points = PackedVector3Array(-2.5, -20.5, -250, 2.5, -20.5, -250, -2.5, -20.5, 250, -2.5, 20.5, -250, 2.5, 20.5, -250, 2.5, -20.5, 250, -2.5, 20.5, 250, 2.5, 20.5, 250)
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_5mrt3"]
-points = PackedVector3Array(-0.5, -20.5, -250, 0.5, -20.5, -250, -0.5, -20.5, 250, -0.5, 20.5, -250, 0.5, 20.5, -250, 0.5, -20.5, 250, -0.5, 20.5, 250, 0.5, 20.5, 250)
+points = PackedVector3Array(-2.5, -20.5, -250, 2.5, -20.5, -250, -2.5, -20.5, 250, -2.5, 20.5, -250, 2.5, 20.5, -250, 2.5, -20.5, 250, -2.5, 20.5, 250, 2.5, 20.5, 250)
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_rwowx"]
-points = PackedVector3Array(-0.5, -20.5, -250, 0.5, -20.5, -250, -0.5, -20.5, 250, -0.5, 20.5, -250, 0.5, 20.5, -250, 0.5, -20.5, 250, -0.5, 20.5, 250, 0.5, 20.5, 250)
+points = PackedVector3Array(-2.5, -20.5, -250, 2.5, -20.5, -250, -2.5, -20.5, 250, -2.5, 20.5, -250, 2.5, 20.5, -250, 2.5, -20.5, 250, -2.5, 20.5, 250, 2.5, 20.5, 250)
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_hu44a"]
-points = PackedVector3Array(-0.5, -20.5, -250, 0.5, -20.5, -250, -0.5, -20.5, 250, -0.5, 20.5, -250, 0.5, 20.5, -250, 0.5, -20.5, 250, -0.5, 20.5, 250, 0.5, 20.5, 250)
+points = PackedVector3Array(-2.5, -20.5, -250, 2.5, -20.5, -250, -2.5, -20.5, 250, -2.5, 20.5, -250, 2.5, 20.5, -250, 2.5, -20.5, 250, -2.5, 20.5, 250, 2.5, 20.5, 250)
 
 [node name="tutorial" type="Node3D"]
 
@@ -29,6 +30,8 @@ points = PackedVector3Array(-0.5, -20.5, -250, 0.5, -20.5, -250, -0.5, -20.5, 25
 
 [node name="floor" type="StaticBody3D" parent="building"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
+collision_layer = 7
+collision_mask = 7
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="building/floor"]
 mesh = SubResource("BoxMesh_cgksj")
@@ -38,6 +41,8 @@ shape = SubResource("ConvexPolygonShape3D_yb1ct")
 
 [node name="ceiling" type="StaticBody3D" parent="building"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)
+collision_layer = 7
+collision_mask = 7
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="building/ceiling"]
 mesh = SubResource("BoxMesh_cgksj")
@@ -46,6 +51,8 @@ mesh = SubResource("BoxMesh_cgksj")
 shape = SubResource("ConvexPolygonShape3D_yb1ct")
 
 [node name="walls" type="StaticBody3D" parent="building"]
+collision_layer = 7
+collision_mask = 7
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="building/walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -250, 20, 0)
@@ -85,3 +92,6 @@ light_color = Color(0.52757543, 0.44108257, 0.9223667, 1)
 
 [node name="Player" parent="." instance=ExtResource("1_7n6eb")]
 in_game = false
+
+[node name="NPC" parent="." instance=ExtResource("2_yb1ct")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -53)
