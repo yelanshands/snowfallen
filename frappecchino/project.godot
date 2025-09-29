@@ -13,6 +13,8 @@ config_version=5
 config/name="Frappecchino"
 run/main_scene="uid://mlr277p0vj6k"
 config/features=PackedStringArray("4.5", "GL Compatibility")
+boot_splash/bg_color=Color(0.30066934, 0.23851728, 0.46257478, 1)
+boot_splash/image="uid://cihq1vmn44hrd"
 config/icon="res://icon.svg"
 
 [display]
