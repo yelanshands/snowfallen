@@ -296,8 +296,8 @@ transform = Transform3D(-4.371139e-08, 0, 0.2, 0, 0.19999999, 0, -0.99999994, 0,
 shape = SubResource("ConvexPolygonShape3D_tvjhf")
 
 [node name="glass" type="StaticBody3D" parent="building/innerwalls"]
-collision_layer = 8
-collision_mask = 8
+collision_layer = 24
+collision_mask = 24
 
 [node name="MeshInstance3D14" type="MeshInstance3D" parent="building/innerwalls/glass"]
 transform = Transform3D(-2.1855694e-08, 0, 0.2, 0, 0.7, 0, -0.5, 0, -8.742278e-09, 5.999996, 19, 250)
