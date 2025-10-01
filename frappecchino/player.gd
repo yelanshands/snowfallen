@@ -130,7 +130,7 @@ func _physics_process(delta: float) -> void:
 	var input = Input.get_vector("strafe_left", "strafe_right", "move_forward", "move_back")
 	var movement_dir = (transform.basis * Vector3(input.x, 0, input.y)).normalized()
 			
-	if Input.is_action_just_pressed("sprint") and animation.current_animation != "runslide" and (movement_dir.x or movement_dir.y):
+	if Input.is_action_just_pressed("sprint") and animation.current_animation != "runslide" and ((movement_dir.x or movement_dir.y) or prev_floor_normal != Vector3.UP):
 		animation.play_section("runslide", 0, 1.1)
 		if is_on_floor():
 			velocity += global_transform.basis.z.normalized() * sprint_length 

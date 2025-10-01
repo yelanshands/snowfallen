@@ -1,9 +1,16 @@
+[gd_scene load_steps=26 format=3 uid="uid://cuh2x5ayh8f80"]
 
 [ext_resource type="PackedScene" uid="uid://daiyf82t58v7s" path="res://player.tscn" id="1_7n6eb"]
 [ext_resource type="Script" uid="uid://cg6s855jvgunl" path="res://tutorial.gd" id="1_ehuit"]
 [ext_resource type="FontFile" uid="uid://c0ox2v115c0rl" path="res://assets/fonts/immortal/IMMORTAL.ttf" id="2_5mrt3"]
 [ext_resource type="PackedScene" uid="uid://ro3nbpeyv3v5" path="res://npc.tscn" id="2_yb1ct"]
 
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5mrt3"]
+sky_top_color = Color(0.0617302, 0.00643286, 0.177529, 1)
+sky_horizon_color = Color(0.1127804, 0.07794315, 0.17150283, 1)
+ground_bottom_color = Color(0.1059993, 0.021947635, 0.2250902, 1)
+ground_horizon_color = Color(0.1127804, 0.07794315, 0.17150283, 1)
+energy_multiplier = 2.5
 
 [sub_resource type="Sky" id="Sky_rwowx"]
 sky_material = SubResource("ProceduralSkyMaterial_5mrt3")
@@ -185,8 +192,6 @@ transform = Transform3D(-4.371139e-08, 0, -0.4, 0, 0.7, 0, 1, 0, -1.7484556e-08,
 shape = SubResource("ConvexPolygonShape3D_bhfnd")
 
 [node name="barrier1" type="StaticBody3D" parent="building/innerwalls"]
-collision_layer = 3
-collision_mask = 3
 
 [node name="CollisionShape3D13" type="CollisionShape3D" parent="building/innerwalls/barrier1"]
 transform = Transform3D(-4.371139e-08, 0, -0.4, 0, 0.8, 0, 1, 0, -1.7484556e-08, 152, 24, 1)
@@ -199,8 +204,6 @@ skeleton = NodePath("../../glass")
 
 [node name="barrier2" type="StaticBody3D" parent="building/innerwalls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -8, -171)
-collision_layer = 3
-collision_mask = 3
 
 [node name="CollisionShape3D13" type="CollisionShape3D" parent="building/innerwalls/barrier2"]
 transform = Transform3D(-4.371139e-08, 0, -0.4, 0, 0.8, 0, 1, 0, -1.7484556e-08, 152, 24, 1)
@@ -239,8 +242,8 @@ transform = Transform3D(1, 0, 0, 0, 0.4, 0, 0, 0, 0.3, 147, 4, 74)
 shape = SubResource("ConvexPolygonShape3D_vmw6g")
 
 [node name="rangebarrier" type="StaticBody3D" parent="building/innerwalls"]
-collision_layer = 10
-collision_mask = 10
+collision_layer = 8
+collision_mask = 8
 
 [node name="CollisionShape3D9" type="CollisionShape3D" parent="building/innerwalls/rangebarrier"]
 transform = Transform3D(1, 0, 0, 0, 0.7, 0, 0, 0, 0.3, 147, 26, 74)
@@ -295,8 +298,8 @@ transform = Transform3D(-4.371139e-08, 0, 0.2, 0, 0.19999999, 0, -0.99999994, 0,
 shape = SubResource("ConvexPolygonShape3D_tvjhf")
 
 [node name="glass" type="StaticBody3D" parent="building/innerwalls"]
-collision_layer = 26
-collision_mask = 26
+collision_layer = 24
+collision_mask = 24
 
 [node name="MeshInstance3D14" type="MeshInstance3D" parent="building/innerwalls/glass"]
 transform = Transform3D(-2.1855694e-08, 0, 0.2, 0, 0.7, 0, -0.5, 0, -8.742278e-09, 5.999996, 19, 250)
@@ -308,8 +311,8 @@ shape = SubResource("ConvexPolygonShape3D_dl7dh")
 
 [node name="finalbarrier" type="StaticBody3D" parent="building/innerwalls"]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 55.333336, 0, -288.66666)
-collision_layer = 10
-collision_mask = 10
+collision_layer = 8
+collision_mask = 8
 
 [node name="CollisionShape3D9" type="CollisionShape3D" parent="building/innerwalls/finalbarrier"]
 transform = Transform3D(1, 0, 0, 0, 0.7, 0, 0, 0, 0.3, 147, 26, 74)

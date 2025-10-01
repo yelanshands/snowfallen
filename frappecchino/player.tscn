@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://daiyf82t58v7s"]
+[gd_scene load_steps=19 format=3 uid="uid://daiyf82t58v7s"]
 
 [ext_resource type="Script" uid="uid://bwhyes7j5e77m" path="res://player.gd" id="1_onrkg"]
 [ext_resource type="PackedScene" uid="uid://bl4ue4lvsx2v2" path="res://pewpew.tscn" id="2_i3pqv"]
@@ -9,10 +9,31 @@
 [ext_resource type="PackedScene" uid="uid://clpai68dck2yo" path="res://frappie.tscn" id="7_1jxqw"]
 [ext_resource type="FontFile" uid="uid://c0ox2v115c0rl" path="res://assets/fonts/immortal/IMMORTAL.ttf" id="7_dw050"]
 [ext_resource type="FontFile" uid="uid://b2n6a2bqt1rdk" path="res://assets/fonts/NotoSansSymbols-VariableFont_wght.ttf" id="8_b26j0"]
+[ext_resource type="Shader" uid="uid://2n826thxqqk" path="res://outline.gdshader" id="10_n7ghd"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2hs0m"]
 radius = 3.0
 height = 18.0
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nvl01"]
+render_priority = 0
+shader = ExtResource("10_n7ghd")
+shader_parameter/outlineColor = Color(0, 0, 0, 0.78)
+shader_parameter/depth_threshold = 0.025
+shader_parameter/normal_threshold = 0.5
+shader_parameter/normal_smoothing = 0.25
+shader_parameter/max_thickness = 1.3
+shader_parameter/min_thickness = 0.5
+shader_parameter/max_distance = 75.0
+shader_parameter/min_distance = 2.0
+shader_parameter/grazing_fresnel_power = 5.0
+shader_parameter/grazing_angle_mask_power = 1.0
+shader_parameter/grazing_angle_modulation_factor = 50.0
+
+[sub_resource type="QuadMesh" id="QuadMesh_b26j0"]
+material = SubResource("ShaderMaterial_nvl01")
+flip_faces = true
+size = Vector2(2, 2)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_b26j0"]
 
@@ -93,6 +114,12 @@ max_db = 0.5
 [node name="PewpewAudio" type="AudioStreamPlayer3D" parent="SpringArmPivot/SpringArm3D/PlayerCamera"]
 stream = ExtResource("4_2hs0m")
 max_db = -1.0
+
+[node name="Outline" type="MeshInstance3D" parent="SpringArmPivot/SpringArm3D/PlayerCamera"]
+transform = Transform3D(1, -1.7763564e-15, -2.7818146e-08, 4.5000256e-15, 0.99999994, 3.5527137e-15, 2.7818146e-08, 3.5527137e-15, 1, 0, 0, -0.403)
+extra_cull_margin = 16384.0
+mesh = SubResource("QuadMesh_b26j0")
+skeleton = NodePath("../../..")
 
 [node name="frappie" parent="." instance=ExtResource("7_1jxqw")]
 
