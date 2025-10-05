@@ -116,7 +116,7 @@ transform = Transform3D(40, 0, 0, 0, 1, 0, 0, 0, 1, -151, 20, 0)
 mesh = SubResource("BoxMesh_7n6eb")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="building/walls"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -250, 20, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.5, 20, 0)
 shape = SubResource("ConvexPolygonShape3D_ehuit")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="building/walls"]
@@ -306,7 +306,7 @@ transform = Transform3D(-2.1855694e-08, 0, 0.2, 0, 0.7, 0, -0.5, 0, -8.742278e-0
 mesh = SubResource("BoxMesh_r4o0u")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="building/innerwalls/glass"]
-transform = Transform3D(-2.1855694e-08, 0, 0.2, 0, 0.7, 0, -0.5, 0, -8.742278e-09, 5.999996, 19, 250)
+transform = Transform3D(-4.371139e-08, 0, 0.2, 0, 0.7, 0, -1, 0, -8.742278e-09, 5.999996, 19, 250)
 shape = SubResource("ConvexPolygonShape3D_dl7dh")
 
 [node name="finalbarrier" type="StaticBody3D" parent="building/innerwalls"]

@@ -30,6 +30,8 @@ func _ready() -> void:
 	
 	current_zloc = slope_mesh_size.x*3
 	
+	player.fade_animation.play_backwards("fade_out")
+	
 	player.input_enabled = false
 	Input.action_press("sprint")
 	Input.action_release("sprint")
@@ -61,7 +63,6 @@ func spawn_wave() -> void:
 	
 	var amount: int = enemies.size()
 	arrow_label.text = ((" ".repeat(int(6 * (amount - 3.5)))) if amount > 3 else "")  + "⮝" + ((" ".repeat(int(6 * (3.5 - amount)))) if amount <= 3 else "")
-
 
 func enemy_died(enemy: Node) -> void:
 	enemies.erase(enemy)

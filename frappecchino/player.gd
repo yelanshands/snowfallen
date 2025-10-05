@@ -17,7 +17,6 @@ extends CharacterBody3D
 @export var friction: float = 0.25
 @export var default_cam_sens: float = 0.0025
 @export var slide_accel: float = 100.0
-@export var max_slope_angle: float = 0.2
 @export var floor_snap: float = 10.0
 @export var sprint_length = 15.0
 
@@ -41,7 +40,6 @@ var target_cam_roty = 0.0
 var player_rot = 0.0
 var in_air = false
 var walking = false
-var slope_angle: float
 var score: int = 0
 var prev_floor_normal: Vector3 = Vector3.ZERO
 var head_bone: Node
@@ -50,6 +48,7 @@ var sprint_boost: Vector3
 var input_enabled: bool = true
 var first_slide: bool = true
 var slope_dir: Vector3
+var slope_normal: Vector3 = Vector3(0, cos(atan(150.0 / 700.0)), sin(atan(150.0 / 700.0)))
 
 func _ready():
 	captureMouse()
@@ -81,6 +80,8 @@ func _physics_process(delta: float) -> void:
 	var input = Input.get_vector("strafe_left", "strafe_right", "move_forward", "move_back")
 	var movement_dir = (transform.basis * Vector3(input.x, 0, input.y)).normalized()
 	var on_floor: bool = is_on_floor()
+	var slide_vector: Vector3 = slope_dir * slide_accel
+	var on_slope: bool = prev_floor_normal.y >= slope_normal.y - 0.0001 and prev_floor_normal.y <= slope_normal.y + 0.0001 and prev_floor_normal.z >= slope_normal.z - 0.0001 and prev_floor_normal.z <= slope_normal.z + 0.0001
 	
 	if not on_floor:
 		in_air = true
@@ -93,7 +94,7 @@ func _physics_process(delta: float) -> void:
 		audio.play()
 
 	if input_enabled:
-		if prev_floor_normal != Vector3.UP:
+		if on_slope:
 			if ((abs(current_vel.x) > 0.1) or (abs(current_vel.y) > 0.1)):
 				if current_vel.z < 0:
 					if animation.assigned_animation == "jumpup" and not animation.current_animation:
@@ -157,16 +158,12 @@ func _physics_process(delta: float) -> void:
 		
 		var lerp_vel = lerp(velocity, Vector3.ZERO, friction)
 		
-		if (prev_floor_normal == Vector3.UP and (not input or animation.current_animation == "runslide")):
+		if (not on_slope and (not input or animation.current_animation == "runslide")):
 			velocity.x = lerp_vel.x
 			velocity.z = lerp_vel.z
 		else:
-			#if movement_dir:
 			velocity.x = -movement_dir.x * speed
 			velocity.z = -movement_dir.z * speed
-			#if prev_floor_normal != Vector3.UP and not input:
-				#velocity.x = (slope_dir * slide_accel).x
-				#velocity.z = (slope_dir * slide_accel).z
 			
 		if Input.is_action_just_pressed("sprint") and animation.current_animation != "runslide":
 			initial_sprint_boost = Vector3.ZERO
@@ -194,14 +191,12 @@ func _physics_process(delta: float) -> void:
 		
 	if not on_floor:
 		velocity.y -= gravity * delta * (1 if input_enabled else 2)
-	elif prev_floor_normal == Vector3.UP:
-		#if prev_floor_normal != Vector3.UP:
-			#velocity += slope_dir * slide_accel
-		#else:
+	elif not on_slope:
 		velocity.y = 0.0
 	
-	if prev_floor_normal != Vector3.UP:
-		velocity += slope_dir * slide_accel
+	if on_slope:
+		velocity.x += slide_vector.x
+		velocity.z += slide_vector.z
 			
 	if Input.is_action_pressed("jump") and on_floor:
 		if animation.assigned_animation == "riflecrouchruntostop" or animation.assigned_animation == "riflecrouchrun":
@@ -212,8 +207,7 @@ func _physics_process(delta: float) -> void:
 			audio.play()
 		elif animation.current_animation == "runslide":
 			velocity.y = jump_speed
-				
-	print(velocity.y)
+
 	move_and_slide()
 	
 func _unhandled_input(event):
@@ -231,7 +225,7 @@ func update_score(amount: int):
 	score_label.text = "\n   " + str(score)
 
 func _on_area_3d_body_entered(body: Node3D) -> void:
-	if body.name == "glass" and animation.current_animation == "runslide":
+	if body.name == "glass" and animation.current_animation == "runslide" and animation.current_animation_position >= 0.1 and animation.current_animation_position <= 0.4:
 		body.free()
 		update_score(0)
 		fade_and_change_scene("res://game.tscn")
@@ -239,4 +233,5 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 func fade_and_change_scene(scene_path: String):
 	fade_animation.play("fade_out")
 	await fade_animation.animation_finished
+	velocity = Vector3.ZERO
 	get_tree().change_scene_to_file(scene_path)

@@ -1,6 +1,6 @@
 extends RayCast3D
 
-@export var speed := 1150.0
+@export var speed := 1400.0
 @onready var remote_transform := RemoteTransform3D.new()
 @onready var player: CharacterBody3D = get_parent().get_parent().get_parent().get_parent()
 var damage_amount := 25.0
