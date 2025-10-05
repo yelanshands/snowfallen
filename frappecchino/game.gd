@@ -10,6 +10,7 @@ const NPC = preload("uid://ro3nbpeyv3v5")
 @onready var slope3: StaticBody3D = $Background/Slope3
 @onready var slope4: StaticBody3D = $Background/Slope4
 @onready var slope5: StaticBody3D = $Background/Slope5
+@onready var slope6: StaticBody3D = $Background/Slope6
 
 var enemies: Array = []
 var slopes: Array = []
@@ -25,11 +26,13 @@ func _ready() -> void:
 	slopes.append(slope3)
 	slopes.append(slope4)
 	slopes.append(slope5)
+	slopes.append(slope6)
 	
 	current_zloc = slope_mesh_size.x*3
 	
 	player.input_enabled = false
 	Input.action_press("sprint")
+	Input.action_release("sprint")
 	
 func _process(_delta: float) -> void:
 	var player_pos = player.global_position
@@ -43,7 +46,7 @@ func _process(_delta: float) -> void:
 		current_zloc += slope_mesh_size.x*2
 		
 	if dropping:
-		if player.position.y < 300.0:
+		if player.position.y < 100.0:
 			dropping = false
 			player.input_enabled = true
 

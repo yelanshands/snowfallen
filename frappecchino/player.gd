@@ -16,9 +16,9 @@ extends CharacterBody3D
 @export var fov: float = 75.0
 @export var friction: float = 0.25
 @export var default_cam_sens: float = 0.0025
-@export var slide_accel: float = 10.0
+@export var slide_accel: float = 100.0
 @export var max_slope_angle: float = 0.2
-@export var floor_snap: float = 2.5
+@export var floor_snap: float = 10.0
 @export var sprint_length = 15.0
 
 const footstep_stream = preload("res://assets/audio/concrete-footsteps-6752.mp3")
@@ -41,7 +41,6 @@ var target_cam_roty = 0.0
 var player_rot = 0.0
 var in_air = false
 var walking = false
-var floor_normal: Vector3
 var slope_angle: float
 var score: int = 0
 var prev_floor_normal: Vector3 = Vector3.ZERO
@@ -50,6 +49,7 @@ var initial_sprint_boost: Vector3 = Vector3.ZERO
 var sprint_boost: Vector3
 var input_enabled: bool = true
 var first_slide: bool = true
+var slope_dir: Vector3
 
 func _ready():
 	captureMouse()
@@ -78,15 +78,16 @@ func _process(_delta):
 
 func _physics_process(delta: float) -> void:
 	var current_vel = velocity
-	var slope_dir: Vector3
 	var input = Input.get_vector("strafe_left", "strafe_right", "move_forward", "move_back")
 	var movement_dir = (transform.basis * Vector3(input.x, 0, input.y)).normalized()
+	var on_floor: bool = is_on_floor()
 	
-	if not is_on_floor():
+	if not on_floor:
 		in_air = true
 	else:
 		prev_floor_normal = get_floor_normal()
-	if in_air and is_on_floor():
+		slope_dir = (Vector3.DOWN - prev_floor_normal * Vector3.DOWN.dot(prev_floor_normal)).normalized()
+	if in_air and on_floor:
 		in_air = false
 		audio.stream = landing_stream
 		audio.play()
@@ -97,7 +98,7 @@ func _physics_process(delta: float) -> void:
 				if current_vel.z < 0:
 					if animation.assigned_animation == "jumpup" and not animation.current_animation:
 						animation.play("riflecrouchruntostop", 0.5)
-				if is_on_floor():
+				if on_floor:
 					if current_vel.z < 0 and animation.current_animation != "runslide":
 						animation.play("riflecrouchrun", 0.5)
 					if animation.current_animation != "runslide" and not audio.is_playing() and animation.current_animation:
@@ -106,7 +107,7 @@ func _physics_process(delta: float) -> void:
 						
 			if (abs(current_vel.x) <= 0.1) or (abs(current_vel.y) > 0.1):
 				if current_vel.z >= 0:
-					if not animation.current_animation and not is_on_floor() and animation.assigned_animation == "jumpup":
+					if not animation.current_animation and not on_floor and animation.assigned_animation == "jumpup":
 						animation.play("riflecrouchruntostop", 0.5)
 					elif animation.assigned_animation != "runslide" and animation.assigned_animation != "riflecrouchruntostop" or (animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation_position == 0):
 						animation.play("riflecrouchruntostop", 0.5)
@@ -154,22 +155,19 @@ func _physics_process(delta: float) -> void:
 		crosshair.position.x = crosshair_cont.size.x/2.0-(crosshair.size.x/2.0)
 		crosshair.position.y = crosshair_cont.size.y/2.0-(crosshair.size.y/2.0)
 		
-		#print(animation.current_animation, "  ", animation.current_animation_position, "    ", prev_floor_normal)
-		#print(velocity)
+		var lerp_vel = lerp(velocity, Vector3.ZERO, friction)
 		
-		if not input:
-			if is_on_floor():
-				velocity.x = lerp(velocity.x, 0.0, friction)
-				velocity.z = lerp(velocity.z, 0.0, friction)
-			elif prev_floor_normal == Vector3.UP or animation.current_animation == "runslide":
-				velocity.x = lerp(velocity.x, 0.0, friction)
-				velocity.z = lerp(velocity.z, 0.0, friction)
+		if (prev_floor_normal == Vector3.UP and (not input or animation.current_animation == "runslide")):
+			velocity.x = lerp_vel.x
+			velocity.z = lerp_vel.z
 		else:
-			if is_on_floor():
-				movement_dir = movement_dir - (slope_dir * friction)
+			#if movement_dir:
 			velocity.x = -movement_dir.x * speed
 			velocity.z = -movement_dir.z * speed
-				
+			#if prev_floor_normal != Vector3.UP and not input:
+				#velocity.x = (slope_dir * slide_accel).x
+				#velocity.z = (slope_dir * slide_accel).z
+			
 		if Input.is_action_just_pressed("sprint") and animation.current_animation != "runslide":
 			initial_sprint_boost = Vector3.ZERO
 			animation.play_section("runslide", 0, 1.1)
@@ -194,18 +192,18 @@ func _physics_process(delta: float) -> void:
 		elif animation.current_animation != "riflecrouchruntostop":
 			animation.play("riflecrouchruntostop", 0.15)
 		
-	if not is_on_floor():
-		velocity.y += -gravity * delta * (1 if input_enabled else 2)
-	else:
-		floor_normal = get_floor_normal()
-		slope_angle = acos(floor_normal.dot(Vector3.UP))
-		slope_dir = (Vector3.DOWN - floor_normal * Vector3.DOWN.dot(floor_normal)).normalized()
-		if slope_angle > max_slope_angle:
-			velocity += slope_dir * slide_accel
-		else:
-			velocity.y = 0.0
+	if not on_floor:
+		velocity.y -= gravity * delta * (1 if input_enabled else 2)
+	elif prev_floor_normal == Vector3.UP:
+		#if prev_floor_normal != Vector3.UP:
+			#velocity += slope_dir * slide_accel
+		#else:
+		velocity.y = 0.0
+	
+	if prev_floor_normal != Vector3.UP:
+		velocity += slope_dir * slide_accel
 			
-	if Input.is_action_pressed("jump") and is_on_floor():
+	if Input.is_action_pressed("jump") and on_floor:
 		if animation.assigned_animation == "riflecrouchruntostop" or animation.assigned_animation == "riflecrouchrun":
 			velocity.y = jump_speed
 			animation.play_section("jumpup", 0.1, 0.5333, 0.5)
@@ -215,6 +213,7 @@ func _physics_process(delta: float) -> void:
 		elif animation.current_animation == "runslide":
 			velocity.y = jump_speed
 				
+	print(velocity.y)
 	move_and_slide()
 	
 func _unhandled_input(event):
