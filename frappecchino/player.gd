@@ -48,7 +48,7 @@ var prev_floor_normal: Vector3 = Vector3.ZERO
 var head_bone: Node
 var initial_sprint_boost: Vector3 = Vector3.ZERO
 var sprint_boost: Vector3
-var input_enabled: bool = false
+var input_enabled: bool = true
 var first_slide: bool = true
 
 func _ready():
@@ -170,17 +170,7 @@ func _physics_process(delta: float) -> void:
 			velocity.x = -movement_dir.x * speed
 			velocity.z = -movement_dir.z * speed
 				
-		if Input.is_action_pressed("jump") and is_on_floor():
-			if animation.assigned_animation == "riflecrouchruntostop" or animation.assigned_animation == "riflecrouchrun":
-				velocity.y = jump_speed
-				animation.play_section("jumpup", 0.1, 0.5333, 0.5)
-				audio.stop()
-				audio.stream = jump_up
-				audio.play()
-			elif animation.current_animation == "runslide":
-				velocity.y = jump_speed
-				
-		if Input.is_action_just_pressed("sprint") and animation.current_animation != "runslide" and ((movement_dir.x or movement_dir.z) or prev_floor_normal != Vector3.UP):
+		if Input.is_action_just_pressed("sprint") and animation.current_animation != "runslide":
 			initial_sprint_boost = Vector3.ZERO
 			animation.play_section("runslide", 0, 1.1)
 			sprint_boost = global_transform.basis.z.normalized() * sprint_length 
@@ -188,7 +178,6 @@ func _physics_process(delta: float) -> void:
 		if animation.current_animation == "runslide":
 			initial_sprint_boost = lerp(initial_sprint_boost, sprint_boost, 0.3)
 			velocity += initial_sprint_boost
-			print(initial_sprint_boost)
 			
 		var hitbox_height = (head_bone.global_position.y - global_position.y) + 1
 		$CollisionShape3D.shape.height = hitbox_height
@@ -196,19 +185,17 @@ func _physics_process(delta: float) -> void:
 	else:
 		if first_slide:
 			animation.play_section("runslide", 0, 1.1)
-			sprint_boost = global_transform.basis.z.normalized() * sprint_length 
+			sprint_boost = global_transform.basis.z.normalized() * 2
 			first_slide = false
 				
 		if animation.current_animation == "runslide":
 			initial_sprint_boost = lerp(initial_sprint_boost, sprint_boost, 0.3)
 			velocity += initial_sprint_boost
-		
-			print(initial_sprint_boost)
-		elif animation.current_animation != "jumploop":
-			animation.play("jumploop")
+		elif animation.current_animation != "riflecrouchruntostop":
+			animation.play("riflecrouchruntostop", 0.15)
 		
 	if not is_on_floor():
-		velocity.y += -gravity * delta
+		velocity.y += -gravity * delta * (1 if input_enabled else 2)
 	else:
 		floor_normal = get_floor_normal()
 		slope_angle = acos(floor_normal.dot(Vector3.UP))
@@ -217,12 +204,18 @@ func _physics_process(delta: float) -> void:
 			velocity += slope_dir * slide_accel
 		else:
 			velocity.y = 0.0
+			
+	if Input.is_action_pressed("jump") and is_on_floor():
+		if animation.assigned_animation == "riflecrouchruntostop" or animation.assigned_animation == "riflecrouchrun":
+			velocity.y = jump_speed
+			animation.play_section("jumpup", 0.1, 0.5333, 0.5)
+			audio.stop()
+			audio.stream = jump_up
+			audio.play()
+		elif animation.current_animation == "runslide":
+			velocity.y = jump_speed
+				
 	move_and_slide()
-	print(animation.current_animation)
-		
-func enable_input() -> void:
-	input_enabled = true
-	animation.play("riflecrouchruntostop")
 	
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:

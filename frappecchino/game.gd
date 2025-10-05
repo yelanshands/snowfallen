@@ -28,6 +28,9 @@ func _ready() -> void:
 	
 	current_zloc = slope_mesh_size.x*3
 	
+	player.input_enabled = false
+	Input.action_press("sprint")
+	
 func _process(_delta: float) -> void:
 	var player_pos = player.global_position
 	barriers.global_position.y = player_pos.y
@@ -38,14 +41,11 @@ func _process(_delta: float) -> void:
 		slopes[0].position.y = slopes[-1].position.y - slope_mesh_size.y*2
 		slopes.append(slopes.pop_at(0))
 		current_zloc += slope_mesh_size.x*2
-		print(slopes)
 		
 	if dropping:
-		Input.action_press("sprint")
 		if player.position.y < 300.0:
 			dropping = false
-			player.enable_input()
-			print("///////////////////////////////")
+			player.input_enabled = true
 
 func spawn_wave() -> void:
 	for x in randi_range(1, 6):
