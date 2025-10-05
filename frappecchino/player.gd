@@ -19,6 +19,7 @@ extends CharacterBody3D
 @export var slide_accel: float = 10.0
 @export var max_slope_angle: float = 0.2
 @export var floor_snap: float = 2.5
+@export var sprint_length = 15.0
 
 const footstep_stream = preload("res://assets/audio/concrete-footsteps-6752.mp3")
 const landing_stream = preload("res://assets/audio/land2-43790.mp3")
@@ -29,7 +30,6 @@ var cam_sens: float = default_cam_sens
 var default_speed = 40.0  
 var speed = default_speed
 var jump_speed = 40.0
-var sprint_length = 1000.0
 var sprint_mult = 1.5
 var crouch_mult = 0.60
 var lerp_value = 8.0
@@ -46,12 +46,19 @@ var slope_angle: float
 var score: int = 0
 var prev_floor_normal: Vector3 = Vector3.ZERO
 var head_bone: Node
+var initial_sprint_boost: Vector3 = Vector3.ZERO
+var sprint_boost: Vector3
+var input_enabled: bool = false
+var first_slide: bool = true
 
 func _ready():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+	captureMouse()
 	floor_stop_on_slope = false
 	floor_snap_length = floor_snap
 	head_bone = skeleton.get_node("mixamorigHeadTop_End")
+	
+func captureMouse() -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
@@ -70,6 +77,11 @@ func _process(_delta):
 		camera.global_rotation.z = lerp(camera_zrot, 0.0, 0.05)
 
 func _physics_process(delta: float) -> void:
+	var current_vel = velocity
+	var slope_dir: Vector3
+	var input = Input.get_vector("strafe_left", "strafe_right", "move_forward", "move_back")
+	var movement_dir = (transform.basis * Vector3(input.x, 0, input.y)).normalized()
+	
 	if not is_on_floor():
 		in_air = true
 	else:
@@ -79,88 +91,122 @@ func _physics_process(delta: float) -> void:
 		audio.stream = landing_stream
 		audio.play()
 
-	var current_vel = velocity
-
-	if prev_floor_normal != Vector3.UP:
-		if ((abs(current_vel.x) > 0.1) or (abs(current_vel.y) > 0.1)):
-			if current_vel.z < 0:
-				if animation.assigned_animation == "jumpup" and not animation.current_animation:
-					animation.play("riflecrouchruntostop", 0.5)
-			if is_on_floor():
-				if current_vel.z < 0 and animation.current_animation != "runslide":
-					animation.play("riflecrouchrun", 0.5)
-				if animation.current_animation != "runslide" and not audio.is_playing() and animation.current_animation:
+	if input_enabled:
+		if prev_floor_normal != Vector3.UP:
+			if ((abs(current_vel.x) > 0.1) or (abs(current_vel.y) > 0.1)):
+				if current_vel.z < 0:
+					if animation.assigned_animation == "jumpup" and not animation.current_animation:
+						animation.play("riflecrouchruntostop", 0.5)
+				if is_on_floor():
+					if current_vel.z < 0 and animation.current_animation != "runslide":
+						animation.play("riflecrouchrun", 0.5)
+					if animation.current_animation != "runslide" and not audio.is_playing() and animation.current_animation:
+						audio.stream = footstep_stream
+						audio.play()
+						
+			if (abs(current_vel.x) <= 0.1) or (abs(current_vel.y) > 0.1):
+				if current_vel.z >= 0:
+					if not animation.current_animation and not is_on_floor() and animation.assigned_animation == "jumpup":
+						animation.play("riflecrouchruntostop", 0.5)
+					elif animation.assigned_animation != "runslide" and animation.assigned_animation != "riflecrouchruntostop" or (animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation_position == 0):
+						animation.play("riflecrouchruntostop", 0.5)
+				if audio.is_playing() and audio.stream == footstep_stream and (not animation.current_animation or (animation.current_animation == "riflecrouchruntostop" and animation.current_animation_position >= 1.00 and animation.current_animation_position <= 1.01)):
+					audio.stop()
+						
+			if animation.assigned_animation == "runslide" and not animation.current_animation:
+				animation.play("riflecrouchruntostop", 0.15)
+				
+		else:		
+			if ((abs(current_vel.x) > 0.1) or (abs(current_vel.z) > 0.1)):
+				if not animation.current_animation:
+					if animation.assigned_animation == "riflecrouchruntostop" or animation.assigned_animation == "riflecrouchrun":
+						animation.play("riflecrouchrun", 0.5)
+					elif animation.assigned_animation == "runslide":
+						animation.play("riflecrouchrun", 0.15)
+				if animation.current_animation != "runslide" and not audio.is_playing():
 					audio.stream = footstep_stream
 					audio.play()
 					
-		if (abs(current_vel.x) <= 0.1) or (abs(current_vel.y) > 0.1):
-			if current_vel.z >= 0:
-				if not animation.current_animation and not is_on_floor() and animation.assigned_animation == "jumpup":
-					animation.play("riflecrouchruntostop", 0.5)
-				elif animation.assigned_animation != "runslide" and animation.assigned_animation != "riflecrouchruntostop" or (animation.assigned_animation == "riflecrouchruntostop" and animation.current_animation_position == 0):
-					animation.play("riflecrouchruntostop", 0.5)
+			if animation.current_animation == "riflecrouchrun" or (animation.assigned_animation == "runslide" and not animation.current_animation):
+				if (abs(current_vel.x) > 0.1) or (abs(current_vel.z) > 0.1):
+					animation.play("riflecrouchrun", 0.5)
+				else:
+					animation.play("riflecrouchruntostop", 0.15)
+			elif animation.assigned_animation != "runslide" and animation.assigned_animation != "riflecrouchruntostop":
+				animation.play("riflecrouchruntostop", 0.5)
 			if audio.is_playing() and audio.stream == footstep_stream and (not animation.current_animation or (animation.current_animation == "riflecrouchruntostop" and animation.current_animation_position >= 1.00 and animation.current_animation_position <= 1.01)):
 				audio.stop()
-					
-		if animation.assigned_animation == "runslide" and not animation.current_animation:
-			animation.play("riflecrouchruntostop", 0.15)
-			
-	else:		
-		if ((abs(current_vel.x) > 0.1) or (abs(current_vel.z) > 0.1)):
-			if not animation.current_animation:
-				if animation.assigned_animation == "riflecrouchruntostop" or animation.assigned_animation == "riflecrouchrun":
-					animation.play("riflecrouchrun", 0.5)
-				elif animation.assigned_animation == "runslide":
-					animation.play("riflecrouchrun", 0.15)
-			if animation.current_animation != "runslide" and not audio.is_playing():
-				audio.stream = footstep_stream
-				audio.play()
-				
-		if animation.current_animation == "riflecrouchrun" or (animation.assigned_animation == "runslide" and not animation.current_animation):
-			if (abs(current_vel.x) > 0.1) or (abs(current_vel.z) > 0.1):
-				animation.play("riflecrouchrun", 0.5)
-			else:
-				animation.play("riflecrouchruntostop", 0.15)
-		elif animation.assigned_animation != "runslide" and animation.assigned_animation != "riflecrouchruntostop":
-			animation.play("riflecrouchruntostop", 0.5)
-		if audio.is_playing() and audio.stream == footstep_stream and (not animation.current_animation or (animation.current_animation == "riflecrouchruntostop" and animation.current_animation_position >= 1.00 and animation.current_animation_position <= 1.01)):
-			audio.stop()
-				
-	var slope_dir: Vector3
-	var input = Input.get_vector("strafe_left", "strafe_right", "move_forward", "move_back")
-	var movement_dir = (transform.basis * Vector3(input.x, 0, input.y)).normalized()
-			
-	if Input.is_action_just_pressed("sprint") and animation.current_animation != "runslide" and ((movement_dir.x or movement_dir.y) or prev_floor_normal != Vector3.UP):
-		animation.play_section("runslide", 0, 1.1)
-		if is_on_floor():
-			velocity += global_transform.basis.z.normalized() * sprint_length 
+		
+		if animation.current_animation == "runslide":
+			camera.fov = lerp(camera.fov, fov * sprint_mult, 0.1)
+			crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_sprint, 0.15), lerp(crosshair.size.y, crosshair_sprint, 0.15)))
+		if Input.is_action_pressed("crouch"):
+			cam_sens = default_cam_sens * crouch_mult * crouch_mult
+			speed = default_speed * crouch_mult
+			camera.fov = lerp(camera.fov, fov * crouch_mult, 0.15)
+			crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_crouch, 0.15), lerp(crosshair.size.y, crosshair_crouch, 0.15)))
+		elif animation.current_animation != "runslide":
+			cam_sens = default_cam_sens
+			speed = default_speed
+			camera.fov = lerp(camera.fov, fov, 0.05)
+			crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_size, 0.15), lerp(crosshair.size.y, crosshair_size, 0.15)))
+		
+		crosshair.position.x = crosshair_cont.size.x/2.0-(crosshair.size.x/2.0)
+		crosshair.position.y = crosshair_cont.size.y/2.0-(crosshair.size.y/2.0)
+		
+		#print(animation.current_animation, "  ", animation.current_animation_position, "    ", prev_floor_normal)
+		#print(velocity)
+		
+		if not input:
+			if is_on_floor():
+				velocity.x = lerp(velocity.x, 0.0, friction)
+				velocity.z = lerp(velocity.z, 0.0, friction)
+			elif prev_floor_normal == Vector3.UP or animation.current_animation == "runslide":
+				velocity.x = lerp(velocity.x, 0.0, friction)
+				velocity.z = lerp(velocity.z, 0.0, friction)
 		else:
-			velocity += global_transform.basis.z.normalized() * sprint_length/5
+			if is_on_floor():
+				movement_dir = movement_dir - (slope_dir * friction)
+			velocity.x = -movement_dir.x * speed
+			velocity.z = -movement_dir.z * speed
+				
+		if Input.is_action_pressed("jump") and is_on_floor():
+			if animation.assigned_animation == "riflecrouchruntostop" or animation.assigned_animation == "riflecrouchrun":
+				velocity.y = jump_speed
+				animation.play_section("jumpup", 0.1, 0.5333, 0.5)
+				audio.stop()
+				audio.stream = jump_up
+				audio.play()
+			elif animation.current_animation == "runslide":
+				velocity.y = jump_speed
+				
+		if Input.is_action_just_pressed("sprint") and animation.current_animation != "runslide" and ((movement_dir.x or movement_dir.z) or prev_floor_normal != Vector3.UP):
+			initial_sprint_boost = Vector3.ZERO
+			animation.play_section("runslide", 0, 1.1)
+			sprint_boost = global_transform.basis.z.normalized() * sprint_length 
+				
+		if animation.current_animation == "runslide":
+			initial_sprint_boost = lerp(initial_sprint_boost, sprint_boost, 0.3)
+			velocity += initial_sprint_boost
+			print(initial_sprint_boost)
 			
-	var hitbox_height = (head_bone.global_position.y - global_position.y) + 1
-	$CollisionShape3D.shape.height = hitbox_height
-	$CollisionShape3D.position.y = hitbox_height/2
-			
-	if animation.current_animation == "runslide":
-		camera.fov = lerp(camera.fov, fov * sprint_mult, 0.1)
-		crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_sprint, 0.15), lerp(crosshair.size.y, crosshair_sprint, 0.15)))
-	if Input.is_action_pressed("crouch"):
-		cam_sens = default_cam_sens * crouch_mult * crouch_mult
-		speed = default_speed * crouch_mult
-		camera.fov = lerp(camera.fov, fov * crouch_mult, 0.15)
-		crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_crouch, 0.15), lerp(crosshair.size.y, crosshair_crouch, 0.15)))
-	elif animation.current_animation != "runslide":
-		cam_sens = default_cam_sens
-		speed = default_speed
-		camera.fov = lerp(camera.fov, fov, 0.05)
-		crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_size, 0.15), lerp(crosshair.size.y, crosshair_size, 0.15)))
-	
-	crosshair.position.x = crosshair_cont.size.x/2.0-(crosshair.size.x/2.0)
-	crosshair.position.y = crosshair_cont.size.y/2.0-(crosshair.size.y/2.0)
-	
-	#print(animation.current_animation, "  ", animation.current_animation_position, "    ", prev_floor_normal)
-	#print(velocity)
-	
+		var hitbox_height = (head_bone.global_position.y - global_position.y) + 1
+		$CollisionShape3D.shape.height = hitbox_height
+		$CollisionShape3D.position.y = hitbox_height/2
+	else:
+		if first_slide:
+			animation.play_section("runslide", 0, 1.1)
+			sprint_boost = global_transform.basis.z.normalized() * sprint_length 
+			first_slide = false
+				
+		if animation.current_animation == "runslide":
+			initial_sprint_boost = lerp(initial_sprint_boost, sprint_boost, 0.3)
+			velocity += initial_sprint_boost
+		
+			print(initial_sprint_boost)
+		elif animation.current_animation != "jumploop":
+			animation.play("jumploop")
+		
 	if not is_on_floor():
 		velocity.y += -gravity * delta
 	else:
@@ -171,28 +217,12 @@ func _physics_process(delta: float) -> void:
 			velocity += slope_dir * slide_accel
 		else:
 			velocity.y = 0.0
-	
-	if not input:
-		if is_on_floor():
-			velocity.x = lerp(velocity.x, 0.0, friction)
-			velocity.z = lerp(velocity.z, 0.0, friction)
-	else:
-		if is_on_floor():
-			movement_dir = movement_dir - (slope_dir * friction)
-		velocity.x = -movement_dir.x * speed
-		velocity.z = -movement_dir.z * speed
-			
-	if Input.is_action_pressed("jump") and is_on_floor():
-		if animation.assigned_animation == "riflecrouchruntostop" or animation.assigned_animation == "riflecrouchrun":
-			velocity.y = jump_speed
-			animation.play_section("jumpup", 0.1, 0.5333, 0.5)
-			audio.stop()
-			audio.stream = jump_up
-			audio.play()
-		elif animation.current_animation == "runslide":
-			velocity.y = jump_speed
-
 	move_and_slide()
+	print(animation.current_animation)
+		
+func enable_input() -> void:
+	input_enabled = true
+	animation.play("riflecrouchruntostop")
 	
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
