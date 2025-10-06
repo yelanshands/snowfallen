@@ -12,6 +12,7 @@ extends CharacterBody3D
 @onready var skeleton: Skeleton3D = $frappie.get_node("Node/Armature/Skeleton3D")
 @onready var fade_animation = $CanvasLayer/AnimationPlayer
 @onready var fade_rect = $CanvasLayer/ColorRect
+@onready var tutorial: Node3D = get_parent()
 
 @export var fov: float = 75.0
 @export var friction: float = 0.25
@@ -227,6 +228,7 @@ func update_score(amount: int):
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if body.name == "glass" and animation.current_animation == "runslide" and animation.current_animation_position >= 0.1 and animation.current_animation_position <= 0.4:
 		body.free()
+		tutorial.animation.play_backwards("slide_in")
 		update_score(0)
 		fade_and_change_scene("res://game.tscn")
 		

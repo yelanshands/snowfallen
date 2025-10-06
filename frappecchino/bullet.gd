@@ -3,8 +3,12 @@ extends RayCast3D
 @export var speed := 1400.0
 @onready var remote_transform := RemoteTransform3D.new()
 @onready var player: CharacterBody3D = get_parent().get_parent().get_parent().get_parent()
+@onready var animation: AnimationPlayer = $AnimationPlayer
 
 var damage_amount := 25.0
+
+func _ready() -> void:
+	animation.play("fade_in")
 
 func _physics_process(delta: float) -> void:
 	position -= global_basis * Vector3.BACK * speed * delta

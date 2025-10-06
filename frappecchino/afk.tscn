@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://ctktiemhrb6ul"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="Label3D" type="Label3D" parent="."]
+text = "frappie afk"

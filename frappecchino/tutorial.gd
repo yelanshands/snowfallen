@@ -10,16 +10,35 @@ extends Node3D
 @onready var slide1 = $slide1
 @onready var slide2 = $slide2
 @onready var finalnpc = $finalnpc
+@onready var dialogue_box: CanvasLayer = $Dialogue
+@onready var dialogue_text: Label = $Dialogue/DialogueBorder/DialogueBox/HBoxContainer/VBoxContainer/Dialogue
+@onready var animation: AnimationPlayer = $AnimationPlayer
+@onready var timer: Timer =  $building/Node/DialogueTimer
+
+@export var text_speed: float = 0.015
 
 var range_enemies: Array
 var slide_enemies: Array
 var final_enemies: Array
+var current_dialogue_id = 0
+
+var area0text = "Hurry, before the explosion goes off. Use WASD to move. Jump moving forward and pressing SPACE."
+var area1text = "Shoot the targets with LEFT CLICK. Notice how headshots deal more damage than body shots? And body shots deal more than leg shots?"
+var area2text = "Slide under by moving forward and pressing SHIFT."
+var area3text = "Eliminate the targets and slide again with SHIFT."
+var area4text = "Now slide and jump at the same time to get through the gap."
+var area5text = "Press C to crouch. Crouching zooms in, decreases sensitivity, and decreases recoil, allowing for better accuracy. Shoot the target."
+var area6text = "Slide and jump to break the glass and escape."
 
 func _ready() -> void:
 	range_enemies = [n1, n2, n3, n4]
 	slide_enemies = [slide1, slide2]
 	final_enemies = [finalnpc]
-
+	
+	dialogue_box.visible = true
+	animation.play("slide_in")
+	streamDialogue($Player, area0text)
+	
 func _process(_delta: float) -> void:
 	if range_enemies.all(func(e): return not is_instance_valid(e)) and barrier1:
 		barrier1.free()
@@ -27,3 +46,33 @@ func _process(_delta: float) -> void:
 		barrier2.free()
 	if final_enemies.all(func(e): return not is_instance_valid(e)) and finalbarrier:
 		finalbarrier.free()
+
+func streamDialogue(body: Node3D, areatext: String) -> void:
+	if body.name == "Player":
+		current_dialogue_id += 1
+		var this_id = current_dialogue_id
+		dialogue_text.text = ""
+		
+		for letter in areatext:
+			if current_dialogue_id != this_id: return
+			timer.start(text_speed)
+			dialogue_text.text += letter
+			await timer.timeout
+			
+func _on_area_1_body_entered(body: Node3D) -> void:
+	streamDialogue(body, area1text)
+
+func _on_area_2_body_entered(body: Node3D) -> void:
+	streamDialogue(body, area2text)
+
+func _on_area_3_body_entered(body: Node3D) -> void:
+	streamDialogue(body, area3text)
+
+func _on_area_4_body_entered(body: Node3D) -> void:
+	streamDialogue(body, area4text)
+
+func _on_area_5_body_entered(body: Node3D) -> void:
+	streamDialogue(body, area5text)
+
+func _on_area_6_body_entered(body: Node3D) -> void:
+	streamDialogue(body, area6text)

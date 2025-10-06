@@ -1,9 +1,10 @@
-[gd_scene load_steps=26 format=3 uid="uid://cuh2x5ayh8f80"]
+[gd_scene load_steps=33 format=3 uid="uid://cuh2x5ayh8f80"]
 
 [ext_resource type="PackedScene" uid="uid://daiyf82t58v7s" path="res://player.tscn" id="1_7n6eb"]
 [ext_resource type="Script" uid="uid://cg6s855jvgunl" path="res://tutorial.gd" id="1_ehuit"]
 [ext_resource type="FontFile" uid="uid://c0ox2v115c0rl" path="res://assets/fonts/immortal/IMMORTAL.ttf" id="2_5mrt3"]
 [ext_resource type="PackedScene" uid="uid://ro3nbpeyv3v5" path="res://npc.tscn" id="2_yb1ct"]
+[ext_resource type="Texture2D" uid="uid://bqa13ypnqi1jl" path="res://assets/images/frappie_pfp.png" id="5_rwowx"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_5mrt3"]
 sky_top_color = Color(0.0617302, 0.00643286, 0.177529, 1)
@@ -77,6 +78,51 @@ points = PackedVector3Array(-2.5, -20.5, -250, 2.5, -20.5, -250, -2.5, -20.5, 25
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_dl7dh"]
 points = PackedVector3Array(-2.5, -20.5, -250, 2.5, -20.5, -250, -2.5, -20.5, 250, -2.5, 20.5, -250, 2.5, 20.5, -250, 2.5, -20.5, 250, -2.5, 20.5, 250, 2.5, 20.5, 250)
 
+[sub_resource type="BoxShape3D" id="BoxShape3D_5mrt3"]
+size = Vector3(3, 33, 100)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_rwowx"]
+size = Vector3(3, 33, 200)
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_hu44a"]
+size = Vector3(3, 33, 200)
+
+[sub_resource type="Animation" id="Animation_rwowx"]
+resource_name = "slide_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Dialogue:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 0.7),
+"transitions": PackedFloat32Array(1, 1.4640864, 0.54),
+"update": 0,
+"values": [Vector2(0, -350), Vector2(0, 20), Vector2(0, 0)]
+}
+
+[sub_resource type="Animation" id="Animation_hu44a"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Dialogue:offset")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_0cr88"]
+_data = {
+&"RESET": SubResource("Animation_hu44a"),
+&"slide_in": SubResource("Animation_rwowx")
+}
+
 [node name="tutorial" type="Node3D"]
 script = ExtResource("1_ehuit")
 
@@ -98,6 +144,7 @@ shape = SubResource("ConvexPolygonShape3D_yb1ct")
 
 [node name="ceiling" type="StaticBody3D" parent="building"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)
+visible = false
 collision_layer = 7
 collision_mask = 7
 
@@ -320,111 +367,62 @@ shape = SubResource("ConvexPolygonShape3D_vmw6g")
 
 [node name="Node" type="Node" parent="building"]
 
-[node name="Label3D" type="Label3D" parent="building/Node"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 195, 15, 166)
-billboard = 1
-shaded = true
-text = "They're bringing 
-in backup soon.
-<- Hurry."
-font = ExtResource("2_5mrt3")
-font_size = 1000
-outline_size = 100
+[node name="Area1" type="Area3D" parent="building/Node"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 147, 20, 199)
+collision_layer = 0
+collision_mask = 8
 
-[node name="Label3D2" type="Label3D" parent="building/Node"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 149, 21, 204)
-billboard = 1
-shaded = true
-text = "Use WASD to move.
-Jump over this by
-moving forward and
-pressing SPACE."
-font = ExtResource("2_5mrt3")
-font_size = 850
-outline_size = 100
+[node name="CollisionShape3D" type="CollisionShape3D" parent="building/Node/Area1"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
+shape = SubResource("BoxShape3D_5mrt3")
 
-[node name="Label3D3" type="Label3D" parent="building/Node"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 94, 16, 140)
-billboard = 1
-shaded = true
-text = "Shoot the targets with
-Left Click ->
+[node name="Area2" type="Area3D" parent="building/Node"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 103, 20, 1)
+collision_layer = 0
+collision_mask = 8
 
-Once you're done,
-continue onward."
-font = ExtResource("2_5mrt3")
-font_size = 850
-outline_size = 100
+[node name="CollisionShape3D" type="CollisionShape3D" parent="building/Node/Area2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, 0)
+shape = SubResource("BoxShape3D_5mrt3")
 
-[node name="Label3D4" type="Label3D" parent="building/Node"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 148, 25, 46)
-billboard = 1
-shaded = true
-modulate = Color(1.8247963, 1.8247963, 1.8247963, 1)
-text = "Notice how headshots deal 
-more damage than body shots? 
-And body shots deal 
-more than leg shots?"
-font = ExtResource("2_5mrt3")
-font_size = 800
-outline_size = 100
+[node name="Area3" type="Area3D" parent="building/Node"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 115, 20, -47)
+collision_layer = 0
+collision_mask = 8
 
-[node name="Label3D5" type="Label3D" parent="building/Node"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 94, 16, -35)
-billboard = 1
-shaded = true
-text = "Slide under by moving
-forward and pressing
-SHIFT."
-font = ExtResource("2_5mrt3")
-font_size = 850
-outline_size = 100
+[node name="CollisionShape3D" type="CollisionShape3D" parent="building/Node/Area3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5258789e-05, -4.5, -37)
+shape = SubResource("BoxShape3D_rwowx")
 
-[node name="Label3D6" type="Label3D" parent="building/Node"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 94, 16, -144)
-billboard = 1
-shaded = true
-text = "Eliminate the targets and
- slide again with SHIFT."
-font = ExtResource("2_5mrt3")
-font_size = 850
-outline_size = 100
+[node name="Area4" type="Area3D" parent="building/Node"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 115, 20, -170)
+collision_layer = 0
+collision_mask = 8
 
-[node name="Label3D7" type="Label3D" parent="building/Node"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 94, 16, -231)
-billboard = 1
-shaded = true
-text = "Now slide and jump
-at the same time to 
-get through the gap.
-<-"
-font = ExtResource("2_5mrt3")
-font_size = 850
-outline_size = 100
+[node name="CollisionShape3D" type="CollisionShape3D" parent="building/Node/Area4"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5258789e-05, -4.5, -37)
+shape = SubResource("BoxShape3D_hu44a")
 
-[node name="Label3D8" type="Label3D" parent="building/Node"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 16, -200)
-billboard = 1
-shaded = true
-text = "Press C to crouch.
-Crouching zooms in and 
-decreases sensitivity,
-allowing for better aim.
-<- Shoot the target."
-font = ExtResource("2_5mrt3")
-font_size = 850
-outline_size = 100
+[node name="Area5" type="Area3D" parent="building/Node"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 54, 20, -197)
+collision_layer = 0
+collision_mask = 8
 
-[node name="Label3D9" type="Label3D" parent="building/Node"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -24, 16, 228)
-billboard = 1
-shaded = true
-text = "Slide and jump to
-break the glass and
-escape before they arrive."
-font = ExtResource("2_5mrt3")
-font_size = 850
-outline_size = 100
+[node name="CollisionShape3D" type="CollisionShape3D" parent="building/Node/Area5"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, -2)
+shape = SubResource("BoxShape3D_5mrt3")
+
+[node name="Area6" type="Area3D" parent="building/Node"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, 2, 21, -141)
+collision_layer = 0
+collision_mask = 8
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="building/Node/Area6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.5, -2)
+shape = SubResource("BoxShape3D_5mrt3")
+
+[node name="DialogueTimer" type="Timer" parent="building/Node"]
+one_shot = true
 
 [node name="Player" parent="." instance=ExtResource("1_7n6eb")]
 transform = Transform3D(-0.9659258, 0, -0.25881913, 0, 1, 0, 0.25881913, 0, -0.9659258, 188, 0, 201)
@@ -449,3 +447,147 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 198,
 
 [node name="finalnpc" parent="." instance=ExtResource("2_yb1ct")]
 transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -14, 0, 197)
+
+[node name="Dialogue" type="CanvasLayer" parent="."]
+visible = false
+
+[node name="DialogueBorderTop" type="ColorRect" parent="Dialogue"]
+custom_minimum_size = Vector2(1050, 25)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -525.0
+offset_top = 75.0
+offset_right = 1025.0
+offset_bottom = 100.0
+grow_horizontal = 2
+scale = Vector2(0.7, 0.7)
+color = Color(0.2, 0.20784314, 0.27058825, 0.8862745)
+
+[node name="DialogueBorderBottom" type="ColorRect" parent="Dialogue"]
+custom_minimum_size = Vector2(1050, 25)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -525.0
+offset_top = 289.0
+offset_right = 1025.0
+offset_bottom = 314.0
+grow_horizontal = 2
+scale = Vector2(0.7, 0.7)
+color = Color(0.2, 0.20784314, 0.27058825, 0.8862745)
+
+[node name="DialogueBorderLeft" type="ColorRect" parent="Dialogue"]
+custom_minimum_size = Vector2(25, 300)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -525.0
+offset_top = 75.0
+offset_right = -500.0
+offset_bottom = 405.0
+grow_horizontal = 2
+scale = Vector2(0.7, 0.7)
+color = Color(0.2, 0.20784314, 0.27058825, 0.8862745)
+
+[node name="DialogueBorderRight" type="ColorRect" parent="Dialogue"]
+custom_minimum_size = Vector2(25, 300)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = 542.5
+offset_top = 75.0
+offset_right = 567.5
+offset_bottom = 405.0
+grow_horizontal = 2
+scale = Vector2(0.7, 0.7)
+color = Color(0.2, 0.20784314, 0.27058825, 0.8862745)
+
+[node name="DialogueBorder" type="ColorRect" parent="Dialogue"]
+custom_minimum_size = Vector2(1050, 330)
+anchors_preset = 5
+anchor_left = 0.5
+anchor_right = 0.5
+offset_left = -525.0
+offset_top = 75.0
+offset_right = 1025.0
+offset_bottom = 405.0
+grow_horizontal = 2
+scale = Vector2(0.7, 0.7)
+color = Color(0.21176471, 0.21176471, 0.21176471, 0)
+
+[node name="DialogueBox" type="ColorRect" parent="Dialogue/DialogueBorder"]
+custom_minimum_size = Vector2(1500, 280)
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_left = 25.0
+offset_top = -140.0
+offset_right = 1525.0
+offset_bottom = 140.0
+grow_vertical = 2
+color = Color(0.63375676, 0.6337568, 0.63375676, 0.3647059)
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Dialogue/DialogueBorder/DialogueBox"]
+layout_mode = 1
+anchors_preset = 4
+anchor_top = 0.5
+anchor_bottom = 0.5
+offset_top = -125.0
+offset_right = 1100.0
+offset_bottom = 125.0
+grow_vertical = 2
+
+[node name="Spacer1" type="Label" parent="Dialogue/DialogueBorder/DialogueBox/HBoxContainer"]
+layout_mode = 2
+text = "    "
+
+[node name="TextureRect" type="TextureRect" parent="Dialogue/DialogueBorder/DialogueBox/HBoxContainer"]
+layout_mode = 2
+texture = ExtResource("5_rwowx")
+expand_mode = 3
+
+[node name="Spacer2" type="Label" parent="Dialogue/DialogueBorder/DialogueBox/HBoxContainer"]
+layout_mode = 2
+text = "    "
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Dialogue/DialogueBorder/DialogueBox/HBoxContainer"]
+custom_minimum_size = Vector2(1100, 0)
+layout_mode = 2
+
+[node name="Spacer1" type="Label" parent="Dialogue/DialogueBorder/DialogueBox/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 10
+
+[node name="Name" type="Label" parent="Dialogue/DialogueBorder/DialogueBox/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_5mrt3")
+theme_override_font_sizes/font_size = 65
+text = "FRAPPIE"
+
+[node name="Spacer2" type="Label" parent="Dialogue/DialogueBorder/DialogueBox/HBoxContainer/VBoxContainer"]
+layout_mode = 2
+theme_override_font_sizes/font_size = 5
+
+[node name="Dialogue" type="Label" parent="Dialogue/DialogueBorder/DialogueBox/HBoxContainer/VBoxContainer"]
+custom_minimum_size = Vector2(1000, 0)
+layout_mode = 2
+theme_override_fonts/font = ExtResource("2_5mrt3")
+theme_override_font_sizes/font_size = 32
+text = "i 
+love
+arlecchino"
+autowrap_mode = 2
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_0cr88")
+}
+
+[connection signal="body_entered" from="building/Node/Area1" to="." method="_on_area_1_body_entered"]
+[connection signal="body_entered" from="building/Node/Area2" to="." method="_on_area_2_body_entered"]
+[connection signal="body_entered" from="building/Node/Area3" to="." method="_on_area_3_body_entered"]
+[connection signal="body_entered" from="building/Node/Area4" to="." method="_on_area_4_body_entered"]
+[connection signal="body_entered" from="building/Node/Area5" to="." method="_on_area_5_body_entered"]
+[connection signal="body_entered" from="building/Node/Area6" to="." method="_on_area_6_body_entered"]
