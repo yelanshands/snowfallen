@@ -32,10 +32,12 @@ var speed = default_speed
 var jump_speed = 40.0
 var sprint_mult = 1.5
 var crouch_mult = 0.60
+var shooting_mult = 0.85
 var lerp_value = 8.0
-var crosshair_size = 60.0
-var crosshair_sprint = 40.0
-var crosshair_crouch = 100.0
+var crosshair_size = 48.0
+var crosshair_sprint = 28.0
+var crosshair_crouch = 128.0
+var crosshair_shooting = 80.0
 var target_cam_rotx = 0.0
 var target_cam_roty = 0.0
 var player_rot = 0.0
@@ -147,12 +149,16 @@ func _physics_process(delta: float) -> void:
 			cam_sens = default_cam_sens * crouch_mult * crouch_mult
 			speed = default_speed * crouch_mult
 			camera.fov = lerp(camera.fov, fov * crouch_mult, 0.15)
-			crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_crouch, 0.15), lerp(crosshair.size.y, crosshair_crouch, 0.15)))
+			crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_crouch, 0.1), lerp(crosshair.size.y, crosshair_crouch, 0.1)))
 		elif animation.current_animation != "runslide":
 			cam_sens = default_cam_sens
 			speed = default_speed
 			camera.fov = lerp(camera.fov, fov, 0.05)
 			crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_size, 0.15), lerp(crosshair.size.y, crosshair_size, 0.15)))
+			
+		if Input.is_action_pressed("left_click"):
+			camera.fov = lerp(camera.fov, fov * shooting_mult, 0.15)
+			crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_shooting, 0.15), lerp(crosshair.size.y, crosshair_shooting, 0.15)))
 		
 		crosshair.position.x = crosshair_cont.size.x/2.0-(crosshair.size.x/2.0)
 		crosshair.position.y = crosshair_cont.size.y/2.0-(crosshair.size.y/2.0)

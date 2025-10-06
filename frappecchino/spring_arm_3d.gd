@@ -16,7 +16,7 @@ func _process(delta):
 	transform.origin = shake_offset
 
 func apply_shake():
-	shake_strength = (pivot.rotation_degrees.x/15.0) * (steady_recoil if camera.fov < 70.0 else shake_max)
+	shake_strength = (pivot.rotation_degrees.x/15.0) * (steady_recoil if Input.is_action_pressed("crouch") else shake_max)
 	shake_target = Vector3(
 		randf_range(-shake_strength, shake_strength),
 		randf_range(-shake_strength, shake_strength),

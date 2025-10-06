@@ -9,6 +9,7 @@ const bullet = preload("res://bullet.tscn")
 @onready var pivot = player.get_node("SpringArmPivot")
 @onready var arm = pivot.get_node("SpringArm3D")
 @onready var phantom: MeshInstance3D = player.get_node("frappie/Node/Armature/Skeleton3D/pewpew/phantom")
+@onready var phantom_mat: StandardMaterial3D = (phantom.get_node("MeshInstance3D").mesh.surface_get_material(0) as StandardMaterial3D)
 
 @export var fire_rate: float = 1.0/11.0
 @export var recoil_strength: float = 20.0
@@ -25,13 +26,16 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if firing:
 		phantom.rotation_degrees.x = lerp(phantom.rotation_degrees.x, phantom_origin.x - recoil_strength, 0.25)
+		phantom_mat.albedo_color.v = lerp(phantom_mat.albedo_color.v, 10.0, 0.6)
 	else:
 		phantom.rotation_degrees.x = lerp(phantom.rotation_degrees.x, phantom_origin.x, 0.25)
+		phantom_mat.albedo_color.v = lerp(phantom_mat.albedo_color.v, 0.0, 0.6)
 		
 func _physics_process(_delta: float) -> void:
 	if Input.is_action_pressed("left_click"):
 		if timer.is_stopped():
 			timer.start(fire_rate)
+			phantom_mat.albedo_color.v = 0.0
 			firing = true
 			pivot.apply_recoil()
 			arm.apply_shake()

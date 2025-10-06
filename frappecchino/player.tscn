@@ -125,6 +125,7 @@ mesh = SubResource("QuadMesh_b26j0")
 skeleton = NodePath("../../..")
 
 [node name="frappie" parent="." instance=ExtResource("7_1jxqw")]
+transform = Transform3D(0.9396926, 0, -0.34202012, 0, 1, 0, 0.34202012, 0, 0.9396926, 0, 11.25, 0)
 
 [node name="Skeleton3D" parent="frappie/Node/Armature" index="0"]
 bones/0/position = Vector3(-0.0011096895, 12.317777, -0.030491889)

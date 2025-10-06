@@ -16,7 +16,7 @@ func _process(delta):
 	rotation_degrees.x = clamp(rotation_degrees.x, 0.0, 15.0)
 
 func apply_recoil():
-	current_recoil = steady_recoil if camera.fov < 70.0 else default_recoil
+	current_recoil = steady_recoil if Input.is_action_pressed("crouch") else default_recoil
 	recoil_offset += current_recoil + randf_range(-0.3, 0.3)
 	
 func return_to_origin():

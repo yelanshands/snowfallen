@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://cuh2x5ayh8f80"]
+[gd_scene load_steps=34 format=3 uid="uid://cuh2x5ayh8f80"]
 
 [ext_resource type="PackedScene" uid="uid://daiyf82t58v7s" path="res://player.tscn" id="1_7n6eb"]
 [ext_resource type="Script" uid="uid://cg6s855jvgunl" path="res://tutorial.gd" id="1_ehuit"]
@@ -22,7 +22,11 @@ sky = SubResource("Sky_rwowx")
 tonemap_mode = 2
 glow_enabled = true
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rwowx"]
+albedo_color = Color(0.22670749, 0.22670749, 0.22670746, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_cgksj"]
+material = SubResource("StandardMaterial3D_rwowx")
 size = Vector3(500, 1, 500)
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_yb1ct"]
@@ -144,7 +148,6 @@ shape = SubResource("ConvexPolygonShape3D_yb1ct")
 
 [node name="ceiling" type="StaticBody3D" parent="building"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)
-visible = false
 collision_layer = 7
 collision_mask = 7
 
