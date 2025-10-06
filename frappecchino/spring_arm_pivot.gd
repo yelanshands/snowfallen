@@ -5,7 +5,7 @@ extends Node3D
 
 var default_recoil := 2.0
 var current_recoil := default_recoil
-var steady_recoil := 1.0
+var steady_recoil := default_recoil/2
 var recoil_speed := 40.0
 var recoil_offset := 0.0
 
@@ -16,10 +16,7 @@ func _process(delta):
 	rotation_degrees.x = clamp(rotation_degrees.x, 0.0, 15.0)
 
 func apply_recoil():
-	if camera.fov < 60: 
-		current_recoil = steady_recoil
-	else:
-		current_recoil = default_recoil
+	current_recoil = steady_recoil if camera.fov < 70.0 else default_recoil
 	recoil_offset += current_recoil + randf_range(-0.3, 0.3)
 	
 func return_to_origin():

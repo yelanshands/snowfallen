@@ -20,7 +20,7 @@ func _physics_process(_delta: float) -> void:
 		if timer.is_stopped():
 			timer.start(fire_rate)
 			pivot.apply_recoil()
-			#arm.apply_shake()
+			arm.apply_shake()
 			var attack = bullet.instantiate()
 			camera.add_child(attack)
 			attack.global_position = camera.global_position

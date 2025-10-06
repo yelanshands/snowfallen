@@ -233,5 +233,4 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 func fade_and_change_scene(scene_path: String):
 	fade_animation.play("fade_out")
 	await fade_animation.animation_finished
-	velocity = Vector3.ZERO
 	get_tree().change_scene_to_file(scene_path)
