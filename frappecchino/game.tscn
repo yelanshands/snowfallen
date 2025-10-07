@@ -1,4 +1,4 @@
-[gd_scene load_steps=91 format=4 uid="uid://bc8j31swr481q"]
+[gd_scene load_steps=93 format=4 uid="uid://bc8j31swr481q"]
 
 [ext_resource type="Texture2D" uid="uid://ddqvntm0oc6d1" path="res://assets/models/structures/skyscraper_0.png" id="1_80nbo"]
 [ext_resource type="Script" uid="uid://csvim2fw7hoyd" path="res://game.gd" id="1_ryrav"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://daiyf82t58v7s" path="res://player.tscn" id="3_fc0e3"]
 [ext_resource type="PackedScene" uid="uid://dhgsv5tanr7eu" path="res://assets/models/structures/snow.glb" id="6_j5wjh"]
 [ext_resource type="AudioStream" uid="uid://dxpcidya168dw" path="res://assets/audio/music.mp3" id="7_eow3j"]
+[ext_resource type="Shader" uid="uid://chvpc4h71brtm" path="res://snowfall.gdshader" id="8_j5wjh"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_e2o6t"]
 sky_top_color = Color(0.0617302, 0.00643286, 0.177529, 1)
@@ -900,6 +901,16 @@ size = Vector2(450, 250)
 [sub_resource type="BoxShape3D" id="BoxShape3D_ryrav"]
 size = Vector3(50, 2000, 4200)
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vef74"]
+shader = ExtResource("8_j5wjh")
+shader_parameter/spread = 0.5
+shader_parameter/size = 1.64700007753398
+shader_parameter/snow_color = Color(1, 1, 1, 1)
+shader_parameter/snow_transparency = 0.2
+shader_parameter/speed = 2.454000116565
+shader_parameter/wind = 2.0
+shader_parameter/num_of_layers = 40
+
 [node name="Game" type="Node3D"]
 script = ExtResource("1_ryrav")
 
@@ -1405,3 +1416,15 @@ Stay tuned :)"
 font = ExtResource("2_ryrav")
 font_size = 3500
 outline_size = 100
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="Snowfall" type="ColorRect" parent="CanvasLayer"]
+material = SubResource("ShaderMaterial_vef74")
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(1, 1, 1, 0)

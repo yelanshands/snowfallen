@@ -12,6 +12,9 @@ extends RayCast3D
 var damage_amount := 25.0
 var crosshair_size: float
 var fov: float
+var enemy_dead: bool = false
+
+signal crosshair_done
 
 func _ready() -> void:
 	crosshair_size = player.crosshair_size
@@ -25,6 +28,7 @@ func _process(_delta: float) -> void:
 	if hitcrosshair_cont.scale.x > 0.77:
 		hitcrosshair_cont.scale = Vector2(0.0, 0.0)
 		set_process(false)
+		emit_signal("crosshair_done")
 			
 func _physics_process(delta: float) -> void:
 	position -= global_basis * Vector3.BACK * speed * delta
@@ -48,6 +52,8 @@ func _physics_process(delta: float) -> void:
 						hitcrosshair_cont.scale = Vector2(0.0, 0.0)
 					set_process(true)
 					player.update_score(damage_amount if current.hp >= damage_amount else current.hp)
+					if current.hp <= damage_amount:
+						enemy_dead = true
 					current.apply_damage(damage_amount)
 					collided = current
 				break
@@ -58,6 +64,9 @@ func _physics_process(delta: float) -> void:
 		remote_transform.tree_exited.connect(cleanup)
 		
 func cleanup() -> void:
+	if enemy_dead:
+		visible = false
+		await crosshair_done
 	if hitcrosshair_cont.scale.x != 0.0:
 		hitcrosshair_cont.scale = Vector2(0.0, 0.0)
 	queue_free()

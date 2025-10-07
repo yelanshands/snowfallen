@@ -4,12 +4,14 @@ extends Control
 @onready var video_stream_player: VideoStreamPlayer = $Node2D/VideoStreamPlayer
 @onready var skip_animation: AnimationPlayer = $CanvasLayer/SkipAnimation
 @onready var label: Label = $CanvasLayer/Label
+@onready var audio_stream_player: AudioStreamPlayer = $Node2D/AudioStreamPlayer
 
 func _ready() -> void:
 	label.modulate.a = 0.0
 	animation_player.play_backwards("fade_out")
 	await animation_player.animation_finished
 	video_stream_player.play()
+	audio_stream_player.play()
 	skip_animation.play("skip_fade_out")
 	
 func _process(_delta) -> void:
