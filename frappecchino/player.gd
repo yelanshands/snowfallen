@@ -55,10 +55,12 @@ var first_slide: bool = true
 var slope_dir: Vector3
 var slope_normal: Vector3 = Vector3(0, cos(atan(150.0 / 700.0)), sin(atan(150.0 / 700.0)))
 
-func _ready():
+func _init():
 	captureMouse()
 	floor_stop_on_slope = false
 	floor_snap_length = floor_snap
+	
+func _ready():
 	head_bone = skeleton.get_node("mixamorigHeadTop_End")
 	
 func captureMouse() -> void:

@@ -6,24 +6,39 @@ extends Node
 @onready var play: TextureButton = $Control/MarginContainer/VBoxContainer/playButton
 @onready var settings: TextureButton = $Control/MarginContainer/VBoxContainer/settingsButton
 @onready var quit: TextureButton = $Control/MarginContainer/VBoxContainer/quitButton
+@onready var crosshairs: CanvasLayer = $Crosshair
+@onready var crosshair_margin: MarginContainer = $Crosshair/MarginContainer
+@onready var hitcrosshair_cont: Control = $Crosshair/HitContainer
+@onready var click: AudioStreamPlayer = $Click
+@onready var fade_animation = $CanvasLayer/AnimationPlayer
 #@onready var camera: Camera3D = $Background/SubViewportContainer/SubViewport/Camera3D
 
 var rot_x = 0
 var rot_y = 0
 var cam_sens = 0.005
+var hitting: bool = false
 #var logged_x = 0.0
 #var logged_y = 0.0
 #var target_rot_x = 0.0
 #var target_rot_y = 0.0
 	
 func _init():
-	Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 
 func _process(_delta):
+	crosshairs.transform.origin = crosshairs.transform.origin.lerp(get_viewport().get_mouse_position() - crosshair_margin.size/2.0, 0.3)
+	
 	buttonHovered(play)
 	buttonHovered(settings)
 	buttonHovered(quit)
 	
+	if hitting:
+		hitcrosshair_cont.scale = Vector2(lerp(hitcrosshair_cont.scale.x, 0.8, 0.4), lerp(hitcrosshair_cont.scale.y, 0.8, 0.4))
+	
+	if hitcrosshair_cont.scale.x > 0.77:
+		hitcrosshair_cont.scale = Vector2(0.0, 0.0)
+		hitting = false
+		
 	#var current_x = get_viewport().get_mouse_position()[0]
 	#var current_y = get_viewport().get_mouse_position()[1]
 	
@@ -58,6 +73,10 @@ func buttonHovered(button: TextureButton):
 		do_tween(button, "scale", Vector2.ONE, tween_duration)
 
 func _on_play_button_pressed():
+	hitting = true
+	click.play()
+	fade_animation.play("fade_out")
+	await fade_animation.animation_finished
 	get_tree().change_scene_to_file("res://intro.tscn")
 
 func _on_quit_button_pressed():

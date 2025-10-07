@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=3 uid="uid://daiyf82t58v7s"]
+[gd_scene load_steps=24 format=3 uid="uid://daiyf82t58v7s"]
 
 [ext_resource type="Script" uid="uid://bwhyes7j5e77m" path="res://player.gd" id="1_onrkg"]
 [ext_resource type="PackedScene" uid="uid://bl4ue4lvsx2v2" path="res://pewpew.tscn" id="2_i3pqv"]
@@ -54,6 +54,18 @@ tracks/0/keys = {
 "update": 0,
 "values": [Color(0, 0, 0, 0)]
 }
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_b26j0"]
 resource_name = "fade_out"
@@ -70,17 +82,36 @@ tracks/0/keys = {
 "values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_y72e6"]
+resource_name = "skip_fade_out"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.75, 3.25, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nvl01"]
 _data = {
 &"RESET": SubResource("Animation_n7ghd"),
-&"fade_out": SubResource("Animation_b26j0")
+&"fade_out": SubResource("Animation_b26j0"),
+&"skip_fade_out": SubResource("Animation_y72e6")
 }
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_n7ghd"]
-shader = ExtResource("6_b26j0")
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_urp6f"]
 shader = ExtResource("6_b26j0")
+shader_parameter/alpha_strength = 0.70000003325
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_bwjto"]
+shader = ExtResource("6_b26j0")
+shader_parameter/alpha_strength = 0.7
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 9
@@ -290,6 +321,7 @@ grow_horizontal = 2
 grow_vertical = 2
 mouse_filter = 2
 color = Color(0, 0, 0, 0)
+metadata/_edit_use_anchors_ = true
 
 [node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer"]
 libraries = {
@@ -304,10 +336,10 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+mouse_filter = 2
 
 [node name="Crosshair" type="TextureRect" parent="Crosshair/MarginContainer"]
-modulate = Color(1, 1, 1, 0.5882353)
-material = SubResource("ShaderMaterial_n7ghd")
+material = SubResource("ShaderMaterial_urp6f")
 clip_contents = true
 layout_mode = 2
 mouse_filter = 2
@@ -335,7 +367,7 @@ pivot_offset = Vector2(20, 20)
 mouse_filter = 2
 
 [node name="HitCrosshair" type="TextureRect" parent="Crosshair/HitContainer"]
-material = SubResource("ShaderMaterial_urp6f")
+material = SubResource("ShaderMaterial_bwjto")
 layout_mode = 0
 offset_right = 40.0
 offset_bottom = 40.0

@@ -1,7 +1,75 @@
-[gd_scene load_steps=3 format=3 uid="uid://bjg81lounr6s7"]
+[gd_scene load_steps=10 format=3 uid="uid://bjg81lounr6s7"]
 
 [ext_resource type="Script" uid="uid://bec4bo0xf3vc1" path="res://intro.gd" id="1_s2ta7"]
 [ext_resource type="VideoStream" uid="uid://iiau33gxphj2" path="res://assets/videos/introo.ogv" id="2_ayt76"]
+[ext_resource type="Texture2D" uid="uid://b3whdhx8sr41t" path="res://assets/images/vignette.png" id="3_0a7ni"]
+[ext_resource type="Texture2D" uid="uid://ccfisw3mqaddw" path="res://assets/images/filmborder.png" id="3_7a8ye"]
+[ext_resource type="FontFile" uid="uid://c0ox2v115c0rl" path="res://assets/fonts/immortal/IMMORTAL.ttf" id="3_y6ycx"]
+
+[sub_resource type="Animation" id="Animation_n7ghd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_b26j0"]
+resource_name = "fade_out"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_y72e6"]
+resource_name = "skip_fade_out"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.75, 3.25, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.78431374), Color(1, 1, 1, 0.78431374), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nvl01"]
+_data = {
+&"RESET": SubResource("Animation_n7ghd"),
+&"fade_out": SubResource("Animation_b26j0"),
+&"skip_fade_out": SubResource("Animation_y72e6")
+}
 
 [node name="Intro" type="Control"]
 layout_mode = 3
@@ -14,10 +82,78 @@ script = ExtResource("1_s2ta7")
 offset_right = 40.0
 offset_bottom = 40.0
 stream = ExtResource("2_ayt76")
-autoplay = true
 
 [node name="Camera2D" type="Camera2D" parent="Node2D"]
 anchor_mode = 0
 zoom = Vector2(0.5, 0.5)
+
+[node name="ColorRect" type="ColorRect" parent="Node2D"]
+custom_minimum_size = Vector2(3000, 250)
+offset_left = -56.0
+offset_top = -35.0
+offset_right = 2944.0
+offset_bottom = 215.0
+color = Color(0.06879826, 0.06879829, 0.068798244, 1)
+
+[node name="ColorRect2" type="ColorRect" parent="Node2D"]
+custom_minimum_size = Vector2(3000, 250)
+offset_left = -71.0
+offset_top = 1931.0
+offset_right = 2929.0
+offset_bottom = 2181.0
+color = Color(0.06879826, 0.06879829, 0.068798244, 1)
+
+[node name="Vignette" type="TextureRect" parent="Node2D"]
+offset_left = 106.0
+offset_top = 222.0
+offset_right = 2763.0
+offset_bottom = 1963.0
+texture = ExtResource("3_0a7ni")
+expand_mode = 1
+
+[node name="Shade" type="ColorRect" parent="Node2D"]
+custom_minimum_size = Vector2(3000, 250)
+offset_left = -66.0
+offset_top = 197.0
+offset_right = 2934.0
+offset_bottom = 2014.0
+color = Color(0, 0, 0, 0.19215687)
+
+[node name="FilmBorder" type="TextureRect" parent="Node2D"]
+offset_right = 2880.0
+offset_bottom = 2160.0
+texture = ExtResource("3_7a8ye")
+expand_mode = 5
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+metadata/_edit_use_anchors_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer"]
+libraries = {
+&"": SubResource("AnimationLibrary_nvl01")
+}
+
+[node name="SkipAnimation" type="AnimationPlayer" parent="CanvasLayer"]
+libraries = {
+&"": SubResource("AnimationLibrary_nvl01")
+}
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_left = 924.0
+offset_top = 27.0
+offset_right = 1412.0
+offset_bottom = 88.0
+theme_override_fonts/font = ExtResource("3_y6ycx")
+theme_override_font_sizes/font_size = 48
+text = "Press SPACE to skip."
 
 [connection signal="finished" from="Node2D/VideoStreamPlayer" to="." method="_on_video_stream_player_finished"]

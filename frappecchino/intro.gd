@@ -1,8 +1,29 @@
 extends Control
 	
+@onready var animation_player: AnimationPlayer = $CanvasLayer/AnimationPlayer
+@onready var video_stream_player: VideoStreamPlayer = $Node2D/VideoStreamPlayer
+@onready var skip_animation: AnimationPlayer = $CanvasLayer/SkipAnimation
+@onready var label: Label = $CanvasLayer/Label
+
+func _ready() -> void:
+	label.modulate.a = 0.0
+	animation_player.play_backwards("fade_out")
+	await animation_player.animation_finished
+	video_stream_player.play()
+	skip_animation.play("skip_fade_out")
+	
 func _process(_delta) -> void:
-	if Input.is_anything_pressed():
-		get_tree().change_scene_to_file("res://tutorial.tscn")
+	if Input.is_action_just_pressed("jump"):
+		end()
 
 func _on_video_stream_player_finished() -> void:
+	end()
+
+func end() -> void:
+	if skip_animation.current_animation_position < 3.25:
+		skip_animation.seek(3.25, true)
+		skip_animation.play_section()
+	animation_player.play("fade_out")
+	await animation_player.animation_finished
+	label.modulate.a = 0.0
 	get_tree().change_scene_to_file("res://tutorial.tscn")

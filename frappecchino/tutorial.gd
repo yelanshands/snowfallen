@@ -14,6 +14,7 @@ extends Node3D
 @onready var dialogue_text: Label = $Dialogue/DialogueBorder/DialogueBox/HBoxContainer/VBoxContainer/Dialogue
 @onready var animation: AnimationPlayer = $AnimationPlayer
 @onready var timer: Timer =  $building/Node/DialogueTimer
+@onready var player: CharacterBody3D = $Player
 
 @export var text_speed: float = 0.015
 
@@ -34,6 +35,8 @@ func _ready() -> void:
 	range_enemies = [n1, n2, n3, n4]
 	slide_enemies = [slide1, slide2]
 	final_enemies = [finalnpc]
+	
+	player.fade_animation.play_backwards("fade_out")
 	
 	dialogue_box.visible = true
 	animation.play("slide_in")
