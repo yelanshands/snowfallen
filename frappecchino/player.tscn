@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=3 uid="uid://daiyf82t58v7s"]
+[gd_scene load_steps=23 format=3 uid="uid://daiyf82t58v7s"]
 
 [ext_resource type="Script" uid="uid://bwhyes7j5e77m" path="res://player.gd" id="1_onrkg"]
 [ext_resource type="PackedScene" uid="uid://bl4ue4lvsx2v2" path="res://pewpew.tscn" id="2_i3pqv"]
@@ -12,6 +12,7 @@
 [ext_resource type="FontFile" uid="uid://c0ox2v115c0rl" path="res://assets/fonts/immortal/IMMORTAL.ttf" id="7_dw050"]
 [ext_resource type="FontFile" uid="uid://b2n6a2bqt1rdk" path="res://assets/fonts/NotoSansSymbols-VariableFont_wght.ttf" id="8_b26j0"]
 [ext_resource type="Shader" uid="uid://2n826thxqqk" path="res://outline.gdshader" id="10_n7ghd"]
+[ext_resource type="Texture2D" uid="uid://d2xmifqrtmypq" path="res://assets/images/hitcrosshair.png" id="13_urp6f"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2hs0m"]
 radius = 3.0
@@ -38,10 +39,6 @@ flip_faces = true
 size = Vector2(2, 2)
 
 [sub_resource type="SphereShape3D" id="SphereShape3D_b26j0"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_n7ghd"]
-shader = ExtResource("6_b26j0")
-shader_parameter/alpha_strength = 0.7
 
 [sub_resource type="Animation" id="Animation_n7ghd"]
 length = 0.001
@@ -78,6 +75,12 @@ _data = {
 &"RESET": SubResource("Animation_n7ghd"),
 &"fade_out": SubResource("Animation_b26j0")
 }
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_n7ghd"]
+shader = ExtResource("6_b26j0")
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_urp6f"]
+shader = ExtResource("6_b26j0")
 
 [node name="Player" type="CharacterBody3D"]
 collision_layer = 9
@@ -227,9 +230,6 @@ transform = Transform3D(-0.99983466, -0.002424378, -0.017998716, -0.017960768, -
 [node name="pewpew" parent="frappie/Node/Armature/Skeleton3D" index="16"]
 transform = Transform3D(0.17490387, 0.8601224, 0.47916493, 0.90610933, -0.3310114, 0.26343355, 0.38519385, 0.38810012, -0.83726, -2.4454992, 14.380862, 2.1998734)
 
-[node name="phantom" parent="frappie/Node/Armature/Skeleton3D/pewpew" index="0"]
-script = null
-
 [node name="footcollider" type="BoneAttachment3D" parent="frappie/Node/Armature/Skeleton3D" index="17"]
 transform = Transform3D(-0.9677458, 0.23571685, 0.08891367, 0.021593265, -0.27402395, 0.96148026, 0.25100163, 0.93238866, 0.26009527, 2.0815506, 0.69599307, 1.8049892)
 bone_name = "mixamorigLeftToe_End"
@@ -250,16 +250,6 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-
-[node name="Crosshair" type="TextureRect" parent="CanvasLayer/MarginContainer"]
-modulate = Color(1, 1, 1, 0.5882353)
-material = SubResource("ShaderMaterial_n7ghd")
-clip_contents = true
-layout_mode = 2
-mouse_filter = 2
-texture = ExtResource("6_2hs0m")
-expand_mode = 1
-stretch_mode = 3
 
 [node name="ScoreContainer" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
 layout_mode = 2
@@ -305,6 +295,54 @@ color = Color(0, 0, 0, 0)
 libraries = {
 &"": SubResource("AnimationLibrary_nvl01")
 }
+
+[node name="Crosshair" type="CanvasLayer" parent="."]
+
+[node name="MarginContainer" type="MarginContainer" parent="Crosshair"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Crosshair" type="TextureRect" parent="Crosshair/MarginContainer"]
+modulate = Color(1, 1, 1, 0.5882353)
+material = SubResource("ShaderMaterial_n7ghd")
+clip_contents = true
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("6_2hs0m")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="HitContainer" type="Control" parent="Crosshair"]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.7853982
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(20, 20)
+mouse_filter = 2
+
+[node name="HitCrosshair" type="TextureRect" parent="Crosshair/HitContainer"]
+material = SubResource("ShaderMaterial_urp6f")
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+texture = ExtResource("13_urp6f")
+expand_mode = 1
+stretch_mode = 3
 
 [connection signal="body_entered" from="frappie/Node/Armature/Skeleton3D/footcollider/Area3D" to="." method="_on_area_3d_body_entered"]
 

@@ -12,7 +12,7 @@ const bullet = preload("res://bullet.tscn")
 @onready var phantom_mat: StandardMaterial3D = (phantom.get_node("MeshInstance3D").mesh.surface_get_material(0) as StandardMaterial3D)
 
 @export var fire_rate: float = 1.0/11.0
-@export var recoil_strength: float = 20.0
+@export var recoil_strength: float = 8.0
 
 var cam_sens := 0.0025
 var pewpew_roty := 0.0
@@ -36,7 +36,10 @@ func _physics_process(_delta: float) -> void:
 		if timer.is_stopped():
 			timer.start(fire_rate)
 			phantom_mat.albedo_color.v = 0.0
-			firing = true
+			if firing:
+				firing = false
+			else:
+				firing = true
 			pivot.apply_recoil()
 			arm.apply_shake()
 			var attack = bullet.instantiate()
