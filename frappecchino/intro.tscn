@@ -94,7 +94,7 @@ offset_left = -56.0
 offset_top = -35.0
 offset_right = 2944.0
 offset_bottom = 215.0
-color = Color(0.06879826, 0.06879829, 0.068798244, 1)
+color = Color(0.16565639, 0.16565642, 0.16565636, 1)
 
 [node name="ColorRect2" type="ColorRect" parent="Node2D"]
 custom_minimum_size = Vector2(3000, 250)
@@ -102,7 +102,7 @@ offset_left = -71.0
 offset_top = 1931.0
 offset_right = 2929.0
 offset_bottom = 2181.0
-color = Color(0.06879826, 0.06879829, 0.068798244, 1)
+color = Color(0.16565639, 0.16565642, 0.16565636, 1)
 
 [node name="Vignette" type="TextureRect" parent="Node2D"]
 offset_left = 106.0
