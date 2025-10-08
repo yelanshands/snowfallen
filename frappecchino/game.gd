@@ -50,6 +50,8 @@ func _process(_delta: float) -> void:
 		current_zloc += slope_mesh_size.x*2
 		
 	if dropping:
+		player.crosshair.set_size(Vector2(lerp(player.crosshair.size.x, player.crosshair_size, 0.15), lerp(player.crosshair.size.y, player.crosshair_size, 0.15)))
+		player.crosshair.position = Vector2(player.crosshair_cont.size.x/2.0-(player.crosshair.size.x/2.0), player.crosshair_cont.size.y/2.0-(player.crosshair.size.y/2.0))
 		if player.position.y < 100.0:
 			dropping = false
 			player.input_enabled = true

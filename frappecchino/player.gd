@@ -164,9 +164,8 @@ func _physics_process(delta: float) -> void:
 			camera.fov = lerp(camera.fov, fov * shooting_mult, 0.15)
 			crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_shooting, 0.15), lerp(crosshair.size.y, crosshair_shooting, 0.15)))
 		
-		crosshair.position.x = crosshair_cont.size.x/2.0-(crosshair.size.x/2.0)
-		crosshair.position.y = crosshair_cont.size.y/2.0-(crosshair.size.y/2.0)
-		
+		crosshair.position = Vector2(crosshair_cont.size.x/2.0-(crosshair.size.x/2.0), crosshair_cont.size.y/2.0-(crosshair.size.y/2.0))
+				
 		var lerp_vel = lerp(velocity, Vector3.ZERO, friction)
 		
 		if (not on_slope and (not input or animation.current_animation == "runslide")):

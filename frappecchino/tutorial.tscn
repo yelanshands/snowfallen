@@ -1,4 +1,4 @@
-[gd_scene load_steps=34 format=3 uid="uid://cuh2x5ayh8f80"]
+[gd_scene load_steps=35 format=3 uid="uid://cuh2x5ayh8f80"]
 
 [ext_resource type="PackedScene" uid="uid://daiyf82t58v7s" path="res://player.tscn" id="1_7n6eb"]
 [ext_resource type="Script" uid="uid://cg6s855jvgunl" path="res://tutorial.gd" id="1_ehuit"]
@@ -23,7 +23,7 @@ tonemap_mode = 2
 glow_enabled = true
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_rwowx"]
-albedo_color = Color(0.22670749, 0.22670749, 0.22670746, 1)
+albedo_color = Color(0.08468992, 0.08468992, 0.08468992, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_cgksj"]
 material = SubResource("StandardMaterial3D_rwowx")
@@ -32,7 +32,11 @@ size = Vector3(500, 1, 500)
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_yb1ct"]
 points = PackedVector3Array(-250, -0.5, -250, -250, 0.5, -250, 250, -0.5, -250, -250, -0.5, 250, -250, 0.5, 250, 250, 0.5, -250, 250, -0.5, 250, 250, 0.5, 250)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_hu44a"]
+albedo_color = Color(0.24840015, 0.24840018, 0.24840015, 1)
+
 [sub_resource type="BoxMesh" id="BoxMesh_7n6eb"]
+material = SubResource("StandardMaterial3D_hu44a")
 size = Vector3(5, 41, 500)
 
 [sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_ehuit"]
@@ -64,7 +68,7 @@ points = PackedVector3Array(-2.5, -20.5, -250, 2.5, -20.5, -250, -2.5, -20.5, 25
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_dl7dh"]
 transparency = 1
-albedo_color = Color(1, 1, 1, 0.49019608)
+albedo_color = Color(1, 1, 1, 0.19607843)
 
 [sub_resource type="BoxMesh" id="BoxMesh_r4o0u"]
 material = SubResource("StandardMaterial3D_dl7dh")
