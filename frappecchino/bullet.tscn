@@ -1,4 +1,4 @@
-[gd_scene load_steps=6 format=3 uid="uid://d2d33o863h0nt"]
+[gd_scene load_steps=7 format=3 uid="uid://d2d33o863h0nt"]
 
 [ext_resource type="Script" uid="uid://di6wgsyyoggor" path="res://bullet.gd" id="1_v7oki"]
 
@@ -7,15 +7,8 @@ top_radius = 0.15
 bottom_radius = 0.25
 height = 1.0
 
-[sub_resource type="Animation" id="Animation_v7oki"]
-resource_name = "fade_in"
-tracks/0/type = "scale_3d"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("MeshInstance3D")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.01, 1, 1, 1, 1)
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v7oki"]
+albedo_color = Color(0.2728209, 0.30577514, 0.2851749, 1)
 
 [sub_resource type="Animation" id="Animation_v8qja"]
 length = 0.001
@@ -26,6 +19,16 @@ tracks/0/path = NodePath("MeshInstance3D")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = PackedFloat32Array(0, 1, 1, 1, 1)
+
+[sub_resource type="Animation" id="Animation_v7oki"]
+resource_name = "fade_in"
+tracks/0/type = "scale_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.01, 1, 1, 1, 1)
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_t4vbm"]
 _data = {
@@ -42,6 +45,7 @@ speed = 1500.0
 [node name="MeshInstance3D" type="MeshInstance3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
 mesh = SubResource("CylinderMesh_fc0e3")
+surface_material_override/0 = SubResource("StandardMaterial3D_v7oki")
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 30.0

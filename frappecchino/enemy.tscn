@@ -859,6 +859,8 @@ transform = Transform3D(0.7083539, 0, 0.46474928, 0, 1, 0, -0.37179947, 0, 0.885
 shape = SubResource("ConvexPolygonShape3D_ar8e5")
 
 [node name="playerinteraction" type="StaticBody3D" parent="."]
+collision_layer = 8
+collision_mask = 8
 
 [node name="playerinteractionhitbox" type="CollisionShape3D" parent="playerinteraction"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.9, 0)

@@ -1255,7 +1255,7 @@ collision_mask = 8
 shape = SubResource("BoxShape3D_eow3j")
 
 [node name="Slope1" type="StaticBody3D" parent="Background"]
-transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, 0, 0, 0)
+transform = Transform3D(-8.742278e-08, 0, 1.5, 0, 2, 0, -2, 0, -6.556708e-08, 0, 0, 0)
 collision_layer = 7
 collision_mask = 7
 
@@ -1276,7 +1276,7 @@ transform = Transform3D(-6.5567085e-09, -0.10480928, -0.35004643, 0, 0.48889163,
 skeleton = NodePath("../../..")
 
 [node name="Slope2" type="StaticBody3D" parent="Background"]
-transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, 0, -300, 1400)
+transform = Transform3D(-8.742278e-08, 0, 1.5, 0, 2, 0, -2, 0, -6.556708e-08, 0, -300, 1400)
 collision_layer = 7
 collision_mask = 7
 
@@ -1297,7 +1297,7 @@ transform = Transform3D(-6.5567085e-09, -0.10480927, -0.35004646, 0, 0.48889163,
 skeleton = NodePath("../../..")
 
 [node name="Slope3" type="StaticBody3D" parent="Background"]
-transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, 0, -600, 2800)
+transform = Transform3D(-8.742278e-08, 0, 1.5, 0, 2, 0, -2, 0, -6.556708e-08, 0, -600, 2800)
 collision_layer = 7
 collision_mask = 7
 
@@ -1318,7 +1318,7 @@ transform = Transform3D(-6.5567085e-09, -0.10480928, -0.35004643, 0, 0.48889163,
 skeleton = NodePath("../../..")
 
 [node name="Slope4" type="StaticBody3D" parent="Background"]
-transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, 0, -900, 4200)
+transform = Transform3D(-8.742278e-08, 0, 1.5, 0, 2, 0, -2, 0, -6.556708e-08, 0, -900, 4200)
 collision_layer = 7
 collision_mask = 7
 
@@ -1339,7 +1339,7 @@ transform = Transform3D(-6.5567085e-09, -0.10480928, -0.35004643, 0, 0.48889163,
 skeleton = NodePath("../../..")
 
 [node name="Slope5" type="StaticBody3D" parent="Background"]
-transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, 0, -1200, 5600)
+transform = Transform3D(-8.742278e-08, 0, 1.5, 0, 2, 0, -2, 0, -6.556708e-08, 0, -1200, 5600)
 collision_layer = 7
 collision_mask = 7
 
@@ -1360,7 +1360,7 @@ transform = Transform3D(-6.5567085e-09, -0.10480928, -0.35004643, 0, 0.48889163,
 skeleton = NodePath("../../..")
 
 [node name="Slope6" type="StaticBody3D" parent="Background"]
-transform = Transform3D(-8.742278e-08, 0, 2, 0, 2, 0, -2, 0, -8.742278e-08, 0, -1500, 7000)
+transform = Transform3D(-8.742278e-08, 0, 1.5, 0, 2, 0, -2, 0, -6.556708e-08, 0, -1500, 7000)
 collision_layer = 7
 collision_mask = 7
 
@@ -1386,11 +1386,11 @@ collision_layer = 8
 collision_mask = 8
 
 [node name="LeftBarrier" type="CollisionShape3D" parent="Background/Barriers"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 325, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 250, 0, 0)
 shape = SubResource("BoxShape3D_ryrav")
 
 [node name="RightBarrier" type="CollisionShape3D" parent="Background/Barriers"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -325, 0, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -250, 0, 0)
 shape = SubResource("BoxShape3D_ryrav")
 
 [node name="Player" parent="." instance=ExtResource("3_fc0e3")]
