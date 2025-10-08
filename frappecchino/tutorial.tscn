@@ -1,4 +1,4 @@
-[gd_scene load_steps=42 format=3 uid="uid://cuh2x5ayh8f80"]
+[gd_scene load_steps=43 format=3 uid="uid://cuh2x5ayh8f80"]
 
 [ext_resource type="PackedScene" uid="uid://daiyf82t58v7s" path="res://player.tscn" id="1_7n6eb"]
 [ext_resource type="Script" uid="uid://cg6s855jvgunl" path="res://tutorial.gd" id="1_ehuit"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://480acyh738qs" path="res://book.tscn" id="4_bhfnd"]
 [ext_resource type="Texture2D" uid="uid://bqa13ypnqi1jl" path="res://assets/images/frappie_pfp.png" id="5_rwowx"]
 [ext_resource type="PackedScene" uid="uid://0bamwawxdwtf" path="res://cactus.tscn" id="6_bhfnd"]
+[ext_resource type="PackedScene" uid="uid://bstrt2pie8c" path="res://lamp.tscn" id="7_tvjhf"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rwowx"]
 sky_top_color = Color(0.0617302, 0.00643286, 0.177529, 1)
@@ -554,6 +555,9 @@ surface_material_override/0 = SubResource("StandardMaterial3D_tvjhf")
 
 [node name="cactus" parent="building/furniture/table" instance=ExtResource("6_bhfnd")]
 transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, -0.2666664, 1.4, 0.33333302)
+
+[node name="lamp" parent="building/furniture" instance=ExtResource("7_tvjhf")]
+transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 64, 16.85, 240)
 
 [node name="Player" parent="." instance=ExtResource("1_7n6eb")]
 transform = Transform3D(-0.9659258, 0, -0.25881913, 0, 1, 0, 0.25881913, 0, -0.9659258, 188, 0, 201)

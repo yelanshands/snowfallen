@@ -10,12 +10,12 @@ func _ready() -> void:
 	label.modulate.a = 0.0
 	animation_player.play_backwards("fade_out")
 	await animation_player.animation_finished
+	skip_animation.play("skip_fade_out")
 	video_stream_player.play()
 	audio_stream_player.play()
-	skip_animation.play("skip_fade_out")
 	
 func _process(_delta) -> void:
-	if Input.is_action_just_pressed("jump"):
+	if Input.is_action_just_pressed("jump") and skip_animation.is_playing() or skip_animation.current_animation_position >= 4.0:
 		end()
 
 func _on_video_stream_player_finished() -> void:
