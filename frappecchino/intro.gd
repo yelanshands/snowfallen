@@ -15,7 +15,7 @@ func _ready() -> void:
 	audio_stream_player.play()
 	
 func _process(_delta) -> void:
-	if Input.is_action_just_pressed("jump") and skip_animation.is_playing() or skip_animation.current_animation_position >= 4.0:
+	if Input.is_action_just_pressed("jump") and skip_animation.assigned_animation == "skip_fade_out":
 		end()
 
 func _on_video_stream_player_finished() -> void:

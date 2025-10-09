@@ -3,7 +3,6 @@ extends Node3D
 const bullet = preload("res://bullet.tscn")
 @onready var timer : Timer = $Timer
 @onready var player: CharacterBody3D = get_parent()
-@onready var camera_end : Node3D = player.get_node("SpringArmPivot/SpringArm3D/PlayerCamera/Line")
 @onready var camera : Camera3D = player.get_node("SpringArmPivot/SpringArm3D/PlayerCamera")
 @onready var sound: AudioStreamPlayer3D = player.get_node("SpringArmPivot/SpringArm3D/PlayerCamera/PewpewAudio")
 @onready var pivot = player.get_node("SpringArmPivot")
@@ -30,6 +29,7 @@ func _process(_delta: float) -> void:
 	else:
 		phantom.rotation_degrees.x = lerp(phantom.rotation_degrees.x, phantom_origin.x, 0.25)
 		phantom_mat.albedo_color.v = lerp(phantom_mat.albedo_color.v, 0.0, 0.6)
+		pivot.global_position.y = lerp(pivot.global_position.y, player.head_bone.global_position.y, 0.15)
 		
 func _physics_process(_delta: float) -> void:
 	if Input.is_action_pressed("left_click"):
@@ -53,7 +53,3 @@ func _physics_process(_delta: float) -> void:
 		pivot.return_to_origin()
 		if phantom.rotation_degrees.x < phantom_origin.x - recoil_strength * 0.9:
 			firing = false
-
-func _unhandled_input(event):
-	if event is InputEventMouseMotion:
-		rotation.x = -camera.rotation.x - rotation.angle_to(camera_end.position)

@@ -2,7 +2,6 @@ extends CharacterBody3D
 
 @onready var spring_arm: SpringArm3D = $SpringArmPivot/SpringArm3D
 @onready var camera: Camera3D = $SpringArmPivot/SpringArm3D/PlayerCamera
-@onready var spring_pos: Node3D = $SpringArmPivot/SpringArm3D/SpringPosition
 @onready var crosshair_cont: MarginContainer = $Crosshair/MarginContainer
 @onready var crosshair: TextureRect = crosshair_cont.get_node("Crosshair")
 @onready var hitcrosshair_cont: Control = $Crosshair/HitContainer
@@ -14,7 +13,6 @@ extends CharacterBody3D
 @onready var skeleton: Skeleton3D = $frappie.get_node("Node/Armature/Skeleton3D")
 @onready var fade_animation = $CanvasLayer/AnimationPlayer
 @onready var fade_rect = $CanvasLayer/ColorRect
-@onready var tutorial: Node3D = get_parent()
 
 @export var fov: float = 75.0
 @export var friction: float = 0.25
@@ -76,7 +74,6 @@ func _input(event):
 
 func _process(_delta):
 	var camera_zrot = camera.global_rotation.z
-	spring_pos.global_position = head_bone.global_position
 	if animation.current_animation == "runslide":
 		camera.global_rotation.z = lerp(camera_zrot, clamp(-head_bone.global_rotation.z, -0.2, 0.05), 0.05)
 	else:
@@ -205,8 +202,7 @@ func _physics_process(delta: float) -> void:
 		velocity.y = 0.0
 	
 	if on_slope:
-		velocity.x += slide_vector.x
-		velocity.z += slide_vector.z
+		velocity += slide_vector
 			
 	if Input.is_action_pressed("jump") and on_floor:
 		if animation.assigned_animation == "riflecrouchruntostop" or animation.assigned_animation == "riflecrouchrun":
@@ -224,8 +220,11 @@ func _unhandled_input(event):
 	if event is InputEventMouseMotion:
 		rotation.y -= event.relative.x * cam_sens
 		
-		camera.rotation.x -= event.relative.y * cam_sens
-		camera.rotation.x = clamp(camera.rotation.x, -PI/4, PI/2) 
+		#camera.rotation.x -= event.relative.y * cam_sens
+		#camera.rotation.x = clamp(camera.rotation.x, -PI/4, PI/2) 
+		
+		spring_arm.rotation.x -= event.relative.y * cam_sens
+		spring_arm.rotation.x = clamp(spring_arm.rotation.x, -PI/4, PI/2) 
 
 func update_score(amount: int):
 	if amount == 0:
@@ -237,7 +236,7 @@ func update_score(amount: int):
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if body.name == "glass" and animation.current_animation == "runslide" and animation.current_animation_position >= 0.1 and animation.current_animation_position <= 0.4:
 		body.free()
-		tutorial.animation.play_backwards("slide_in")
+		get_parent().animation.play_backwards("slide_in")
 		update_score(0)
 		fade_and_change_scene("res://game.tscn")
 		

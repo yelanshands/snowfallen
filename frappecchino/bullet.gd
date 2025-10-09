@@ -1,11 +1,9 @@
 extends RayCast3D
 
 @onready var remote_transform := RemoteTransform3D.new()
-#@onready var camera: Camera3D = $SpringArmPivot/SpringArm3D/PlayerCamera
 @onready var player: CharacterBody3D = get_parent().get_parent().get_parent().get_parent()
 @onready var animation: AnimationPlayer = $AnimationPlayer
 @onready var hitcrosshair_cont: Control = player.get_node("Crosshair/HitContainer")
-#@onready var hitcrosshair: TextureRect = hitcrosshair_cont.get_node("HitCrosshair")
 
 @export var speed: float = 1400.0
 

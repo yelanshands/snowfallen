@@ -2,11 +2,12 @@ extends SpringArm3D
 
 @onready var pivot: Node3D = get_parent()
 @onready var camera: Camera3D = $PlayerCamera
+@onready var player: CharacterBody3D = get_parent().get_parent()
 
 var shake_max := 3.0
 var shake_strength := shake_max
 var steady_recoil := shake_max/2
-var shake_decay := 20.0
+#var shake_decay := 20.0
 var shake_offset := Vector3.ZERO
 var shake_target := Vector3.ZERO
 
