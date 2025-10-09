@@ -1,4 +1,4 @@
-[gd_scene load_steps=43 format=3 uid="uid://cuh2x5ayh8f80"]
+[gd_scene load_steps=46 format=3 uid="uid://cuh2x5ayh8f80"]
 
 [ext_resource type="PackedScene" uid="uid://daiyf82t58v7s" path="res://player.tscn" id="1_7n6eb"]
 [ext_resource type="Script" uid="uid://cg6s855jvgunl" path="res://tutorial.gd" id="1_ehuit"]
@@ -11,6 +11,7 @@
 [ext_resource type="Texture2D" uid="uid://bqa13ypnqi1jl" path="res://assets/images/frappie_pfp.png" id="5_rwowx"]
 [ext_resource type="PackedScene" uid="uid://0bamwawxdwtf" path="res://cactus.tscn" id="6_bhfnd"]
 [ext_resource type="PackedScene" uid="uid://bstrt2pie8c" path="res://lamp.tscn" id="7_tvjhf"]
+[ext_resource type="Texture2D" uid="uid://clsi7k4lwvg3s" path="res://assets/images/frappiewantedposter.png" id="8_vmw6g"]
 
 [sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_rwowx"]
 sky_top_color = Color(0.0617302, 0.00643286, 0.177529, 1)
@@ -107,6 +108,14 @@ albedo_color = Color(0.77721065, 0.77337074, 0, 1)
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_vmw6g"]
 albedo_color = Color(0.999971, 0.13639593, 0.20409307, 1)
 
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4hjyh"]
+transparency = 1
+albedo_texture = ExtResource("8_vmw6g")
+
+[sub_resource type="QuadMesh" id="QuadMesh_bsk3x"]
+material = SubResource("StandardMaterial3D_4hjyh")
+size = Vector2(8, 12)
+
 [sub_resource type="Animation" id="Animation_hu44a"]
 length = 0.001
 tracks/0/type = "value"
@@ -150,6 +159,10 @@ script = ExtResource("1_ehuit")
 environment = SubResource("Environment_0cr88")
 
 [node name="building" type="Node3D" parent="."]
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="building"]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 26, 0)
+light_color = Color(0.52757543, 0.44108257, 0.9223667, 1)
 
 [node name="floor" type="StaticBody3D" parent="building"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
@@ -272,10 +285,6 @@ collision_mask = 32
 [node name="CollisionShape3D6" type="CollisionShape3D" parent="building/walls/CameraCollider5"]
 transform = Transform3D(1.1, 0, 0, 0, 1, 0, 0, 0, 1, 250, 20, 0)
 shape = SubResource("ConvexPolygonShape3D_hu44a")
-
-[node name="DirectionalLight3D" type="DirectionalLight3D" parent="building"]
-transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 26, 0)
-light_color = Color(0.52757543, 0.44108257, 0.9223667, 1)
 
 [node name="innerwalls" type="StaticBody3D" parent="building"]
 collision_layer = 3
@@ -726,6 +735,36 @@ transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, -0.2666664, 1.4, 0.33333302
 
 [node name="lamp" parent="building/furniture" instance=ExtResource("7_tvjhf")]
 transform = Transform3D(15, 0, 0, 0, 15, 0, 0, 0, 15, 64, 16.85, 240)
+
+[node name="poster" type="MeshInstance3D" parent="building/furniture"]
+transform = Transform3D(1, 0, 1.7484555e-07, 0, 1, 0, -1.7484555e-07, 0, 1, 191, 21, 151.60004)
+mesh = SubResource("QuadMesh_bsk3x")
+skeleton = NodePath("")
+
+[node name="poster1" type="MeshInstance3D" parent="building/furniture"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 76, 21, 247.40004)
+mesh = SubResource("QuadMesh_bsk3x")
+skeleton = NodePath("")
+
+[node name="poster2" type="MeshInstance3D" parent="building/furniture"]
+transform = Transform3D(1.3113416e-07, 0, -1, 0, 1, 0, 1, 0, 1.3113416e-07, 247.40001, 21, 65.40004)
+mesh = SubResource("QuadMesh_bsk3x")
+skeleton = NodePath("")
+
+[node name="poster3" type="MeshInstance3D" parent="building/furniture"]
+transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 247.3, 21, -133.59996)
+mesh = SubResource("QuadMesh_bsk3x")
+skeleton = NodePath("")
+
+[node name="poster4" type="MeshInstance3D" parent="building/furniture"]
+transform = Transform3D(-4.371139e-08, 0, 1, 0, 1, 0, -1, 0, -4.371139e-08, -50.899998, 21, -195.59996)
+mesh = SubResource("QuadMesh_bsk3x")
+skeleton = NodePath("")
+
+[node name="poster5" type="MeshInstance3D" parent="building/furniture"]
+transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, -43.999996, 21, 247.40004)
+mesh = SubResource("QuadMesh_bsk3x")
+skeleton = NodePath("")
 
 [node name="Player" parent="." instance=ExtResource("1_7n6eb")]
 transform = Transform3D(-0.9659258, 0, -0.25881913, 0, 1, 0, 0.25881913, 0, -0.9659258, 188, 0, 201)
