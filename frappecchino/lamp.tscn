@@ -364,39 +364,47 @@ shape = SubResource("ConvexPolygonShape3D_qfipa")
 
 [node name="frame" type="MeshInstance3D" parent="lamp"]
 transform = Transform3D(1, 0, 0, 0, 0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, 0.5, -0.0625)
+visible = false
 mesh = SubResource("ArrayMesh_fvv45")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D5" type="CollisionShape3D" parent="lamp"]
 transform = Transform3D(1, 0, 0, 0, 0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, 0.5, -0.0625)
 shape = SubResource("ConvexPolygonShape3D_00ij4")
+disabled = true
 
 [node name="frame2" type="MeshInstance3D" parent="lamp"]
 transform = Transform3D(0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, 0, 0, 1, 0.0625, 0.5, 0)
+visible = false
 mesh = SubResource("ArrayMesh_pmo1q")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D6" type="CollisionShape3D" parent="lamp"]
 transform = Transform3D(0.9659258, 0.25881904, 0, -0.25881904, 0.9659258, 0, 0, 0, 1, 0.0625, 0.5, 0)
 shape = SubResource("ConvexPolygonShape3D_n7rru")
+disabled = true
 
 [node name="frame3" type="MeshInstance3D" parent="lamp"]
 transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0.5, 0.0625)
+visible = false
 mesh = SubResource("ArrayMesh_p3yss")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D7" type="CollisionShape3D" parent="lamp"]
 transform = Transform3D(1, 0, 0, 0, 0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0.5, 0.0625)
 shape = SubResource("ConvexPolygonShape3D_b6kmw")
+disabled = true
 
 [node name="frame4" type="MeshInstance3D" parent="lamp"]
 transform = Transform3D(0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0, 0, 1, -0.0625, 0.5, 0)
+visible = false
 mesh = SubResource("ArrayMesh_gaypu")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D8" type="CollisionShape3D" parent="lamp"]
 transform = Transform3D(0.9659258, -0.25881904, 0, 0.25881904, 0.9659258, 0, 0, 0, 1, -0.0625, 0.5, 0)
 shape = SubResource("ConvexPolygonShape3D_dd1hs")
+disabled = true
 
 [node name="OmniLight3D" type="OmniLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.75, 0)

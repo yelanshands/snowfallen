@@ -184,6 +184,7 @@ func _physics_process(delta: float) -> void:
 		var hitbox_height = (head_bone.global_position.y - global_position.y) + 1
 		$CollisionShape3D.shape.height = hitbox_height
 		$CollisionShape3D.position.y = hitbox_height/2
+
 	else:
 		if first_slide:
 			animation.play_section("runslide", 0, 1.1)
@@ -202,7 +203,8 @@ func _physics_process(delta: float) -> void:
 		velocity.y = 0.0
 	
 	if on_slope:
-		velocity += slide_vector
+		velocity.x += slide_vector.x
+		velocity.z += slide_vector.z
 			
 	if Input.is_action_pressed("jump") and on_floor:
 		if animation.assigned_animation == "riflecrouchruntostop" or animation.assigned_animation == "riflecrouchrun":
@@ -220,11 +222,8 @@ func _unhandled_input(event):
 	if event is InputEventMouseMotion:
 		rotation.y -= event.relative.x * cam_sens
 		
-		#camera.rotation.x -= event.relative.y * cam_sens
-		#camera.rotation.x = clamp(camera.rotation.x, -PI/4, PI/2) 
-		
 		spring_arm.rotation.x -= event.relative.y * cam_sens
-		spring_arm.rotation.x = clamp(spring_arm.rotation.x, -PI/4, PI/2) 
+		spring_arm.rotation.x = clamp(spring_arm.rotation.x, -PI/4, PI/3) 
 
 func update_score(amount: int):
 	if amount == 0:

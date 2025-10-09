@@ -7,7 +7,7 @@ const bullet = preload("res://bullet.tscn")
 @onready var sound: AudioStreamPlayer3D = player.get_node("SpringArmPivot/SpringArm3D/PlayerCamera/PewpewAudio")
 @onready var pivot = player.get_node("SpringArmPivot")
 @onready var arm = pivot.get_node("SpringArm3D")
-@onready var phantom: MeshInstance3D = player.get_node("frappie/Node/Armature/Skeleton3D/pewpew/phantom")
+@onready var phantom: StaticBody3D = player.get_node("frappie/Node/Armature/Skeleton3D/pewpew/phantom")
 @onready var phantom_mat: StandardMaterial3D = (phantom.get_node("MeshInstance3D").mesh.surface_get_material(0) as StandardMaterial3D)
 
 @export var fire_rate: float = 1.0/11.0

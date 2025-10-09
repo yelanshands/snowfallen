@@ -162,6 +162,14 @@ mesh = SubResource("BoxMesh_cgksj")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="building/floor"]
 shape = SubResource("ConvexPolygonShape3D_yb1ct")
 
+[node name="CameraCollider" type="StaticBody3D" parent="building/floor"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="building/floor/CameraCollider"]
+transform = Transform3D(1, 0, 0, 0, 1.1, 0, 0, 0, 1, 0, 0, 0)
+shape = SubResource("ConvexPolygonShape3D_yb1ct")
+
 [node name="ceiling" type="StaticBody3D" parent="building"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)
 collision_layer = 7
@@ -171,6 +179,14 @@ collision_mask = 7
 mesh = SubResource("BoxMesh_cgksj")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="building/ceiling"]
+shape = SubResource("ConvexPolygonShape3D_yb1ct")
+
+[node name="CameraCollider" type="StaticBody3D" parent="building/ceiling"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D2" type="CollisionShape3D" parent="building/ceiling/CameraCollider"]
+transform = Transform3D(1, 0, 0, 0, 1.1, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("ConvexPolygonShape3D_yb1ct")
 
 [node name="walls" type="StaticBody3D" parent="building"]
@@ -185,12 +201,28 @@ mesh = SubResource("BoxMesh_7n6eb")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -53.5, 20, 0)
 shape = SubResource("ConvexPolygonShape3D_ehuit")
 
+[node name="CameraCollider" type="StaticBody3D" parent="building/walls"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="building/walls/CameraCollider"]
+transform = Transform3D(1.1, 0, 0, 0, 1, 0, 0, 0, 1, -53.5, 20, 0)
+shape = SubResource("ConvexPolygonShape3D_ehuit")
+
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="building/walls"]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 20, -250)
 mesh = SubResource("BoxMesh_7n6eb")
 
 [node name="CollisionShape3D2" type="CollisionShape3D" parent="building/walls"]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 0, 20, -250)
+shape = SubResource("ConvexPolygonShape3D_5mrt3")
+
+[node name="CameraCollider2" type="StaticBody3D" parent="building/walls"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="building/walls/CameraCollider2"]
+transform = Transform3D(-4.8082526e-08, 0, -1, 0, 1, 0, 1.1, 0, -4.371139e-08, 0, 20, -250)
 shape = SubResource("ConvexPolygonShape3D_5mrt3")
 
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="building/walls"]
@@ -201,6 +233,14 @@ mesh = SubResource("BoxMesh_7n6eb")
 transform = Transform3D(-4.371139e-08, 0, -0.425, 0, 1, 0, 1, 0, -1.857734e-08, 146, 20, 250)
 shape = SubResource("ConvexPolygonShape3D_rwowx")
 
+[node name="CameraCollider3" type="StaticBody3D" parent="building/walls"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="building/walls/CameraCollider3"]
+transform = Transform3D(-4.8082526e-08, 0, -0.425, 0, 1, 0, 1.1, 0, -1.857734e-08, 146, 20, 250)
+shape = SubResource("ConvexPolygonShape3D_rwowx")
+
 [node name="MeshInstance3D5" type="MeshInstance3D" parent="building/walls"]
 transform = Transform3D(-4.371139e-08, 0, -0.425, 0, 1, 0, 1, 0, -1.857734e-08, -144, 20, 250)
 mesh = SubResource("BoxMesh_7n6eb")
@@ -209,12 +249,28 @@ mesh = SubResource("BoxMesh_7n6eb")
 transform = Transform3D(-4.371139e-08, 0, -0.425, 0, 1, 0, 1, 0, -1.857734e-08, -144, 20, 250)
 shape = SubResource("ConvexPolygonShape3D_bsk3x")
 
+[node name="CameraCollider4" type="StaticBody3D" parent="building/walls"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="building/walls/CameraCollider4"]
+transform = Transform3D(-4.8082526e-08, 0, -0.425, 0, 1, 0, 1.1, 0, -1.857734e-08, -144, 20, 250)
+shape = SubResource("ConvexPolygonShape3D_bsk3x")
+
 [node name="MeshInstance3D2" type="MeshInstance3D" parent="building/walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 250, 20, 0)
 mesh = SubResource("BoxMesh_7n6eb")
 
 [node name="CollisionShape3D4" type="CollisionShape3D" parent="building/walls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 250, 20, 0)
+shape = SubResource("ConvexPolygonShape3D_hu44a")
+
+[node name="CameraCollider5" type="StaticBody3D" parent="building/walls"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D6" type="CollisionShape3D" parent="building/walls/CameraCollider5"]
+transform = Transform3D(1.1, 0, 0, 0, 1, 0, 0, 0, 1, 250, 20, 0)
 shape = SubResource("ConvexPolygonShape3D_hu44a")
 
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="building"]
@@ -234,11 +290,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.9, 54, 20, 26)
 shape = SubResource("ConvexPolygonShape3D_0cr88")
 
 [node name="CameraCollider" type="StaticBody3D" parent="building/innerwalls"]
-collision_layer = 40
-collision_mask = 40
+collision_layer = 32
+collision_mask = 32
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="building/innerwalls/CameraCollider"]
-transform = Transform3D(2, 0, 0, 0, 1, 0, 0, 0, 0.9, 54, 20, 26)
+transform = Transform3D(1.1, 0, 0, 0, 1, 0, 0, 0, 0.9, 54, 20, 26)
 shape = SubResource("ConvexPolygonShape3D_0cr88")
 
 [node name="MeshInstance3D3" type="MeshInstance3D" parent="building/innerwalls"]
@@ -249,6 +305,14 @@ mesh = SubResource("BoxMesh_7n6eb")
 transform = Transform3D(-4.371139e-08, 0, -0.21, 0, 1, 0, 1, 0, -9.1793915e-09, 197, 20, 149)
 shape = SubResource("ConvexPolygonShape3D_4t6hg")
 
+[node name="CameraCollider2" type="StaticBody3D" parent="building/innerwalls"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D15" type="CollisionShape3D" parent="building/innerwalls/CameraCollider2"]
+transform = Transform3D(-4.8082526e-08, 0, -0.21, 0, 1, 0, 1.1, 0, -9.1793915e-09, 197, 20, 149)
+shape = SubResource("ConvexPolygonShape3D_4t6hg")
+
 [node name="MeshInstance3D5" type="MeshInstance3D" parent="building/innerwalls"]
 transform = Transform3D(-4.371139e-08, 0, -0.21, 0, 1, 0, 1, 0, -9.1793915e-09, 197, 20, 1)
 mesh = SubResource("BoxMesh_7n6eb")
@@ -257,12 +321,28 @@ mesh = SubResource("BoxMesh_7n6eb")
 transform = Transform3D(-4.371139e-08, 0, -0.21, 0, 1, 0, 1, 0, -9.1793915e-09, 197, 20, 1)
 shape = SubResource("ConvexPolygonShape3D_7vrqn")
 
+[node name="CameraCollider3" type="StaticBody3D" parent="building/innerwalls"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D15" type="CollisionShape3D" parent="building/innerwalls/CameraCollider3"]
+transform = Transform3D(-4.8082526e-08, 0, -0.21, 0, 1, 0, 1.1, 0, -9.1793915e-09, 197, 20, 1)
+shape = SubResource("ConvexPolygonShape3D_7vrqn")
+
 [node name="MeshInstance3D6" type="MeshInstance3D" parent="building/innerwalls"]
 transform = Transform3D(-4.371139e-08, 0, -0.4, 0, 0.7, 0, 1, 0, -1.7484556e-08, 152, 26, -47)
 mesh = SubResource("BoxMesh_7n6eb")
 
 [node name="CollisionShape3D4" type="CollisionShape3D" parent="building/innerwalls"]
 transform = Transform3D(-4.371139e-08, 0, -0.4, 0, 0.7, 0, 1, 0, -1.7484556e-08, 152, 26, -47)
+shape = SubResource("ConvexPolygonShape3D_bhfnd")
+
+[node name="CameraCollider4" type="StaticBody3D" parent="building/innerwalls"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D15" type="CollisionShape3D" parent="building/innerwalls/CameraCollider4"]
+transform = Transform3D(-4.8082526e-08, 0, -0.4, 0, 0.7, 0, 1.1, 0, -1.7484556e-08, 152, 26, -47)
 shape = SubResource("ConvexPolygonShape3D_bhfnd")
 
 [node name="barrier1" type="StaticBody3D" parent="building/innerwalls"]
@@ -291,12 +371,28 @@ mesh = SubResource("BoxMesh_7n6eb")
 transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 147, 3, 199)
 shape = SubResource("ConvexPolygonShape3D_tvjhf")
 
+[node name="CameraCollider5" type="StaticBody3D" parent="building/innerwalls"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D15" type="CollisionShape3D" parent="building/innerwalls/CameraCollider5"]
+transform = Transform3D(1.1, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 147, 3, 199)
+shape = SubResource("ConvexPolygonShape3D_tvjhf")
+
 [node name="MeshInstance3D9" type="MeshInstance3D" parent="building/innerwalls"]
 transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 54, 3, -202)
 mesh = SubResource("BoxMesh_7n6eb")
 
 [node name="CollisionShape3D9" type="CollisionShape3D" parent="building/innerwalls"]
 transform = Transform3D(1, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 54, 3, -202)
+shape = SubResource("ConvexPolygonShape3D_tvjhf")
+
+[node name="CameraCollider6" type="StaticBody3D" parent="building/innerwalls"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D15" type="CollisionShape3D" parent="building/innerwalls/CameraCollider6"]
+transform = Transform3D(1.1, 0, 0, 0, 0.2, 0, 0, 0, 0.2, 54, 3, -202)
 shape = SubResource("ConvexPolygonShape3D_tvjhf")
 
 [node name="MeshInstance3D8" type="MeshInstance3D" parent="building/innerwalls"]
@@ -307,12 +403,28 @@ mesh = SubResource("BoxMesh_7n6eb")
 transform = Transform3D(-4.371139e-08, 0, -0.2, 0, 0.19999999, 0, 0.99999994, 0, -8.742277e-09, 104, 3, 1)
 shape = SubResource("ConvexPolygonShape3D_tvjhf")
 
+[node name="CameraCollider7" type="StaticBody3D" parent="building/innerwalls"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D15" type="CollisionShape3D" parent="building/innerwalls/CameraCollider7"]
+transform = Transform3D(-4.8082526e-08, 0, -0.2, 0, 0.2, 0, 1.1, 0, -8.742278e-09, 104, 3, 1)
+shape = SubResource("ConvexPolygonShape3D_tvjhf")
+
 [node name="MeshInstance3D4" type="MeshInstance3D" parent="building/innerwalls"]
 transform = Transform3D(1, 0, 0, 0, 0.4, 0, 0, 0, 0.3, 147, 4, 74)
 mesh = SubResource("BoxMesh_7n6eb")
 
 [node name="CollisionShape3D6" type="CollisionShape3D" parent="building/innerwalls"]
 transform = Transform3D(1, 0, 0, 0, 0.4, 0, 0, 0, 0.3, 147, 4, 74)
+shape = SubResource("ConvexPolygonShape3D_vmw6g")
+
+[node name="CameraCollider8" type="StaticBody3D" parent="building/innerwalls"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D15" type="CollisionShape3D" parent="building/innerwalls/CameraCollider8"]
+transform = Transform3D(1.1, 0, 0, 0, 0.4, 0, 0, 0, 0.3, 147, 4, 74)
 shape = SubResource("ConvexPolygonShape3D_vmw6g")
 
 [node name="rangebarrier" type="StaticBody3D" parent="building/innerwalls"]
@@ -331,12 +443,28 @@ mesh = SubResource("BoxMesh_7n6eb")
 transform = Transform3D(-4.371139e-08, 0, -0.4, 0, 0.7, 0, 1, 0, -1.7484556e-08, 152, 26, -170)
 shape = SubResource("ConvexPolygonShape3D_4hjyh")
 
+[node name="CameraCollider9" type="StaticBody3D" parent="building/innerwalls"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D15" type="CollisionShape3D" parent="building/innerwalls/CameraCollider9"]
+transform = Transform3D(-4.8082526e-08, 0, -0.4, 0, 0.7, 0, 1.1, 0, -1.7484556e-08, 152, 26, -170)
+shape = SubResource("ConvexPolygonShape3D_4hjyh")
+
 [node name="MeshInstance3D10" type="MeshInstance3D" parent="building/innerwalls"]
 transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 0.2, 54, 30, -202)
 mesh = SubResource("BoxMesh_7n6eb")
 
 [node name="CollisionShape3D10" type="CollisionShape3D" parent="building/innerwalls"]
 transform = Transform3D(1, 0, 0, 0, 0.5, 0, 0, 0, 0.2, 54, 30, -202)
+shape = SubResource("ConvexPolygonShape3D_4hjyh")
+
+[node name="CameraCollider10" type="StaticBody3D" parent="building/innerwalls"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D15" type="CollisionShape3D" parent="building/innerwalls/CameraCollider10"]
+transform = Transform3D(1.1, 0, 0, 0, 0.5, 0, 0, 0, 0.2, 54, 30, -202)
 shape = SubResource("ConvexPolygonShape3D_4hjyh")
 
 [node name="MeshInstance3D11" type="MeshInstance3D" parent="building/innerwalls"]
@@ -347,12 +475,28 @@ mesh = SubResource("BoxMesh_7n6eb")
 transform = Transform3D(-4.371139e-08, 0, -0.3, 0, 0.4, 0, 1, 0, -1.3113417e-08, -18.666672, 4, -141.66667)
 shape = SubResource("ConvexPolygonShape3D_vmw6g")
 
+[node name="CameraCollider11" type="StaticBody3D" parent="building/innerwalls"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D15" type="CollisionShape3D" parent="building/innerwalls/CameraCollider11"]
+transform = Transform3D(-4.8082526e-08, 0, -0.3, 0, 0.4, 0, 1.1, 0, -1.3113417e-08, -18.666672, 4, -141.66667)
+shape = SubResource("ConvexPolygonShape3D_vmw6g")
+
 [node name="MeshInstance3D12" type="MeshInstance3D" parent="building/innerwalls"]
 transform = Transform3D(-4.371139e-08, 0, -0.3, 0, 0.4, 0, 1, 0, -1.3113417e-08, -18.666672, -2, -146.66667)
 mesh = SubResource("BoxMesh_7n6eb")
 
 [node name="CollisionShape3D12" type="CollisionShape3D" parent="building/innerwalls"]
 transform = Transform3D(-4.371139e-08, 0, -0.3, 0, 0.4, 0, 1, 0, -1.3113417e-08, -18.666672, -2, -146.66667)
+shape = SubResource("ConvexPolygonShape3D_vmw6g")
+
+[node name="CameraCollider12" type="StaticBody3D" parent="building/innerwalls"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D15" type="CollisionShape3D" parent="building/innerwalls/CameraCollider12"]
+transform = Transform3D(-4.8082526e-08, 0, -0.3, 0, 0.4, 0, 1.1, 0, -1.3113417e-08, -18.666672, -2, -146.66667)
 shape = SubResource("ConvexPolygonShape3D_vmw6g")
 
 [node name="MeshInstance3D13" type="MeshInstance3D" parent="building/innerwalls"]
@@ -363,12 +507,28 @@ mesh = SubResource("BoxMesh_7n6eb")
 transform = Transform3D(-4.371139e-08, 0, 0.2, 0, 0.19999999, 0, -0.99999994, 0, -8.742277e-09, 5.999996, 3, 250)
 shape = SubResource("ConvexPolygonShape3D_tvjhf")
 
+[node name="CameraCollider13" type="StaticBody3D" parent="building/innerwalls"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D15" type="CollisionShape3D" parent="building/innerwalls/CameraCollider13"]
+transform = Transform3D(-4.8082526e-08, 0, 0.2, 0, 0.2, 0, -1.1, 0, -8.742278e-09, 5.999996, 3, 250)
+shape = SubResource("ConvexPolygonShape3D_tvjhf")
+
 [node name="MeshInstance3D14" type="MeshInstance3D" parent="building/innerwalls"]
 transform = Transform3D(-4.371139e-08, 0, 0.2, 0, 0.19999999, 0, -0.99999994, 0, -8.742277e-09, 5.999996, 37, 250)
 mesh = SubResource("BoxMesh_7n6eb")
 
 [node name="CollisionShape3D14" type="CollisionShape3D" parent="building/innerwalls"]
 transform = Transform3D(-4.371139e-08, 0, 0.2, 0, 0.19999999, 0, -0.99999994, 0, -8.742277e-09, 5.999996, 37, 250)
+shape = SubResource("ConvexPolygonShape3D_tvjhf")
+
+[node name="CameraCollider14" type="StaticBody3D" parent="building/innerwalls"]
+collision_layer = 32
+collision_mask = 32
+
+[node name="CollisionShape3D15" type="CollisionShape3D" parent="building/innerwalls/CameraCollider14"]
+transform = Transform3D(-4.8082526e-08, 0, 0.2, 0, 0.2, 0, -1.1, 0, -8.742278e-09, 5.999996, 37, 250)
 shape = SubResource("ConvexPolygonShape3D_tvjhf")
 
 [node name="glass" type="StaticBody3D" parent="building/innerwalls"]
