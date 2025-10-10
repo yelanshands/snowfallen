@@ -1,9 +1,15 @@
 extends CharacterBody3D
 
+@onready var enemi: Node3D = $enemi
+@onready var animation: AnimationPlayer = enemi.get_node("AnimationPlayer")
+
 @export var hp : int = 100
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var vel = Vector3(0, 0, 0)
 
+func _ready() -> void:
+	animation.play("FiringRifle0")
+	
 func _process(_delta):
 	if hp <= 0:
 		queue_free() 

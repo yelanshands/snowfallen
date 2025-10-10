@@ -1,7 +1,7 @@
 [gd_scene load_steps=4 format=3 uid="uid://ro3nbpeyv3v5"]
 
 [ext_resource type="Script" uid="uid://4xkne2rhx8fr" path="res://npc.gd" id="1_xxcha"]
-[ext_resource type="PackedScene" uid="uid://dme422wyg3ehv" path="res://enemy.tscn" id="3_kh24r"]
+[ext_resource type="PackedScene" uid="uid://b3fhkrqfgm6rc" path="res://enemi.tscn" id="2_xxcha"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xxcha"]
 size = Vector3(0, 0, 0)
@@ -14,7 +14,7 @@ metadata/dialogue = false
 metadata/attackable = false
 metadata/hp = 100
 
-[node name="enemy" parent="." instance=ExtResource("3_kh24r")]
-
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_xxcha")
+
+[node name="enemi" parent="." instance=ExtResource("2_xxcha")]
