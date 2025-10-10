@@ -3,22 +3,23 @@
 importer="texture"
 type="CompressedTexture2D"
 uid="uid://cklvacfoh0hlb"
-path="res://.godot/imported/enemy_4.png-6da855021d6af347eb2bea20904f103d.ctex"
+path.s3tc="res://.godot/imported/enemy_4.png-6da855021d6af347eb2bea20904f103d.s3tc.ctex"
 metadata={
-"vram_texture": false
+"imported_formats": ["s3tc_bptc"],
+"vram_texture": true
 }
 generator_parameters={
-"md5": "4d3b1da902b03ef9742b15eb218253c8"
+"md5": "1576d2a761cc41b443fe380229215e1e"
 }
 
 [deps]
 
 source_file="res://assets/models/enemy_4.png"
-dest_files=["res://.godot/imported/enemy_4.png-6da855021d6af347eb2bea20904f103d.ctex"]
+dest_files=["res://.godot/imported/enemy_4.png-6da855021d6af347eb2bea20904f103d.s3tc.ctex"]
 
 [params]
 
-compress/mode=0
+compress/mode=2
 compress/high_quality=false
 compress/lossy_quality=0.7
 compress/uastc_level=0
@@ -40,4 +41,4 @@ process/normal_map_invert_y=false
 process/hdr_as_srgb=false
 process/hdr_clamp_exposure=false
 process/size_limit=0
-detect_3d/compress_to=1
+detect_3d/compress_to=0
