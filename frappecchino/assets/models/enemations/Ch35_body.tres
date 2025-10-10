@@ -4,8 +4,7 @@
 
 [resource]
 resource_name = "Ch35_body"
-albedo_color = Color(0.9063318, 0.9063318, 0.9063318, 1)
+albedo_color = Color(0.101960786, 0.101960786, 0.101960786, 1)
 metallic = 0.5
 roughness = 0.5
-normal_enabled = true
 normal_texture = ExtResource("2_m3mt2")

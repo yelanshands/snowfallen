@@ -1,7 +1,7 @@
 extends CharacterBody3D
 
-@onready var enemi: Node3D = $enemi
-@onready var animation: AnimationPlayer = enemi.get_node("AnimationPlayer")
+@onready var enemy: Node3D = $enemi
+@onready var animation: AnimationPlayer = enemy.get_node("AnimationPlayer")
 
 @export var hp : int = 100
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
