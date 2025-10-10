@@ -1,0 +1,11 @@
+[gd_resource type="StandardMaterial3D" load_steps=2 format=3 uid="uid://br1au7gvcwsej"]
+
+[ext_resource type="Texture2D" uid="uid://7itviulbesw6" path="res://assets/models/structures/enemy_3.png" id="2_m3mt2"]
+
+[resource]
+resource_name = "Ch35_body"
+albedo_color = Color(0.9063318, 0.9063318, 0.9063318, 1)
+metallic = 0.5
+roughness = 0.5
+normal_enabled = true
+normal_texture = ExtResource("2_m3mt2")
