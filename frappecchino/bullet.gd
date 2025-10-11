@@ -37,7 +37,7 @@ func _physics_process(delta: float) -> void:
 	if is_colliding():
 		global_position = get_collision_point()
 		set_physics_process(false)
-		print(collided.name)
+		#print(collided.name)
 		if collided.name == "head":
 			damage_amount = 100
 		elif collided.name == "body":
@@ -47,8 +47,7 @@ func _physics_process(delta: float) -> void:
 		while current:
 			if current.is_in_group("attackable"):
 				if current.has_method("apply_damage"):
-					if hitcrosshair_cont.scale.x != 0.0:
-						hitcrosshair_cont.scale = Vector2(0.0, 0.0)
+					hitcrosshair_cont.scale = Vector2(0.0, 0.0)
 					set_process(true)
 					player.update_score(damage_amount if current.hp >= damage_amount else current.hp)
 					if current.hp <= damage_amount:
@@ -65,6 +64,5 @@ func cleanup() -> void:
 	if enemy_dead:
 		visible = false
 		await crosshair_done
-	if hitcrosshair_cont.scale.x != 0.0:
-		hitcrosshair_cont.scale = Vector2(0.0, 0.0)
+	hitcrosshair_cont.scale = Vector2(0.0, 0.0)
 	queue_free()

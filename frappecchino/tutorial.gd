@@ -43,15 +43,12 @@ func _ready() -> void:
 	streamDialogue($Player, area0text)
 	
 func _process(_delta: float) -> void:
-	if barrier1:
-		if range_enemies.all(func(e): return not e.alive):
-			barrier1.free()
-	if barrier2:
-		if slide_enemies.all(func(e): return not e.alive):
-			barrier2.free()
-	if finalbarrier:
-		if final_enemies.all(func(e): return not e.alive):
-			finalbarrier.free()
+	if barrier1 and not enemiesAlive(range_enemies):
+		barrier1.free()
+	if barrier2 and not enemiesAlive(slide_enemies):
+		barrier2.free()
+	if finalbarrier and not enemiesAlive(final_enemies):
+		finalbarrier.free()
 
 func streamDialogue(body: Node3D, areatext: String) -> void:
 	if body.name == "Player":
@@ -64,6 +61,14 @@ func streamDialogue(body: Node3D, areatext: String) -> void:
 			timer.start(text_speed)
 			dialogue_text.text += letter
 			await timer.timeout
+			
+func enemiesAlive(enemies: Array) -> int:
+	var count: int = 0
+	for enemy in enemies:
+		if is_instance_valid(enemy):
+			if enemy.alive:
+				count += 1
+	return count
 			
 func _on_area_1_body_entered(body: Node3D) -> void:
 	streamDialogue(body, area1text)

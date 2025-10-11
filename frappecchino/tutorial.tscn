@@ -355,6 +355,8 @@ transform = Transform3D(-4.8082526e-08, 0, -0.4, 0, 0.7, 0, 1.1, 0, -1.7484556e-
 shape = SubResource("ConvexPolygonShape3D_bhfnd")
 
 [node name="barrier1" type="StaticBody3D" parent="building/innerwalls"]
+collision_layer = 256
+collision_mask = 256
 
 [node name="CollisionShape3D13" type="CollisionShape3D" parent="building/innerwalls/barrier1"]
 transform = Transform3D(-4.371139e-08, 0, -0.4, 0, 0.8, 0, 1, 0, -1.7484556e-08, 152, 24, 1)
@@ -367,6 +369,8 @@ skeleton = NodePath("../../glass")
 
 [node name="barrier2" type="StaticBody3D" parent="building/innerwalls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -8, -171)
+collision_layer = 256
+collision_mask = 256
 
 [node name="CollisionShape3D13" type="CollisionShape3D" parent="building/innerwalls/barrier2"]
 transform = Transform3D(-4.371139e-08, 0, -0.4, 0, 0.8, 0, 1, 0, -1.7484556e-08, 152, 24, 1)
@@ -437,8 +441,8 @@ transform = Transform3D(1.1, 0, 0, 0, 0.4, 0, 0, 0, 0.3, 147, 4, 74)
 shape = SubResource("ConvexPolygonShape3D_vmw6g")
 
 [node name="rangebarrier" type="StaticBody3D" parent="building/innerwalls"]
-collision_layer = 8
-collision_mask = 8
+collision_layer = 256
+collision_mask = 256
 
 [node name="CollisionShape3D9" type="CollisionShape3D" parent="building/innerwalls/rangebarrier"]
 transform = Transform3D(1, 0, 0, 0, 0.7, 0, 0, 0, 0.3, 147, 26, 74)

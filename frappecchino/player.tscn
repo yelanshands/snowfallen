@@ -114,8 +114,8 @@ shader = ExtResource("6_b26j0")
 shader_parameter/alpha_strength = 0.7
 
 [node name="Player" type="CharacterBody3D"]
-collision_layer = 9
-collision_mask = 9
+collision_layer = 393
+collision_mask = 393
 script = ExtResource("1_onrkg")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
