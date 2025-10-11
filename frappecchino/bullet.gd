@@ -54,7 +54,6 @@ func _physics_process(delta: float) -> void:
 					if current.hp <= damage_amount:
 						enemy_dead = true
 					current.apply_damage(damage_amount)
-					collided = current
 				break
 			current = current.get_parent()
 		collided.add_child(remote_transform)

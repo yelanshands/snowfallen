@@ -43,12 +43,15 @@ func _ready() -> void:
 	streamDialogue($Player, area0text)
 	
 func _process(_delta: float) -> void:
-	if range_enemies.all(func(e): return not is_instance_valid(e)) and barrier1:
-		barrier1.free()
-	if slide_enemies.all(func(e): return not is_instance_valid(e)) and barrier2:
-		barrier2.free()
-	if final_enemies.all(func(e): return not is_instance_valid(e)) and finalbarrier:
-		finalbarrier.free()
+	if barrier1:
+		if range_enemies.all(func(e): return not e.alive):
+			barrier1.free()
+	if barrier2:
+		if slide_enemies.all(func(e): return not e.alive):
+			barrier2.free()
+	if finalbarrier:
+		if final_enemies.all(func(e): return not e.alive):
+			finalbarrier.free()
 
 func streamDialogue(body: Node3D, areatext: String) -> void:
 	if body.name == "Player":

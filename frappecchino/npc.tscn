@@ -18,3 +18,7 @@ metadata/hp = 100
 shape = SubResource("BoxShape3D_xxcha")
 
 [node name="enemi" parent="." instance=ExtResource("2_xxcha")]
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 30.0
+one_shot = true
