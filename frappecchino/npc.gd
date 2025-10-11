@@ -2,7 +2,6 @@ extends CharacterBody3D
 
 @onready var enemy: Node3D = $enemi
 @onready var animation: AnimationPlayer = enemy.get_node("AnimationPlayer")
-@onready var enemy_playercollision: CollisionShape3D = enemy.get_node("playerinteraction/playerinteractionhitbox")
 @onready var skeleton: Skeleton3D = enemy.get_node("Node/Skeleton3D")
 @onready var timer: Timer = $Timer
 
@@ -17,15 +16,13 @@ func _ready() -> void:
 
 func _process(_delta):
 	if hp <= 0:
-		if not alive:
+		if not animation.assigned_animation == "Dying0":
 			animation.speed_scale = 2.75
 			animation.play_section("Dying0", 0.22, 4.4, 0.5)
 			alive = false
 			timer.start(30.0)
 		elif animation.current_animation_position >= 0.6 and animation.speed_scale != 1.0:
 			animation.speed_scale = 1.0
-			
-		enemy_playercollision.disabled = true
 		for child in skeleton.get_children():
 			for grandchild in child.get_children():
 				if not grandchild is StaticBody3D:
@@ -34,7 +31,6 @@ func _process(_delta):
 					for greatgrandchild in grandchild.get_children():
 						if greatgrandchild is CollisionShape3D:
 							greatgrandchild.disabled = true
-						
 		if timer.is_stopped():
 			queue_free()
 		

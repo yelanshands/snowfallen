@@ -28,7 +28,7 @@ var area1text = "Shoot the targets with LEFT CLICK. Notice how headshots deal mo
 var area2text = "Slide under by moving forward and pressing SHIFT."
 var area3text = "Eliminate the targets and slide again with SHIFT."
 var area4text = "Now slide and jump at the same time to get through the gap."
-var area5text = "Press C to crouch. Crouching zooms in, decreases sensitivity, and decreases recoil, allowing for better accuracy. Shoot the target."
+var area5text = "Press C to aim. Aiming zooms in, decreases sensitivity, and decreases recoil, allowing for better accuracy. Shoot the target."
 var area6text = "Slide and jump to break the glass and escape."
 
 func _ready() -> void:

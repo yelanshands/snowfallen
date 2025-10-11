@@ -11,13 +11,13 @@ var recoil_offset := 0.0
 
 func _process(delta):
 	if recoil_offset > 0.001:
-		recoil_offset = lerp(recoil_offset, 0.0, recoil_speed * delta)
+		recoil_offset = lerp(recoil_offset, 0.0, recoil_speed * delta) * (1.0 - rotation_degrees.x/15.0)
 		rotation_degrees.x = rotation_degrees.x + recoil_offset
 	rotation_degrees.x = clamp(rotation_degrees.x, 0.0, 15.0)
 
 func apply_recoil():
 	current_recoil = steady_recoil if Input.is_action_pressed("crouch") else default_recoil
-	recoil_offset += current_recoil + randf_range(-0.3, 0.3)
+	recoil_offset += current_recoil + randf_range(-0.7, 0.7)
 	
 func return_to_origin():
-	rotation.x = lerp(rotation.x, 0.0, 0.25)	
+	rotation.x = lerp(rotation.x, 0.0, 0.25)
