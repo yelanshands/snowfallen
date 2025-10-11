@@ -3,7 +3,7 @@
 importer="scene"
 importer_version=1
 type="PackedScene"
-uid="uid://inci6opidops"
+uid="uid://c16auw4yldsxt"
 path="res://.godot/imported/enemyfov.gltf-486e65fb6d03294d1c1710e93d51fbc9.scn"
 
 [deps]
@@ -13,7 +13,7 @@ dest_files=["res://.godot/imported/enemyfov.gltf-486e65fb6d03294d1c1710e93d51fbc
 
 [params]
 
-nodes/root_type="MeshInstance3D"
+nodes/root_type=""
 nodes/root_name=""
 nodes/root_script=null
 nodes/apply_root_scale=true
