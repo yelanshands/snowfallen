@@ -18,10 +18,11 @@ var speed: float = 1400.0
 func _ready() -> void:
 	phantom_mat = phantom_mesh.mesh.surface_get_material(0).duplicate()
 	phantom_mesh.set_surface_override_material(0, phantom_mat)
-	accuracy = enemy.accuracy
-	target = enemy.target
 	
 func _process(_delta: float) -> void:
+	if not target:
+		accuracy = enemy.accuracy
+		target = enemy.target
 	if enemy.animation.current_animation == "FiringRifle0" and enemy.animation.current_animation_position <= 0.5:
 		phantom_mat.albedo_color.v = lerp(phantom_mat.albedo_color.v, 10.0, 0.8)
 	else:

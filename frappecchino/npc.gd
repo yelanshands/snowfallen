@@ -36,8 +36,8 @@ func _ready() -> void:
 	head_bone = skeleton.get_node("mixamorigHeadTop_End")
 	if enemy_type == "sharpshooter":
 		max_hp = 150
-		lock_in = 0.4
-		fire_confidence = 0.001
+		lock_in = 0.35
+		fire_confidence = 0.005
 		accuracy = 0.0
 		detection_range = 3.0
 		focused = true
