@@ -18,6 +18,8 @@ extends Node3D
 
 @export var text_speed: float = 0.015
 
+var player_respawn: Vector3
+
 var range_enemies: Array
 var slide_enemies: Array
 var final_enemies: Array
@@ -37,12 +39,27 @@ func _ready() -> void:
 	final_enemies = [finalnpc]
 	
 	player.fade_animation.play_backwards("fade_out")
+	player_respawn = player.global_position
 	
 	dialogue_box.visible = true
 	animation.play("slide_in")
 	streamDialogue($Player, area0text)
 	
 func _process(_delta: float) -> void:
+	if player.hp <= 0: 
+		if player.animation.assigned_animation == "dying":
+			if not player.animation.current_animation:
+				player.hp = player.max_hp
+				player.input_enabled = true
+				player.change_collision(true)
+				player.global_position = player_respawn
+				#player.rotation.y -= player.death_transform
+				#player.spring_arm.rotation.y += player.death_transform
+				#player.death_transform = 0.0
+				player.animation.play("riflecrouchruntostop", 0.5)
+		else:
+			player.emit_signal("on_ground")
+	
 	if barrier1 and not enemiesAlive(range_enemies):
 		barrier1.free()
 	if barrier2 and not enemiesAlive(slide_enemies):
