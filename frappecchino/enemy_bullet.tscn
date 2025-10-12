@@ -1,0 +1,60 @@
+[gd_scene load_steps=7 format=3 uid="uid://c41xvsq6oq3wn"]
+
+[ext_resource type="Script" uid="uid://b86peqyccx37o" path="res://enemy_bullet.gd" id="1_1xapl"]
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_fc0e3"]
+top_radius = 0.15
+bottom_radius = 0.25
+height = 1.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_v7oki"]
+albedo_color = Color(0.16995206, 0.012596003, 0.009442302, 1)
+
+[sub_resource type="Animation" id="Animation_v8qja"]
+length = 0.001
+tracks/0/type = "scale_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 1, 1, 1)
+
+[sub_resource type="Animation" id="Animation_v7oki"]
+resource_name = "fade_in"
+tracks/0/type = "scale_3d"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MeshInstance3D")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = PackedFloat32Array(0, 1, 0, 0, 0, 0.01, 1, 1, 1, 1)
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_t4vbm"]
+_data = {
+&"RESET": SubResource("Animation_v8qja"),
+&"fade_in": SubResource("Animation_v7oki")
+}
+
+[node name="EnemyBullet" type="RayCast3D"]
+top_level = true
+collision_mask = 66
+script = ExtResource("1_1xapl")
+speed = 1500.0
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.371139e-08, 1, 0, -1, -4.371139e-08, 0, 0, 0)
+mesh = SubResource("CylinderMesh_fc0e3")
+surface_material_override/0 = SubResource("StandardMaterial3D_v7oki")
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 30.0
+one_shot = true
+autostart = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+&"": SubResource("AnimationLibrary_t4vbm")
+}
+
+[connection signal="timeout" from="Timer" to="." method="cleanup"]

@@ -1,7 +1,8 @@
-[gd_scene load_steps=8 format=4 uid="uid://ro3nbpeyv3v5"]
+[gd_scene load_steps=9 format=4 uid="uid://ro3nbpeyv3v5"]
 
 [ext_resource type="Script" uid="uid://4xkne2rhx8fr" path="res://npc.gd" id="1_xxcha"]
 [ext_resource type="PackedScene" uid="uid://b3fhkrqfgm6rc" path="res://enemi.tscn" id="2_xxcha"]
+[ext_resource type="PackedScene" uid="uid://biirmcqhxqkos" path="res://enemy_pewpew.tscn" id="3_kh24r"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xxcha"]
 size = Vector3(0, 0, 0)
@@ -146,6 +147,8 @@ shape = SubResource("ConvexPolygonShape3D_kh24r")
 [node name="AttentionTimer" type="Timer" parent="."]
 wait_time = 10.0
 one_shot = true
+
+[node name="Pewpew" parent="." instance=ExtResource("3_kh24r")]
 
 [connection signal="body_entered" from="fov" to="." method="_on_fov_body_entered"]
 [connection signal="body_exited" from="fov" to="." method="_on_fov_body_exited"]

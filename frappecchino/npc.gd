@@ -6,10 +6,14 @@ extends CharacterBody3D
 @onready var timer: Timer = $Timer
 @onready var fov_collision: CollisionShape3D = $fov/CollisionShape3D
 @onready var attention_timer: Timer = $AttentionTimer
+@onready var pewpew: Node3D = $Pewpew
 
 @export var hp : int = 100
 @export var attention_min: float = 8.0
 @export var attention_max: float = 15.0
+@export var lock_in: float = 0.15
+@export var fire_confidence: float = 0.01
+@export var accuracy: float = deg_to_rad(1.0)
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var vel = Vector3(0, 0, 0)
@@ -22,25 +26,29 @@ var idle_rot_y: float
 var attention_timer_started: bool = true
 
 func _ready() -> void:
-	animation.play("FiringRifle0")
+	animation.play("IdleAiming0")
 	head_bone = skeleton.get_node("mixamorigHeadTop_End")
 	attention_timer.start(randf_range(attention_min, attention_max))
 	idle_rot_y = global_rotation.y
 
 func _process(_delta: float) -> void:
-	if player_seen:
-		var dir = player.global_position - global_position
-		var target_rot_y = atan2(dir.x, dir.z)
-		global_rotation.y = lerp_angle(global_rotation.y, target_rot_y, 0.15)
-	else:
-		if attention_timer.is_stopped():
-			if global_rotation.y <= idle_rot_y + 0.001 and global_rotation.y >= idle_rot_y - 0.001:
-				idle_rot_y = global_rotation.y + randf_range(-PI/9, PI/9)
-			else:
-				global_rotation.y = lerp_angle(global_rotation.y, idle_rot_y, 0.05)
+	if alive:
+		if player_seen:
+			var dir = player.global_position - global_position
+			var target_rot_y = atan2(dir.x, dir.z)
+			global_rotation.y = lerp_angle(global_rotation.y, target_rot_y, lock_in)
+			if global_rotation.y <= target_rot_y + fire_confidence and global_rotation.y >= target_rot_y - fire_confidence and animation.current_animation != "FiringRifle0":
+				pewpew.fire()
+		else:
+			if attention_timer.is_stopped():
+				if global_rotation.y <= idle_rot_y + 0.001 and global_rotation.y >= idle_rot_y - 0.001:
+					idle_rot_y = global_rotation.y + randf_range(-PI/9, PI/9)
+				else:
+					global_rotation.y = lerp_angle(global_rotation.y, idle_rot_y, 0.05)
 	
 	if hp <= 0:
 		if not animation.assigned_animation == "Dying0":
+			animation.stop()
 			animation.speed_scale = 2.75
 			animation.play_section("Dying0", 0.22, 4.4, 0.5)
 			alive = false
@@ -62,7 +70,7 @@ func _process(_delta: float) -> void:
 			queue_free()
 		
 func _physics_process(delta):
-	if player_in_fov:
+	if alive and player_in_fov:
 		var space_state = get_world_3d().direct_space_state
 		var query = PhysicsRayQueryParameters3D.create(head_bone.global_position, player.head_bone.global_position, (1 << 0) | (1 << 6))
 		var result = space_state.intersect_ray(query)

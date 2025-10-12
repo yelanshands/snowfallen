@@ -58,7 +58,7 @@ func _init():
 	floor_stop_on_slope = false
 	floor_snap_length = floor_snap
 	
-func _ready():
+func _ready() -> void:
 	head_bone = skeleton.get_node("mixamorigHeadTop_End")
 	
 func captureMouse() -> void:
