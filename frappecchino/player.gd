@@ -111,6 +111,7 @@ func _physics_process(delta: float) -> void:
 		input_enabled = false
 		camera.fov = lerp(camera.fov, fov * 1.25, 0.1)
 		if animation.assigned_animation != "dying":
+			velocity = Vector3.ZERO
 			if not on_floor:
 				await on_ground
 			animation.stop()
@@ -218,8 +219,8 @@ func _physics_process(delta: float) -> void:
 			velocity += initial_sprint_boost
 			
 		var hitbox_height = (head_bone.global_position.y - global_position.y) + 1
-		$CollisionShape3D.shape.height = hitbox_height
-		$CollisionShape3D.position.y = hitbox_height/2
+		hitbox.shape.height = hitbox_height
+		hitbox.position.y = hitbox_height/2
 
 	elif hp > 0 and animation.assigned_animation != "dying":
 		if first_slide:
@@ -266,11 +267,13 @@ func _unhandled_input(event):
 		spring_arm.rotation.x = clamp(spring_arm.rotation.x, -PI/4, PI/3) 
 
 func apply_damage(damage_amount):
-	hp -= damage_amount
+	if damage_amount > hp:
+		damage_amount = hp
 	if hp_timer.is_stopped():
 		hp_taken = 0.0
 		hp_timer.start(1.0)
 	hp_taken += damage_amount
+	hp -= damage_amount
 	print(hp)
 
 func update_score(amount: int):
