@@ -274,7 +274,6 @@ func apply_damage(damage_amount):
 		hp_timer.start(1.0)
 	hp_taken += damage_amount
 	hp -= damage_amount
-	print(hp)
 
 func update_score(amount: int):
 	if amount == 0:

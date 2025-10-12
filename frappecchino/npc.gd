@@ -8,13 +8,17 @@ extends CharacterBody3D
 @onready var attention_timer: Timer = $AttentionTimer
 @onready var pewpew: Node3D = $Pewpew
 
-@export var hp : int = 100
+@export var enemy_type: String = "none"
+@export var max_hp: int = 100
 @export var attention_min: float = 8.0
 @export var attention_max: float = 15.0
 @export var lock_in: float = 0.15
 @export var fire_confidence: float = 0.01
 @export var accuracy: float = deg_to_rad(1.0)
 @export var target: String = "uppertorso"
+@export var detection_range: float = 1.0
+@export var focused: bool = false
+@export var bullet_speed: float = 1400.0
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var vel = Vector3(0, 0, 0)
@@ -25,12 +29,28 @@ var player_in_fov: bool = false
 var head_bone: Node
 var idle_rot_y: float
 var attention_timer_started: bool = true
+var hp: = max_hp
 
 func _ready() -> void:
 	animation.play("IdleAiming0")
 	head_bone = skeleton.get_node("mixamorigHeadTop_End")
+	if enemy_type == "sharpshooter":
+		max_hp = 150
+		lock_in = 0.4
+		fire_confidence = 0.001
+		accuracy = 0.0
+		detection_range = 3.0
+		focused = true
+		target = "head"
+		bullet_speed = 2000.0
+	if focused:
+		attention_timer.one_shot = false
+	hp = max_hp
+	pewpew.speed = bullet_speed
+	
 	attention_timer.start(randf_range(attention_min, attention_max))
 	idle_rot_y = global_rotation.y
+	fov_collision.scale *= detection_range
 
 func _process(_delta: float) -> void:
 	if player:

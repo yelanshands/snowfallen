@@ -13,6 +13,7 @@ var phantom_mat: StandardMaterial3D
 var accuracy: float
 var target: String
 var target_node: Node
+var speed: float = 1400.0
 
 func _ready() -> void:
 	phantom_mat = phantom_mesh.mesh.surface_get_material(0).duplicate()
@@ -35,6 +36,7 @@ func fire() -> void:
 		enemy.animation.play("FiringRifle0", 0.5)
 		phantom_mat.albedo_color.v = 0.0
 		var attack = bullet.instantiate()
+		attack.speed = speed
 		phantom.add_child(attack)
 		attack.global_position = phantom.global_position
 		var spread = Vector3(
