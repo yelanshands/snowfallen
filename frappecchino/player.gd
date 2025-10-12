@@ -45,13 +45,17 @@ var in_air = false
 var walking = false
 var score: int = 0
 var prev_floor_normal: Vector3 = Vector3.ZERO
-var head_bone: Node
 var initial_sprint_boost: Vector3 = Vector3.ZERO
 var sprint_boost: Vector3
 var input_enabled: bool = true
 var first_slide: bool = true
 var slope_dir: Vector3
 var slope_normal: Vector3 = Vector3(0, cos(atan(150.0 / 700.0)), sin(atan(150.0 / 700.0)))
+
+var head_bone: Node
+var upper_torso: Node
+
+var hp := 1000.0
 
 func _init():
 	captureMouse()
@@ -60,7 +64,8 @@ func _init():
 	
 func _ready() -> void:
 	head_bone = skeleton.get_node("mixamorigHeadTop_End")
-	
+	upper_torso = skeleton.get_node("uppertorso/body")
+
 func captureMouse() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
@@ -87,6 +92,21 @@ func _physics_process(delta: float) -> void:
 	var slide_vector: Vector3 = slope_dir * slide_accel
 	var on_slope: bool = prev_floor_normal.y >= slope_normal.y - 0.0001 and prev_floor_normal.y <= slope_normal.y + 0.0001 and prev_floor_normal.z >= slope_normal.z - 0.0001 and prev_floor_normal.z <= slope_normal.z + 0.0001
 	
+	if hp <= 0:
+		input_enabled = false
+		camera.fov = lerp(camera.fov, fov * 1.25, 0.1)
+		if animation.assigned_animation != "dying":
+			animation.stop()
+			animation.play("dying", 0.5)
+			for child in skeleton.get_children():
+				for grandchild in child.get_children():
+					if not grandchild is StaticBody3D:
+						break
+					else:
+						for greatgrandchild in grandchild.get_children():
+							if greatgrandchild is CollisionShape3D:
+								greatgrandchild.disabled = true
+	
 	if not on_floor:
 		in_air = true
 	else:
@@ -109,6 +129,7 @@ func _physics_process(delta: float) -> void:
 					if animation.current_animation != "runslide" and not audio.is_playing() and animation.current_animation:
 						audio.stream = footstep_stream
 						audio.play()
+						print(animation.current_animation_position)
 						
 			if (abs(current_vel.x) <= 0.1) or (abs(current_vel.y) > 0.1):
 				if current_vel.z >= 0:
@@ -185,7 +206,7 @@ func _physics_process(delta: float) -> void:
 		$CollisionShape3D.shape.height = hitbox_height
 		$CollisionShape3D.position.y = hitbox_height/2
 
-	else:
+	elif hp >= 0:
 		if first_slide:
 			animation.play_section("runslide", 0, 1.1)
 			sprint_boost = global_transform.basis.z.normalized() * 2
@@ -206,7 +227,7 @@ func _physics_process(delta: float) -> void:
 		velocity.x += slide_vector.x
 		velocity.z += slide_vector.z
 			
-	if Input.is_action_pressed("jump") and on_floor:
+	if input_enabled and Input.is_action_pressed("jump") and on_floor:
 		if animation.assigned_animation == "riflecrouchruntostop" or animation.assigned_animation == "riflecrouchrun":
 			velocity.y = jump_speed
 			animation.play_section("jumpup", 0.1, 0.5333, 0.5)
@@ -215,15 +236,22 @@ func _physics_process(delta: float) -> void:
 			audio.play()
 		elif animation.current_animation == "runslide":
 			velocity.y = jump_speed
-
+		
 	move_and_slide()
 	
 func _unhandled_input(event):
 	if event is InputEventMouseMotion:
-		rotation.y -= event.relative.x * cam_sens
+		if input_enabled:
+			rotation.y -= event.relative.x * cam_sens
+		else:
+			spring_arm.rotation.y -= event.relative.x * cam_sens
 		
 		spring_arm.rotation.x -= event.relative.y * cam_sens
 		spring_arm.rotation.x = clamp(spring_arm.rotation.x, -PI/4, PI/3) 
+
+func apply_damage(damage_amount):
+	hp -= damage_amount
+	print(hp)
 
 func update_score(amount: int):
 	if amount == 0:

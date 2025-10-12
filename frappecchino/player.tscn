@@ -113,7 +113,7 @@ shader_parameter/alpha_strength = 0.70000003325
 shader = ExtResource("6_b26j0")
 shader_parameter/alpha_strength = 0.7
 
-[node name="Player" type="CharacterBody3D"]
+[node name="Player" type="CharacterBody3D" groups=["attackable"]]
 collision_layer = 393
 collision_mask = 393
 script = ExtResource("1_onrkg")

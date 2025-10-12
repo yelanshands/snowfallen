@@ -14,6 +14,7 @@ extends CharacterBody3D
 @export var lock_in: float = 0.15
 @export var fire_confidence: float = 0.01
 @export var accuracy: float = deg_to_rad(1.0)
+@export var target: String = "uppertorso"
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")
 var vel = Vector3(0, 0, 0)

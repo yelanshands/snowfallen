@@ -11,6 +11,7 @@ var damage_amount := 25.0
 var crosshair_size: float
 var fov: float
 var enemy_dead: bool = false
+var hit: bool = false
 
 signal crosshair_done
 
@@ -23,6 +24,7 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	hitcrosshair_cont.scale = Vector2(lerp(hitcrosshair_cont.scale.x, 0.8, 0.4), lerp(hitcrosshair_cont.scale.y, 0.8, 0.4))
 	
+	print(hitcrosshair_cont.scale)
 	if hitcrosshair_cont.scale.x > 0.77:
 		hitcrosshair_cont.scale = Vector2(0.0, 0.0)
 		set_process(false)

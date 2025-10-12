@@ -11,12 +11,15 @@ const bullet = preload("res://enemy_bullet.tscn")
 var firing: bool = false
 var phantom_mat: StandardMaterial3D
 var accuracy: float
+var target: String
+var target_node: Node
 
 func _ready() -> void:
 	phantom_mat = phantom_mesh.mesh.surface_get_material(0).duplicate()
 	phantom_mesh.set_surface_override_material(0, phantom_mat)
 	accuracy = enemy.accuracy
-
+	target = enemy.target
+	
 func _process(_delta: float) -> void:
 	if enemy.animation.current_animation == "FiringRifle0" and enemy.animation.current_animation_position <= 0.5:
 		phantom_mat.albedo_color.v = lerp(phantom_mat.albedo_color.v, 10.0, 0.8)
@@ -39,4 +42,8 @@ func fire() -> void:
 			randf_range(-accuracy, accuracy),
 			randf_range(-accuracy, accuracy)
 		)
-		attack.global_rotation = phantom.global_transform.looking_at(enemy.player.head_bone.global_position, Vector3.UP).basis.get_euler() + spread
+		if target == "head":
+			target_node = enemy.player.head_bone
+		elif target == "uppertorso":
+			target_node = enemy.player.upper_torso
+		attack.global_rotation = phantom.global_transform.looking_at(target_node.global_position, Vector3.UP).basis.get_euler() + spread

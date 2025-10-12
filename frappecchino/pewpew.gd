@@ -32,7 +32,7 @@ func _process(_delta: float) -> void:
 		pivot.global_position.y = lerp(pivot.global_position.y, player.head_bone.global_position.y, 0.15)
 		
 func _physics_process(_delta: float) -> void:
-	if Input.is_action_pressed("left_click"):
+	if Input.is_action_pressed("left_click") and player.input_enabled:
 		if timer.is_stopped():
 			timer.start(fire_rate)
 			phantom_mat.albedo_color.v = 0.0
