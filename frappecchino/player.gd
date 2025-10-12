@@ -12,7 +12,9 @@ extends CharacterBody3D
 @onready var hitbox: CollisionShape3D = $CollisionShape3D
 @onready var skeleton: Skeleton3D = $frappie.get_node("Node/Armature/Skeleton3D")
 @onready var fade_animation = $CanvasLayer/AnimationPlayer
-@onready var fade_rect = $CanvasLayer/ColorRect
+@onready var green: ColorRect = $CanvasLayer/Health/Green
+@onready var red: ColorRect = $CanvasLayer/Health/Red
+@onready var hp_timer: Timer = $CanvasLayer/Health/Timer
 
 @export var fov: float = 75.0
 @export var friction: float = 0.25
@@ -60,6 +62,7 @@ signal on_ground
 
 var max_hp := 300.0
 var hp := max_hp
+var hp_taken := 0.0
 
 func _init():
 	captureMouse()
@@ -87,6 +90,14 @@ func _process(_delta):
 		camera.global_rotation.z = lerp(camera_zrot, clamp(-head_bone.global_rotation.z, -0.2, 0.05), 0.05)
 	else:
 		camera.global_rotation.z = lerp(camera_zrot, 0.0, 0.05)
+		
+	if not hp_timer.is_stopped():
+		red.size.y = lerp(red.size.y, (hp_taken/max_hp) * green.position.y, 0.2)
+	else:
+		hp_taken = 0.0
+		green.size.y = lerp(green.size.y, (hp/max_hp) * green.position.y, 0.2)
+		red.size.y = lerp(red.size.y, 0.0, 0.2)
+	red.position.y = green.position.y - green.size.y - 1
 
 func _physics_process(delta: float) -> void:
 	var current_vel = velocity
@@ -256,6 +267,10 @@ func _unhandled_input(event):
 
 func apply_damage(damage_amount):
 	hp -= damage_amount
+	if hp_timer.is_stopped():
+		hp_taken = 0.0
+		hp_timer.start(1.0)
+	hp_taken += damage_amount
 	print(hp)
 
 func update_score(amount: int):

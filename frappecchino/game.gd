@@ -32,10 +32,11 @@ func _ready() -> void:
 	current_zloc = slope_mesh_size.x*3
 	
 	fade_animation.play_backwards("fade_out")
+	
 	player.velocity = Vector3.ZERO
 	player.rotation = Vector3.ZERO
-	
 	player.input_enabled = false
+	
 	Input.action_press("sprint")
 	Input.action_release("sprint")
 	

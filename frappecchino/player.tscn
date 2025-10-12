@@ -377,6 +377,34 @@ libraries = {
 &"": SubResource("AnimationLibrary_nvl01")
 }
 
+[node name="Health" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchor_left = 0.2
+anchor_top = 0.6
+anchor_right = 0.22800002
+anchor_bottom = 0.82800007
+offset_right = -0.32000732
+offset_bottom = 3.7599487
+grow_vertical = 0
+
+[node name="Green" type="ColorRect" parent="CanvasLayer/Health"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 250.0
+offset_right = 80.0
+offset_bottom = 500.0
+rotation = 3.1415927
+color = Color(0.6509804, 0.99607843, 0.6862745, 1)
+
+[node name="Red" type="ColorRect" parent="CanvasLayer/Health"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 10.0
+color = Color(1, 0.3864046, 0.33298135, 1)
+
+[node name="Timer" type="Timer" parent="CanvasLayer/Health"]
+one_shot = true
+
 [node name="Crosshair" type="CanvasLayer" parent="."]
 
 [node name="MarginContainer" type="MarginContainer" parent="Crosshair"]
