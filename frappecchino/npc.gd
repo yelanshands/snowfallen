@@ -33,6 +33,12 @@ func _ready() -> void:
 	idle_rot_y = global_rotation.y
 
 func _process(_delta: float) -> void:
+	if player:
+		if player.hp <= 0:
+			player = null
+			player_seen = false
+			player_in_fov = false
+	
 	if alive:
 		if player_seen:
 			var dir = player.global_position - global_position
@@ -48,7 +54,7 @@ func _process(_delta: float) -> void:
 					global_rotation.y = lerp_angle(global_rotation.y, idle_rot_y, 0.05)
 	
 	if hp <= 0:
-		if not animation.assigned_animation == "Dying0":
+		if animation.assigned_animation != "Dying0":
 			animation.stop()
 			animation.speed_scale = 2.75
 			animation.play_section("Dying0", 0.22, 4.4, 0.5)
@@ -78,15 +84,16 @@ func _physics_process(delta):
 		
 		if result:
 			var collider = result.collider
-			if collider.get_owner().name == "frappie":
-				player_seen = true
-				attention_timer_started = false
-				attention_timer.stop()
-			else:
-				player_seen = false
-				if not attention_timer_started:
-					attention_timer_started = true
-					attention_timer.start(randf_range(attention_min, attention_max))
+			if collider.name != "Player":
+				if collider.get_owner().name == "frappie":
+					player_seen = true
+					attention_timer_started = false
+					attention_timer.stop()
+				else:
+					player_seen = false
+					if not attention_timer_started:
+						attention_timer_started = true
+						attention_timer.start(randf_range(attention_min, attention_max))
 				
 	if not is_on_floor():
 		velocity.y -= gravity * delta

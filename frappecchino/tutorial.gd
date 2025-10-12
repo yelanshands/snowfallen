@@ -1,5 +1,7 @@
 extends Node3D
 
+const PlayerScene = preload("res://player.tscn")
+
 @onready var barrier1 = $building/innerwalls/barrier1
 @onready var barrier2 = $building/innerwalls/barrier2
 @onready var finalbarrier = $building/innerwalls/finalbarrier
@@ -15,6 +17,7 @@ extends Node3D
 @onready var animation: AnimationPlayer = $AnimationPlayer
 @onready var timer: Timer =  $building/Node/DialogueTimer
 @onready var player: CharacterBody3D = $Player
+@onready var fade_animation: AnimationPlayer = $CanvasLayer/AnimationPlayer
 
 @export var text_speed: float = 0.015
 
@@ -38,8 +41,8 @@ func _ready() -> void:
 	slide_enemies = [slide1, slide2]
 	final_enemies = [finalnpc]
 	
-	player.fade_animation.play_backwards("fade_out")
 	player_respawn = player.global_position
+	fade_animation.play_backwards("fade_out")
 	
 	dialogue_box.visible = true
 	animation.play("slide_in")
@@ -49,14 +52,12 @@ func _process(_delta: float) -> void:
 	if player.hp <= 0: 
 		if player.animation.assigned_animation == "dying":
 			if not player.animation.current_animation:
-				player.hp = player.max_hp
-				player.input_enabled = true
-				player.change_collision(true)
-				player.global_position = player_respawn
-				#player.rotation.y -= player.death_transform
-				#player.spring_arm.rotation.y += player.death_transform
-				#player.death_transform = 0.0
-				player.animation.play("riflecrouchruntostop", 0.5)
+				fade_animation.play_backwards("fade_out")
+				player.free()
+				player = PlayerScene.instantiate()
+				add_child(player)
+				player.global_position = Vector3(190.0, 0.0, 200.0)
+				player.global_rotation = Vector3(0.0, 180.0, 0.0)
 		else:
 			player.emit_signal("on_ground")
 	

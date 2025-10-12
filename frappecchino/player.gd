@@ -69,7 +69,7 @@ func _init():
 func _ready() -> void:
 	head_bone = skeleton.get_node("mixamorigHeadTop_End")
 	upper_torso = skeleton.get_node("uppertorso/body")
-
+	
 func captureMouse() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
@@ -104,7 +104,13 @@ func _physics_process(delta: float) -> void:
 				await on_ground
 			animation.stop()
 			change_collision(false)
-			animation.play("dying", 0.5)
+			animation.speed_scale = 2.75
+			animation.play_section("dying", 0.22, 4.4, 0.5)
+		elif animation.current_animation_position >= 0.6 and animation.speed_scale != 1.0:
+			animation.speed_scale = 1.0
+		elif animation.current_animation_position >= 3.4 and not fade_animation.current_animation:
+			fade_animation.play("fade_out")
+			
 			
 	if not on_floor:
 		in_air = true
@@ -241,9 +247,9 @@ func _unhandled_input(event):
 	if event is InputEventMouseMotion:
 		if input_enabled:
 			rotation.y -= event.relative.x * cam_sens
-		#else:
-			#death_transform += event.relative.x * cam_sens
-			#spring_arm.rotation.y -= event.relative.x * cam_sens
+		else:
+			death_transform += event.relative.x * cam_sens
+			spring_arm.rotation.y -= event.relative.x * cam_sens
 		
 		spring_arm.rotation.x -= event.relative.y * cam_sens
 		spring_arm.rotation.x = clamp(spring_arm.rotation.x, -PI/4, PI/3) 
