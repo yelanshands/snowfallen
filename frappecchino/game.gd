@@ -11,6 +11,7 @@ const NPC = preload("uid://ro3nbpeyv3v5")
 @onready var slope4: StaticBody3D = $Background/Slope4
 @onready var slope5: StaticBody3D = $Background/Slope5
 @onready var slope6: StaticBody3D = $Background/Slope6
+@onready var fade_animation: AnimationPlayer = $CanvasLayer/AnimationPlayer
 
 var enemies: Array = []
 var slopes: Array = []
@@ -30,7 +31,7 @@ func _ready() -> void:
 	
 	current_zloc = slope_mesh_size.x*3
 	
-	player.fade_animation.play_backwards("fade_out")
+	fade_animation.play_backwards("fade_out")
 	player.velocity = Vector3.ZERO
 	player.rotation = Vector3.ZERO
 	

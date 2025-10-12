@@ -24,7 +24,6 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	hitcrosshair_cont.scale = Vector2(lerp(hitcrosshair_cont.scale.x, 0.8, 0.4), lerp(hitcrosshair_cont.scale.y, 0.8, 0.4))
 	
-	print(hitcrosshair_cont.scale)
 	if hitcrosshair_cont.scale.x > 0.77:
 		hitcrosshair_cont.scale = Vector2(0.0, 0.0)
 		set_process(false)
@@ -39,7 +38,6 @@ func _physics_process(delta: float) -> void:
 	if is_colliding():
 		global_position = get_collision_point()
 		set_physics_process(false)
-		#print(collided.name)
 		if collided.name == "head":
 			damage_amount = 100
 		elif collided.name == "body":
