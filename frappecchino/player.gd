@@ -92,10 +92,10 @@ func _process(_delta):
 		camera.global_rotation.z = lerp(camera_zrot, 0.0, 0.05)
 		
 	if not hp_timer.is_stopped():
-		red.size.y = lerp(red.size.y, (hp_taken/max_hp) * green.position.y, 0.2)
+		red.size.y = lerp(red.size.y, (hp_taken/max_hp) * green.position.y, 0.2) + (1 if hp <= 0 else 0)
 	else:
 		hp_taken = 0.0
-		green.size.y = lerp(green.size.y, (hp/max_hp) * green.position.y, 0.2)
+		green.size.y = lerp(green.size.y, (((hp+hp_taken)/max_hp) * green.position.y)-1, 0.2)
 		red.size.y = lerp(red.size.y, 0.0, 0.2)
 	red.position.y = green.position.y - green.size.y - 1
 
@@ -221,7 +221,7 @@ func _physics_process(delta: float) -> void:
 		$CollisionShape3D.shape.height = hitbox_height
 		$CollisionShape3D.position.y = hitbox_height/2
 
-	elif hp >= 0 and animation.assigned_animation != "dying":
+	elif hp > 0 and animation.assigned_animation != "dying":
 		if first_slide:
 			animation.play_section("runslide", 0, 1.1)
 			sprint_boost = global_transform.basis.z.normalized() * 2
