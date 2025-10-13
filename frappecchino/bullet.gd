@@ -21,8 +21,8 @@ func _ready() -> void:
 	set_process(false)
 	animation.play("fade_in")
 	
-func _process(_delta: float) -> void:
-	hitcrosshair_cont.scale = Vector2(lerp(hitcrosshair_cont.scale.x, 0.8, 0.4), lerp(hitcrosshair_cont.scale.y, 0.8, 0.4))
+func _process(delta: float) -> void:
+	hitcrosshair_cont.scale = Vector2(lerp(hitcrosshair_cont.scale.x, 0.8, 30.0*delta), lerp(hitcrosshair_cont.scale.y, 0.8, 30.0*delta))
 	
 	if hitcrosshair_cont.scale.x > 0.77:
 		hitcrosshair_cont.scale = Vector2(0.0, 0.0)

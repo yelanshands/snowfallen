@@ -34,12 +34,12 @@ var hp: = max_hp
 func _ready() -> void:
 	animation.play("IdleAiming0")
 	head_bone = skeleton.get_node("mixamorigHeadTop_End")
-	if enemy_type == "sharpshooter":
-		max_hp = 150
-		lock_in = 0.35
+	if enemy_type == "sharpshooter" or enemy_type == "snowshooter":
+		max_hp = 150 if enemy_type == "sharpshooter" else 100
+		lock_in = 0.35 if enemy_type == "sharpshooter" else 0.6
 		fire_confidence = 0.005
 		accuracy = 0.0
-		detection_range = 3.0
+		detection_range = 3.0 if enemy_type == "sharpshooter" else 2.75
 		focused = true
 		target = "head"
 		bullet_speed = 2000.0
@@ -80,32 +80,35 @@ func _process(_delta: float) -> void:
 			animation.play_section("Dying0", 0.22, 4.4, 0.5)
 			alive = false
 			timer.start(30.0)
+			fov_collision.disabled = true
+			player_seen = false
+			player_in_fov = false
+			set_physics_process(false)
+			for child in skeleton.get_children():
+				for grandchild in child.get_children():
+					if not grandchild is StaticBody3D:
+						break
+					else:
+						for greatgrandchild in grandchild.get_children():
+							if greatgrandchild is CollisionShape3D:
+								greatgrandchild.disabled = true
 		elif animation.current_animation_position >= 0.6 and animation.speed_scale != 1.0:
 			animation.speed_scale = 1.0
-		fov_collision.disabled = true
-		player_seen = false
-		player_in_fov = false
-		for child in skeleton.get_children():
-			for grandchild in child.get_children():
-				if not grandchild is StaticBody3D:
-					break
-				else:
-					for greatgrandchild in grandchild.get_children():
-						if greatgrandchild is CollisionShape3D:
-							greatgrandchild.disabled = true
 		if timer.is_stopped():
 			queue_free()
 		
 func _physics_process(delta):
 	if alive and player_in_fov:
 		var space_state = get_world_3d().direct_space_state
-		var query = PhysicsRayQueryParameters3D.create(head_bone.global_position, player.head_bone.global_position, (1 << 0) | (1 << 6))
+		var query = PhysicsRayQueryParameters3D.create(head_bone.global_position, player.head_bone.global_position, (1 << 0) | (1 << 6), [player.get_rid()])
 		var result = space_state.intersect_ray(query)
 		
 		if result:
 			var collider = result.collider
+			print(collider)
 			if collider.name != "Player":
 				if collider.get_owner().name == "frappie":
+					print(collider.get_owner())
 					player_seen = true
 					attention_timer_started = false
 					attention_timer.stop()
@@ -129,7 +132,9 @@ func _on_fov_body_entered(body: Node3D) -> void:
 		player_in_fov = true
 		if not player:
 			player = body
+		print(self, "   ", player_in_fov)
 
 func _on_fov_body_exited(body: Node3D) -> void:
 	if body.name == "Player":
 		player_in_fov = false
+		print(self, "   ", player_in_fov)

@@ -123,7 +123,6 @@ func _physics_process(delta: float) -> void:
 		elif animation.current_animation_position >= 3.4 and not fade_animation.current_animation:
 			fade_animation.play("fade_out")
 			
-			
 	if not on_floor:
 		in_air = true
 	else:
@@ -239,7 +238,7 @@ func _physics_process(delta: float) -> void:
 	elif not on_slope:
 		velocity.y = 0.0
 	
-	if on_slope:
+	if on_slope and hp > 0:
 		velocity.x += slide_vector.x
 		velocity.z += slide_vector.z
 			
@@ -259,7 +258,7 @@ func _unhandled_input(event):
 	if event is InputEventMouseMotion:
 		if input_enabled:
 			rotation.y -= event.relative.x * cam_sens
-		else:
+		elif hp <= 0:
 			death_transform += event.relative.x * cam_sens
 			spring_arm.rotation.y -= event.relative.x * cam_sens
 		

@@ -34,7 +34,7 @@ func _ready() -> void:
 	fade_animation.play_backwards("fade_out")
 	
 	player.velocity = Vector3.ZERO
-	player.rotation = Vector3.ZERO
+	player.rotation.y = 0.0
 	player.input_enabled = false
 	
 	Input.action_press("sprint")
@@ -44,38 +44,50 @@ func _process(_delta: float) -> void:
 	var player_pos = player.global_position
 	barriers.global_position.y = player_pos.y
 	barriers.global_position.z = player_pos.z
-
-	if player_pos.z > current_zloc:
-		slopes[0].position.z = slopes[-1].position.z + slope_mesh_size.x*2
-		slopes[0].position.y = slopes[-1].position.y - slope_mesh_size.y*2
-		slopes.append(slopes.pop_at(0))
-		current_zloc += slope_mesh_size.x*2
-		
-	if dropping:
-		player.crosshair.set_size(Vector2(lerp(player.crosshair.size.x, player.crosshair_size, 0.15), lerp(player.crosshair.size.y, player.crosshair_size, 0.15)))
-		player.crosshair.position = Vector2(player.crosshair_cont.size.x/2.0-(player.crosshair.size.x/2.0), player.crosshair_cont.size.y/2.0-(player.crosshair.size.y/2.0))
-		if player.position.y < 100.0:
-			dropping = false
-			player.input_enabled = true
+	
+	if player.hp <= 0: 
+		if player.animation.assigned_animation == "dying":
+			if not player.animation.current_animation:
+				queue_free()
+				get_tree().change_scene_to_file("res://home.tscn")
+		else:
+			player.emit_signal("on_ground")
+	else:
+		if player_pos.z > current_zloc:
+			slopes[0].position.z = slopes[-1].position.z + slope_mesh_size.x*2
+			slopes[0].position.y = slopes[-1].position.y - slope_mesh_size.y*2
+			slopes.append(slopes.pop_at(0))
+			current_zloc += slope_mesh_size.x*2
+			
+		if dropping:
+			player.crosshair.set_size(Vector2(lerp(player.crosshair.size.x, player.crosshair_size, 0.15), lerp(player.crosshair.size.y, player.crosshair_size, 0.15)))
+			player.crosshair.position = Vector2(player.crosshair_cont.size.x/2.0-(player.crosshair.size.x/2.0), player.crosshair_cont.size.y/2.0-(player.crosshair.size.y/2.0))
+			if player.position.y < 100.0:
+				dropping = false
+				player.input_enabled = true
 
 func spawn_wave() -> void:
-	for x in randi_range(1, 6):
-		var enemy = NPC.instantiate()
-		enemy.position = get_random_point_on_sloped_plane(enemy_plane)
-		add_child(enemy)
+	if player.hp > 0:
+		for x in randi_range(1, 6):
+			var enemy = NPC.instantiate()
+			enemy.enemy_type = "snowshooter"
+			enemy.position = get_random_point_on_sloped_plane(enemy_plane)
+			enemy.rotation.y = 180.0
+			add_child(enemy)
+			
+			enemies.append(enemy)
+			enemy.tree_exited.connect(enemy_died.bind(enemy))
 		
-		enemies.append(enemy)
-		enemy.tree_exited.connect(enemy_died.bind(enemy))
-	
-	var amount: int = enemies.size()
-	arrow_label.text = ((" ".repeat(int(6 * (amount - 3.5)))) if amount > 3 else "")  + "⮝" + ((" ".repeat(int(6 * (3.5 - amount)))) if amount <= 3 else "")
+		var amount: int = enemies.size()
+		arrow_label.text = ((" ".repeat(int(6 * (amount - 3.5)))) if amount > 3 else "")  + "⮝" + ((" ".repeat(int(6 * (3.5 - amount)))) if amount <= 3 else "")
 
 func enemy_died(enemy: Node) -> void:
-	enemies.erase(enemy)
-	if not enemies:
-		spawn_wave()
-	var amount: int = enemies.size()
-	arrow_label.text = ((" ".repeat(int(6 * (amount - 3.5)))) if amount > 3 else "")  + "⮝" + ((" ".repeat(int(6 * (3.5 - amount)))) if amount <= 3 else "")
+	if player.hp > 0:
+		enemies.erase(enemy)
+		if not enemies:
+			spawn_wave()
+		var amount: int = enemies.size()
+		arrow_label.text = ((" ".repeat(int(6 * (amount - 3.5)))) if amount > 3 else "")  + "⮝" + ((" ".repeat(int(6 * (3.5 - amount)))) if amount <= 3 else "")
 
 func get_random_point_on_sloped_plane(plane: MeshInstance3D) -> Vector3:
 	var size_x = plane.mesh.size.x
