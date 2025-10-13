@@ -838,12 +838,6 @@ skeleton = NodePath("")
 [node name="Player" parent="." instance=ExtResource("1_7n6eb")]
 transform = Transform3D(-1, 0, -8.742278e-08, 0, 1, 0, 8.742278e-08, 0, -1, 190, 0, 200)
 
-[node name="slide1" parent="." instance=ExtResource("2_yb1ct")]
-transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 213, 0, -73)
-
-[node name="slide2" parent="." instance=ExtResource("2_yb1ct")]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 157, 0, -154)
-
 [node name="n1" parent="." instance=ExtResource("2_yb1ct")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 198, 0, 25)
 
@@ -855,10 +849,6 @@ transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 198,
 
 [node name="n4" parent="." instance=ExtResource("2_yb1ct")]
 transform = Transform3D(-4.371139e-08, 0, -1, 0, 1, 0, 1, 0, -4.371139e-08, 198, 0, 111)
-
-[node name="finalnpc" parent="." instance=ExtResource("2_yb1ct")]
-transform = Transform3D(-1, 0, 8.742278e-08, 0, 1, 0, -8.742278e-08, 0, -1, -14, 0, 197)
-enemy_type = "sharpshooter"
 
 [node name="Dialogue" type="CanvasLayer" parent="."]
 visible = false

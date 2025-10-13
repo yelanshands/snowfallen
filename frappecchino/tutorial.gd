@@ -1,6 +1,7 @@
 extends Node3D
 
 const PlayerScene = preload("res://player.tscn")
+const Npc = preload("res://npc.tscn")
 
 @onready var barrier1 = $building/innerwalls/barrier1
 @onready var barrier2 = $building/innerwalls/barrier2
@@ -9,9 +10,6 @@ const PlayerScene = preload("res://player.tscn")
 @onready var n2 = $n2
 @onready var n3 = $n3
 @onready var n4 = $n4
-@onready var slide1 = $slide1
-@onready var slide2 = $slide2
-@onready var finalnpc = $finalnpc
 @onready var dialogue_box: CanvasLayer = $Dialogue
 @onready var dialogue_text: Label = $Dialogue/DialogueBorder/DialogueBox/HBoxContainer/VBoxContainer/Dialogue
 @onready var animation: AnimationPlayer = $AnimationPlayer
@@ -20,6 +18,10 @@ const PlayerScene = preload("res://player.tscn")
 @onready var fade_animation: AnimationPlayer = $CanvasLayer/AnimationPlayer
 
 @export var text_speed: float = 0.015
+
+var slide1
+var slide2
+var finalnpc
 
 var player_respawn: Vector3
 
@@ -38,8 +40,6 @@ var area6text = "Slide and jump to break the glass and escape."
 
 func _ready() -> void:
 	range_enemies = [n1, n2, n3, n4]
-	slide_enemies = [slide1, slide2]
-	final_enemies = [finalnpc]
 	
 	player_respawn = player.global_position
 	fade_animation.play_backwards("fade_out")
@@ -63,9 +63,23 @@ func _process(_delta: float) -> void:
 	
 	if barrier1 and not enemiesAlive(range_enemies):
 		barrier1.free()
-	if barrier2 and not enemiesAlive(slide_enemies):
+		slide1 = Npc.instantiate()
+		add_child(slide1)
+		slide1.global_position = Vector3(157.0, 0.0, -154.0)
+		slide2 = Npc.instantiate()
+		add_child(slide2)
+		slide2.global_position = Vector3(213.0, 0.0, -73.0)
+		slide2.global_rotation = Vector3(0.0, -90.0, 0.0)
+		slide_enemies = [slide1, slide2]
+	if not barrier1 and barrier2 and not enemiesAlive(slide_enemies):
 		barrier2.free()
-	if finalbarrier and not enemiesAlive(final_enemies):
+		finalnpc = Npc.instantiate()
+		finalnpc.enemy_type = "sharpshooter"
+		add_child(finalnpc)
+		finalnpc.global_position = Vector3(-14.0, 0.0, 197.0)
+		finalnpc.global_rotation = Vector3(0.0, 180.0, 0.0)
+		final_enemies = [finalnpc]
+	if not barrier2 and finalbarrier and not enemiesAlive(final_enemies):
 		finalbarrier.free()
 
 func streamDialogue(body: Node3D, areatext: String) -> void:
