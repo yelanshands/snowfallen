@@ -1,0 +1,292 @@
+[gd_scene load_steps=19 format=3 uid="uid://cqyjx3nirqmu4"]
+
+[ext_resource type="Script" uid="uid://br50l8wtvg5jq" path="res://settings.gd" id="1_3j6r5"]
+[ext_resource type="FontFile" uid="uid://c0ox2v115c0rl" path="res://assets/fonts/immortal/IMMORTAL.ttf" id="3_3lj6o"]
+[ext_resource type="Theme" uid="uid://sr8bi06fqgm8" path="res://UI.tres" id="4_82xqq"]
+[ext_resource type="AudioStream" uid="uid://yi6t8unvbaio" path="res://assets/audio/calm-night-312296.mp3" id="5_y43lv"]
+[ext_resource type="Shader" uid="uid://bc4f6kq1t06ct" path="res://crosshair.gdshader" id="6_7eiv2"]
+[ext_resource type="Texture2D" uid="uid://rs66kiv43jvu" path="res://assets/images/crosshair.png" id="7_tk3m0"]
+[ext_resource type="Texture2D" uid="uid://d2xmifqrtmypq" path="res://assets/images/hitcrosshair.png" id="8_fdp2d"]
+[ext_resource type="AudioStream" uid="uid://y2ef6e4yn2mw" path="res://assets/audio/silenced-gunshot-81063.mp3" id="9_e0y8d"]
+
+[sub_resource type="Gradient" id="Gradient_86xni"]
+colors = PackedColorArray(1, 1, 1, 0.784314, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_qq0qw"]
+gradient = SubResource("Gradient_86xni")
+width = 165
+height = 100
+
+[sub_resource type="Gradient" id="Gradient_qq0qw"]
+colors = PackedColorArray(1, 1, 1, 0.196078, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_2ayvv"]
+gradient = SubResource("Gradient_qq0qw")
+width = 165
+height = 100
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_86xni"]
+shader = ExtResource("6_7eiv2")
+shader_parameter/alpha_strength = 0.70000003325
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qq0qw"]
+shader = ExtResource("6_7eiv2")
+shader_parameter/alpha_strength = 0.7
+
+[sub_resource type="Animation" id="Animation_n7ghd"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_b26j0"]
+resource_name = "fade_out"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_y72e6"]
+resource_name = "skip_fade_out"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.75, 3.25, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.78431374), Color(1, 1, 1, 0.78431374), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_nvl01"]
+_data = {
+&"RESET": SubResource("Animation_n7ghd"),
+&"fade_out": SubResource("Animation_b26j0"),
+&"skip_fade_out": SubResource("Animation_y72e6")
+}
+
+[node name="Settings" type="CanvasLayer"]
+script = ExtResource("1_3j6r5")
+
+[node name="Control" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+offset_right = 354.0
+offset_bottom = 294.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Control"]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0.08627451, 0.078431375, 0.11764706, 0.8862745)
+
+[node name="MarginContainer" type="MarginContainer" parent="Control"]
+layout_mode = 0
+offset_right = 1480.0
+offset_bottom = 1080.0
+theme_override_constants/margin_left = 100
+theme_override_constants/margin_top = 100
+theme_override_constants/margin_right = 100
+theme_override_constants/margin_bottom = 100
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Control/MarginContainer"]
+layout_mode = 2
+
+[node name="MarginContainer2" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 20)
+layout_mode = 2
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Settings" type="RichTextLabel" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(1000, 100)
+layout_mode = 2
+theme = ExtResource("4_82xqq")
+theme_override_font_sizes/normal_font_size = 80
+text = "settings"
+
+[node name="quitButton" type="TextureButton" parent="Control/MarginContainer/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(165, 100)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_pressed = SubResource("GradientTexture2D_qq0qw")
+texture_hover = SubResource("GradientTexture2D_2ayvv")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="Control/MarginContainer/VBoxContainer/HBoxContainer/quitButton"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme = ExtResource("4_82xqq")
+theme_override_font_sizes/normal_font_size = 50
+text = " close"
+vertical_alignment = 1
+
+[node name="MarginContainer" type="MarginContainer" parent="Control/MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(0, 200)
+layout_mode = 2
+
+[node name="MouseSens" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer/MouseSens"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/MouseSens/HBoxContainer2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_3lj6o")
+theme_override_font_sizes/font_size = 36
+text = "mouse sensitivity  |  "
+
+[node name="Value" type="Label" parent="Control/MarginContainer/VBoxContainer/MouseSens/HBoxContainer2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_3lj6o")
+theme_override_font_sizes/font_size = 36
+text = "1.0"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer/MouseSens"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/MouseSens/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_3lj6o")
+theme_override_font_sizes/font_size = 36
+text = "0.01  "
+
+[node name="MouseSensSlider" type="HSlider" parent="Control/MarginContainer/VBoxContainer/MouseSens/HBoxContainer"]
+modulate = Color(0.074750386, 0.42531613, 0.7030993, 1)
+custom_minimum_size = Vector2(700, 50)
+layout_mode = 2
+min_value = 0.01
+max_value = 2.0
+step = 0.01
+value = 1.0
+scrollable = false
+
+[node name="Label2" type="Label" parent="Control/MarginContainer/VBoxContainer/MouseSens/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_3lj6o")
+theme_override_font_sizes/font_size = 36
+text = "  2.0"
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_y43lv")
+volume_db = -10.0
+autoplay = true
+parameters/looping = true
+
+[node name="Crosshair" type="CanvasLayer" parent="."]
+layer = 5
+visible = false
+
+[node name="MarginContainer" type="MarginContainer" parent="Crosshair"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Crosshair" type="TextureRect" parent="Crosshair/MarginContainer"]
+material = SubResource("ShaderMaterial_86xni")
+clip_contents = true
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("7_tk3m0")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="HitContainer" type="Control" parent="Crosshair"]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.7853982
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(20, 20)
+mouse_filter = 2
+
+[node name="HitCrosshair" type="TextureRect" parent="Crosshair/HitContainer"]
+material = SubResource("ShaderMaterial_qq0qw")
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+texture = ExtResource("8_fdp2d")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="Click" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("9_e0y8d")
+volume_db = -8.0
+
+[node name="CanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0, 0, 0, 0)
+metadata/_edit_use_anchors_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer"]
+libraries = {
+&"": SubResource("AnimationLibrary_nvl01")
+}
+
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/HBoxContainer/quitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="value_changed" from="Control/MarginContainer/VBoxContainer/MouseSens/HBoxContainer/MouseSensSlider" to="." method="_on_mouse_sens_slider_value_changed"]

@@ -105,10 +105,10 @@ func _physics_process(delta):
 		
 		if result:
 			var collider = result.collider
-			print(collider)
+			#print(collider)
 			if collider.name != "Player":
 				if collider.get_owner().name == "frappie":
-					print(collider.get_owner())
+					#print(collider.get_owner())
 					player_seen = true
 					attention_timer_started = false
 					attention_timer.stop()

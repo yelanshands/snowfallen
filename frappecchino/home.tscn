@@ -201,7 +201,7 @@ offset_bottom = 100.0
 mouse_filter = 2
 theme = ExtResource("1_tt30a")
 theme_override_font_sizes/normal_font_size = 50
-text = " Play"
+text = " play"
 vertical_alignment = 1
 
 [node name="settingsButton" type="TextureButton" parent="Control/MarginContainer/VBoxContainer"]
@@ -219,7 +219,7 @@ offset_bottom = 100.0
 mouse_filter = 2
 theme = ExtResource("1_tt30a")
 theme_override_font_sizes/normal_font_size = 50
-text = " Settings"
+text = " settings"
 vertical_alignment = 1
 
 [node name="quitButton" type="TextureButton" parent="Control/MarginContainer/VBoxContainer"]
@@ -237,7 +237,7 @@ offset_bottom = 100.0
 mouse_filter = 2
 theme = ExtResource("1_tt30a")
 theme_override_font_sizes/normal_font_size = 50
-text = " Quit"
+text = " quit"
 vertical_alignment = 1
 
 [node name="RichTextLabel2" type="RichTextLabel" parent="Control/MarginContainer/VBoxContainer"]

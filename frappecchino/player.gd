@@ -15,10 +15,10 @@ extends CharacterBody3D
 @onready var green: ColorRect = $CanvasLayer/Health/Green
 @onready var red: ColorRect = $CanvasLayer/Health/Red
 @onready var hp_timer: Timer = $CanvasLayer/Health/Timer
+@onready var settings: Node = $Settings
 
 @export var fov: float = 75.0
 @export var friction: float = 0.25
-@export var default_cam_sens: float = 0.0025
 @export var slide_accel: float = 100.0
 @export var floor_snap: float = 10.0
 @export var sprint_length = 15.0
@@ -28,6 +28,8 @@ const landing_stream = preload("res://assets/audio/land2-43790.mp3")
 const jump_up = preload("res://assets/audio/jump-up.mp3")
 
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity")*9.8
+var default_cam_sens_value: float = 0.0025
+var default_cam_sens: float = default_cam_sens_value
 var cam_sens: float = default_cam_sens
 var default_speed = 40.0  
 var speed = default_speed
@@ -65,7 +67,7 @@ var hp := max_hp
 var hp_taken := 0.0
 
 func _init():
-	captureMouse()
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	floor_stop_on_slope = false
 	floor_snap_length = floor_snap
 	
@@ -78,10 +80,16 @@ func captureMouse() -> void:
 	
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
-		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+		if get_tree().get_current_scene().get_name() == "tutorial" or get_tree().get_current_scene().get_name() == "game":
+			if not get_tree().paused:
+				Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+				get_tree().paused = true
+				settings.visible = true
+		else:
+			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
 	if event.is_action_pressed("left_click"):
-		if Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
-			Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+		if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 			get_viewport().set_input_as_handled()
 
 func _process(_delta):
@@ -187,6 +195,8 @@ func _physics_process(delta: float) -> void:
 			speed = default_speed * crouch_mult
 			camera.fov = lerp(camera.fov, fov * crouch_mult, 0.15)
 			crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_crouch, 0.1), lerp(crosshair.size.y, crosshair_crouch, 0.1)))
+		elif Input.is_action_pressed("left_click"):
+			cam_sens = default_cam_sens * crouch_mult
 		elif animation.current_animation != "runslide":
 			cam_sens = default_cam_sens
 			speed = default_speed

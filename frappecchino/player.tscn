@@ -1,4 +1,4 @@
-[gd_scene load_steps=24 format=3 uid="uid://daiyf82t58v7s"]
+[gd_scene load_steps=25 format=3 uid="uid://daiyf82t58v7s"]
 
 [ext_resource type="Script" uid="uid://bwhyes7j5e77m" path="res://player.gd" id="1_onrkg"]
 [ext_resource type="PackedScene" uid="uid://bl4ue4lvsx2v2" path="res://pewpew.tscn" id="2_i3pqv"]
@@ -13,6 +13,7 @@
 [ext_resource type="FontFile" uid="uid://b2n6a2bqt1rdk" path="res://assets/fonts/NotoSansSymbols-VariableFont_wght.ttf" id="8_b26j0"]
 [ext_resource type="Shader" uid="uid://2n826thxqqk" path="res://outline.gdshader" id="10_n7ghd"]
 [ext_resource type="Texture2D" uid="uid://d2xmifqrtmypq" path="res://assets/images/hitcrosshair.png" id="13_urp6f"]
+[ext_resource type="PackedScene" uid="uid://cqyjx3nirqmu4" path="res://settings.tscn" id="14_bwjto"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_2hs0m"]
 radius = 3.0
@@ -453,6 +454,11 @@ metadata/_edit_use_anchors_ = true
 libraries = {
 &"": SubResource("AnimationLibrary_nvl01")
 }
+
+[node name="Settings" parent="." instance=ExtResource("14_bwjto")]
+process_mode = 2
+layer = 3
+visible = false
 
 [connection signal="body_entered" from="frappie/Node/Armature/Skeleton3D/footcollider/Area3D" to="." method="_on_area_3d_body_entered"]
 

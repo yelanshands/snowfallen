@@ -976,7 +976,7 @@ _data = {
 &"skip_fade_out": SubResource("Animation_y72e6")
 }
 
-[node name="Game" type="Node3D"]
+[node name="game" type="Node3D"]
 script = ExtResource("1_ryrav")
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
