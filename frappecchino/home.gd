@@ -4,7 +4,8 @@ extends Node
 @export var tween_duration: float
 
 @onready var play: TextureButton = $Control/MarginContainer/VBoxContainer/playButton
-@onready var settings: TextureButton = $Control/MarginContainer/VBoxContainer/settingsButton
+@onready var settings_button: TextureButton = $Control/MarginContainer/VBoxContainer/settingsButton
+@onready var settings: CanvasLayer = $Settings
 @onready var quit: TextureButton = $Control/MarginContainer/VBoxContainer/quitButton
 @onready var crosshairs: CanvasLayer = $Crosshair
 @onready var crosshair_margin: MarginContainer = $Crosshair/MarginContainer
@@ -21,15 +22,19 @@ var hitting: bool = false
 #var logged_y = 0.0
 #var target_rot_x = 0.0
 #var target_rot_y = 0.0
-	
-func _init():
+
+func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	
+	play.disabled = false
+	settings_button.disabled = false
+	quit.disabled = false
 
 func _process(_delta):
 	crosshairs.transform.origin = crosshairs.transform.origin.lerp(get_viewport().get_mouse_position() - crosshair_margin.size/2.0, 0.3)
 	
 	buttonHovered(play)
-	buttonHovered(settings)
+	buttonHovered(settings_button)
 	buttonHovered(quit)
 	
 	if hitting:
@@ -74,6 +79,7 @@ func buttonHovered(button: TextureButton):
 		do_tween(button, "scale", Vector2.ONE, tween_duration)
 
 func _on_play_button_pressed():
+	play.disabled = true
 	hitting = true
 	click.play()
 	fade_animation.play("fade_out")
@@ -81,4 +87,14 @@ func _on_play_button_pressed():
 	get_tree().change_scene_to_file("res://intro.tscn")
 
 func _on_quit_button_pressed():
+	quit.disabled = true
 	get_tree().quit()
+	
+func _on_settings_button_pressed() -> void:
+	settings_button.disabled = true
+	if not get_tree().paused:
+		Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+		get_tree().paused = true
+		settings.visible = true
+	await settings.settingsclosed
+	settings_button.disabled = false

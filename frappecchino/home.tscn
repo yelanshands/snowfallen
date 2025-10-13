@@ -1,4 +1,4 @@
-[gd_scene load_steps=28 format=3 uid="uid://mlr277p0vj6k"]
+[gd_scene load_steps=29 format=3 uid="uid://mlr277p0vj6k"]
 
 [ext_resource type="Script" uid="uid://d0qicxcwe28so" path="res://home.gd" id="1_1ey7h"]
 [ext_resource type="Theme" uid="uid://sr8bi06fqgm8" path="res://UI.tres" id="1_tt30a"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://rs66kiv43jvu" path="res://assets/images/crosshair.png" id="7_qq0qw"]
 [ext_resource type="Texture2D" uid="uid://d2xmifqrtmypq" path="res://assets/images/hitcrosshair.png" id="8_q6q8i"]
 [ext_resource type="AudioStream" uid="uid://y2ef6e4yn2mw" path="res://assets/audio/silenced-gunshot-81063.mp3" id="9_qq0qw"]
+[ext_resource type="PackedScene" uid="uid://cqyjx3nirqmu4" path="res://settings.tscn" id="10_q6q8i"]
 
 [sub_resource type="Gradient" id="Gradient_2ayvv"]
 colors = PackedColorArray(1, 1, 1, 0.784314, 1, 1, 1, 0)
@@ -329,5 +330,11 @@ libraries = {
 &"": SubResource("AnimationLibrary_nvl01")
 }
 
+[node name="Settings" parent="." instance=ExtResource("10_q6q8i")]
+process_mode = 2
+layer = 4
+visible = false
+
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/playButton" to="." method="_on_play_button_pressed"]
+[connection signal="pressed" from="Control/MarginContainer/VBoxContainer/settingsButton" to="." method="_on_settings_button_pressed"]
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/quitButton" to="." method="_on_quit_button_pressed"]

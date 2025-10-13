@@ -12,7 +12,6 @@ extends Node
 @onready var fade_animation = $CanvasLayer/AnimationPlayer
 @onready var mouse_sens_label: Label = $Control/MarginContainer/VBoxContainer/MouseSens/HBoxContainer2/Value
 @onready var mouse_sens_slider: HSlider = $Control/MarginContainer/VBoxContainer/MouseSens/HBoxContainer/MouseSensSlider
-@onready var player: CharacterBody3D = get_parent()
 #@onready var camera: Camera3D = $Background/SubViewportContainer/SubViewport/Camera3D
 
 var rot_x = 0
@@ -24,9 +23,11 @@ var hitting: bool = false
 #var target_rot_x = 0.0
 #var target_rot_y = 0.0
 	
+signal settingsclosed
+	
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
-	mouse_sens_slider.value = settings_data.mouse_sens
+	mouse_sens_slider.value = globals.settings_data.mouse_sens
 
 func _process(_delta) -> void:
 	if crosshairs.visible == true and Input.is_action_just_pressed("ui_cancel"):
@@ -49,8 +50,7 @@ func _process(_delta) -> void:
 		hitting = false
 
 func exit() -> void:
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	player.default_cam_sens = player.default_cam_sens_value * mouse_sens_slider.value
+	emit_signal("settingsclosed")
 	self.visible = false
 	crosshairs.visible = false
 	get_tree().paused = false
@@ -65,16 +65,9 @@ func buttonHovered(button: TextureButton):
 	else:
 		do_tween(button, "scale", Vector2.ONE, tween_duration)
 
-func _on_play_button_pressed():
-	hitting = true
-	click.play()
-	fade_animation.play("fade_out")
-	await fade_animation.animation_finished
-	get_tree().change_scene_to_file("res://intro.tscn")
-
 func _on_quit_button_pressed():
 	exit()
 	
 func _on_mouse_sens_slider_value_changed(value: float) -> void:
 	mouse_sens_label.text = str(mouse_sens_slider.value)
-	settings_data.mouse_sens = mouse_sens_slider.value
+	globals.settings_data.mouse_sens = mouse_sens_slider.value

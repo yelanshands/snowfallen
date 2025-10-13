@@ -74,26 +74,27 @@ func _init():
 func _ready() -> void:
 	head_bone = skeleton.get_node("mixamorigHeadTop_End")
 	upper_torso = skeleton.get_node("uppertorso/body")
-	default_cam_sens = default_cam_sens_value * settings.mouse_sens_slider.value
+	default_cam_sens = default_cam_sens_value * globals.settings_data.mouse_sens
 	
 func captureMouse() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
-		if get_tree().get_current_scene().get_name() == "tutorial" or get_tree().get_current_scene().get_name() == "game":
-			if not get_tree().paused:
-				Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
-				get_tree().paused = true
-				settings.visible = true
-		else:
-			Input.set_mouse_mode(Input.MOUSE_MODE_VISIBLE)
+		if not get_tree().paused:
+			Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+			get_tree().paused = true
+			settings.visible = true
+			await settings.settingsclosed
+			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	if event.is_action_pressed("left_click"):
 		if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
 			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 			get_viewport().set_input_as_handled()
 
 func _process(_delta):
+	default_cam_sens = default_cam_sens_value * settings.mouse_sens_slider.value
+	
 	var camera_zrot = camera.global_rotation.z
 	if animation.current_animation == "runslide":
 		camera.global_rotation.z = lerp(camera_zrot, clamp(-head_bone.global_rotation.z, -0.2, 0.05), 0.05)
