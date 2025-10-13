@@ -19,7 +19,7 @@ var current_zloc: float
 var dropping: bool = true
 
 func _ready() -> void:
-	player.captureMouse()
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	spawn_wave()
 	
 	slopes.append(slope1)

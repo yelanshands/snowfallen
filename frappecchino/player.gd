@@ -67,17 +67,15 @@ var hp := max_hp
 var hp_taken := 0.0
 
 func _init():
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	floor_stop_on_slope = false
 	floor_snap_length = floor_snap
 	
 func _ready() -> void:
+	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	head_bone = skeleton.get_node("mixamorigHeadTop_End")
 	upper_torso = skeleton.get_node("uppertorso/body")
 	default_cam_sens = default_cam_sens_value * globals.settings_data.mouse_sens
 	
-func captureMouse() -> void:
-	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
