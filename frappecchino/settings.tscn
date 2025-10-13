@@ -1,6 +1,7 @@
-[gd_scene load_steps=19 format=3 uid="uid://cqyjx3nirqmu4"]
+[gd_scene load_steps=20 format=3 uid="uid://cqyjx3nirqmu4"]
 
 [ext_resource type="Script" uid="uid://br50l8wtvg5jq" path="res://settings.gd" id="1_3j6r5"]
+[ext_resource type="Resource" uid="uid://dfno87by05xr6" path="res://settings.tres" id="2_6mhpt"]
 [ext_resource type="FontFile" uid="uid://c0ox2v115c0rl" path="res://assets/fonts/immortal/IMMORTAL.ttf" id="3_3lj6o"]
 [ext_resource type="Theme" uid="uid://sr8bi06fqgm8" path="res://UI.tres" id="4_82xqq"]
 [ext_resource type="AudioStream" uid="uid://yi6t8unvbaio" path="res://assets/audio/calm-night-312296.mp3" id="5_y43lv"]
@@ -100,6 +101,7 @@ _data = {
 
 [node name="Settings" type="CanvasLayer"]
 script = ExtResource("1_3j6r5")
+settings_data = ExtResource("2_6mhpt")
 
 [node name="Control" type="Control" parent="."]
 layout_mode = 3

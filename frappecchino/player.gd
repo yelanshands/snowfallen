@@ -74,6 +74,7 @@ func _init():
 func _ready() -> void:
 	head_bone = skeleton.get_node("mixamorigHeadTop_End")
 	upper_torso = skeleton.get_node("uppertorso/body")
+	default_cam_sens = default_cam_sens_value * settings.mouse_sens_slider.value
 	
 func captureMouse() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
@@ -197,15 +198,13 @@ func _physics_process(delta: float) -> void:
 			crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_crouch, 0.1), lerp(crosshair.size.y, crosshair_crouch, 0.1)))
 		elif Input.is_action_pressed("left_click"):
 			cam_sens = default_cam_sens * crouch_mult
+			camera.fov = lerp(camera.fov, fov * shooting_mult, 0.15)
+			crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_shooting, 0.15), lerp(crosshair.size.y, crosshair_shooting, 0.15)))
 		elif animation.current_animation != "runslide":
 			cam_sens = default_cam_sens
 			speed = default_speed
 			camera.fov = lerp(camera.fov, fov, 0.05)
 			crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_size, 0.15), lerp(crosshair.size.y, crosshair_size, 0.15)))
-			
-		if Input.is_action_pressed("left_click"):
-			camera.fov = lerp(camera.fov, fov * shooting_mult, 0.15)
-			crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_shooting, 0.15), lerp(crosshair.size.y, crosshair_shooting, 0.15)))
 		
 		crosshair.position = Vector2(crosshair_cont.size.x/2.0-(crosshair.size.x/2.0), crosshair_cont.size.y/2.0-(crosshair.size.y/2.0))
 		

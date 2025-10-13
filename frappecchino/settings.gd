@@ -2,6 +2,7 @@ extends Node
 
 @export var tween_intensity: float = 1.07
 @export var tween_duration: float = 0.2
+@export var settings_data: SettingsData
 
 @onready var quit: TextureButton = $Control/MarginContainer/VBoxContainer/HBoxContainer/quitButton
 @onready var crosshairs: CanvasLayer = $Crosshair
@@ -23,10 +24,11 @@ var hitting: bool = false
 #var target_rot_x = 0.0
 #var target_rot_y = 0.0
 	
-func _init():
+func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+	mouse_sens_slider.value = settings_data.mouse_sens
 
-func _process(_delta):
+func _process(_delta) -> void:
 	if crosshairs.visible == true and Input.is_action_just_pressed("ui_cancel"):
 		exit()
 		
@@ -47,8 +49,8 @@ func _process(_delta):
 		hitting = false
 
 func exit() -> void:
-	player.default_cam_sens = player.default_cam_sens_value * mouse_sens_slider.value
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	player.default_cam_sens = player.default_cam_sens_value * mouse_sens_slider.value
 	self.visible = false
 	crosshairs.visible = false
 	get_tree().paused = false
@@ -75,3 +77,4 @@ func _on_quit_button_pressed():
 	
 func _on_mouse_sens_slider_value_changed(value: float) -> void:
 	mouse_sens_label.text = str(mouse_sens_slider.value)
+	settings_data.mouse_sens = mouse_sens_slider.value
