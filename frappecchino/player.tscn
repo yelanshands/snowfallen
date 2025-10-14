@@ -444,74 +444,144 @@ theme_override_font_sizes/font_size = 60
 text = "
    0"
 
-[node name="Buttons" type="VBoxContainer" parent="CanvasLayer/MarginContainer/ScoreContainer"]
+[node name="hbox" type="HBoxContainer" parent="CanvasLayer/MarginContainer/ScoreContainer"]
+layout_mode = 2
+
+[node name="Spacer" type="Label" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox"]
+layout_mode = 2
+text = "
+                                  "
+
+[node name="Buttons" type="VBoxContainer" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox"]
 visible = false
 layout_mode = 2
-size_flags_horizontal = 4
+size_flags_horizontal = 0
 mouse_filter = 2
 alignment = 1
 
-[node name="Spacer" type="Label" parent="CanvasLayer/MarginContainer/ScoreContainer/Buttons"]
+[node name="Spacer" type="Label" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox/Buttons"]
 layout_mode = 2
 text = "
 "
 
-[node name="playAgainButton" type="TextureButton" parent="CanvasLayer/MarginContainer/ScoreContainer/Buttons"]
-custom_minimum_size = Vector2(300, 100)
+[node name="playAgainButton" type="TextureButton" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox/Buttons"]
+custom_minimum_size = Vector2(500, 100)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 texture_pressed = SubResource("GradientTexture2D_606se")
 texture_hover = SubResource("GradientTexture2D_u1c27")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/MarginContainer/ScoreContainer/Buttons/playAgainButton"]
-custom_minimum_size = Vector2(300, 0)
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox/Buttons/playAgainButton"]
+custom_minimum_size = Vector2(500, 0)
 layout_mode = 0
 offset_right = 100.0
 offset_bottom = 100.0
 mouse_filter = 2
 theme = ExtResource("13_606se")
 theme_override_font_sizes/normal_font_size = 50
-text = "play again"
-horizontal_alignment = 1
+text = " play again"
 vertical_alignment = 1
 
-[node name="settingsButton" type="TextureButton" parent="CanvasLayer/MarginContainer/ScoreContainer/Buttons"]
-custom_minimum_size = Vector2(300, 100)
+[node name="settingsButton" type="TextureButton" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox/Buttons"]
+custom_minimum_size = Vector2(500, 100)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 texture_pressed = SubResource("GradientTexture2D_606se")
 texture_hover = SubResource("GradientTexture2D_u1c27")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/MarginContainer/ScoreContainer/Buttons/settingsButton"]
-custom_minimum_size = Vector2(300, 100)
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox/Buttons/settingsButton"]
+custom_minimum_size = Vector2(500, 100)
 layout_mode = 0
 offset_right = 100.0
 offset_bottom = 100.0
 mouse_filter = 2
 theme = ExtResource("13_606se")
 theme_override_font_sizes/normal_font_size = 50
-text = "settings"
-horizontal_alignment = 1
+text = " settings"
 vertical_alignment = 1
 
-[node name="quitButton" type="TextureButton" parent="CanvasLayer/MarginContainer/ScoreContainer/Buttons"]
-custom_minimum_size = Vector2(300, 100)
+[node name="quitButton" type="TextureButton" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox/Buttons"]
+custom_minimum_size = Vector2(500, 100)
 layout_mode = 2
 mouse_default_cursor_shape = 2
 texture_pressed = SubResource("GradientTexture2D_606se")
 texture_hover = SubResource("GradientTexture2D_u1c27")
 
-[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/MarginContainer/ScoreContainer/Buttons/quitButton"]
-custom_minimum_size = Vector2(300, 100)
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox/Buttons/quitButton"]
+custom_minimum_size = Vector2(500, 100)
 layout_mode = 0
 offset_right = 100.0
 offset_bottom = 100.0
 mouse_filter = 2
 theme = ExtResource("13_606se")
 theme_override_font_sizes/normal_font_size = 50
-text = "home"
-horizontal_alignment = 1
+text = " home"
 vertical_alignment = 1
+
+[node name="Spacer2" type="Label" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox"]
+layout_mode = 2
+text = "
+                                  "
+
+[node name="Leaderboard" type="ColorRect" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox"]
+visible = false
+custom_minimum_size = Vector2(400, 400)
+layout_mode = 2
+color = Color(0.6004277, 0.5828307, 1, 0.78431374)
+
+[node name="vbox" type="VBoxContainer" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox/Leaderboard"]
+layout_mode = 0
+offset_left = -4.0
+offset_right = -4.0
+offset_bottom = 400.0
+
+[node name="MarginContainer" type="MarginContainer" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox/Leaderboard/vbox"]
+clip_contents = true
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Label" type="Label" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox/Leaderboard/vbox/MarginContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_dw050")
+theme_override_font_sizes/font_size = 32
+text = "Leaderboard (WIP)"
+
+[node name="bottom" type="MarginContainer" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox/Leaderboard/vbox"]
+clip_contents = true
+custom_minimum_size = Vector2(500, 0)
+layout_mode = 2
+theme_override_constants/margin_left = 20
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 5
+theme_override_constants/margin_bottom = 5
+
+[node name="Players" type="VBoxContainer" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox/Leaderboard/vbox/bottom"]
+layout_mode = 2
+
+[node name="1" type="HBoxContainer" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox/Leaderboard/vbox/bottom/Players"]
+layout_mode = 2
+
+[node name="name" type="Label" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox/Leaderboard/vbox/bottom/Players/1"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_dw050")
+theme_override_font_sizes/font_size = 32
+text = "frappie"
+
+[node name="spacer" type="Label" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox/Leaderboard/vbox/bottom/Players/1"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_dw050")
+theme_override_font_sizes/font_size = 32
+text = "          "
+
+[node name="score" type="Label" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox/Leaderboard/vbox/bottom/Players/1"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("7_dw050")
+theme_override_font_sizes/font_size = 32
+text = "1000"
 
 [node name="Header" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
 visible = false
@@ -638,9 +708,9 @@ stream = ExtResource("4_2hs0m")
 volume_db = -8.0
 
 [connection signal="body_entered" from="frappie/Node/Armature/Skeleton3D/footcollider/Area3D" to="." method="_on_area_3d_body_entered"]
-[connection signal="pressed" from="CanvasLayer/MarginContainer/ScoreContainer/Buttons/playAgainButton" to="." method="_on_play_again_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/MarginContainer/ScoreContainer/Buttons/settingsButton" to="." method="_on_settings_button_pressed"]
-[connection signal="pressed" from="CanvasLayer/MarginContainer/ScoreContainer/Buttons/quitButton" to="." method="_on_quit_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/ScoreContainer/hbox/Buttons/playAgainButton" to="." method="_on_play_again_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/ScoreContainer/hbox/Buttons/settingsButton" to="." method="_on_settings_button_pressed"]
+[connection signal="pressed" from="CanvasLayer/MarginContainer/ScoreContainer/hbox/Buttons/quitButton" to="." method="_on_quit_button_pressed"]
 
 [editable path="Pewpew"]
 [editable path="frappie"]
