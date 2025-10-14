@@ -31,6 +31,8 @@ var idle_rot_y: float
 var attention_timer_started: bool = true
 var hp: = max_hp
 
+var plane_index: int
+
 func _ready() -> void:
 	animation.play("IdleAiming0")
 	head_bone = skeleton.get_node("mixamorigHeadTop_End")
@@ -132,9 +134,9 @@ func _on_fov_body_entered(body: Node3D) -> void:
 		player_in_fov = true
 		if not player:
 			player = body
-		print(self, "   ", player_in_fov)
+		#print(self, "   ", player_in_fov)
 
 func _on_fov_body_exited(body: Node3D) -> void:
 	if body.name == "Player":
 		player_in_fov = false
-		print(self, "   ", player_in_fov)
+		#print(self, "   ", player_in_fov)

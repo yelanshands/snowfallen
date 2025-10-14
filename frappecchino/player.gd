@@ -76,7 +76,6 @@ func _ready() -> void:
 	upper_torso = skeleton.get_node("uppertorso/body")
 	default_cam_sens = default_cam_sens_value * globals.settings_data.mouse_sens
 	
-	
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
 		if not get_tree().paused:
