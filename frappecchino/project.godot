@@ -128,4 +128,3 @@ interact={
 
 renderer/rendering_method="gl_compatibility"
 renderer/rendering_method.mobile="gl_compatibility"
-mesh_lod/lod_change/threshold_pixels=200.0

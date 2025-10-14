@@ -22,6 +22,7 @@ extends CharacterBody3D
 @export var slide_accel: float = 100.0
 @export var floor_snap: float = 10.0
 @export var sprint_length = 15.0
+@export var bullet_speed := 1400.0
 
 const footstep_stream = preload("res://assets/audio/concrete-footsteps-6752.mp3")
 const landing_stream = preload("res://assets/audio/land2-43790.mp3")
@@ -56,6 +57,9 @@ var first_slide: bool = true
 var slope_dir: Vector3
 var slope_normal: Vector3 = Vector3(0, cos(atan(150.0 / 700.0)), sin(atan(150.0 / 700.0)))
 var death_transform: float
+var on_slope: bool
+var default_font_size := 48
+var in_game: bool = false
 
 var head_bone: Node
 var upper_torso: Node
@@ -75,6 +79,7 @@ func _ready() -> void:
 	head_bone = skeleton.get_node("mixamorigHeadTop_End")
 	upper_torso = skeleton.get_node("uppertorso/body")
 	default_cam_sens = default_cam_sens_value * globals.settings_data.mouse_sens
+	score_label.add_theme_font_size_override("font_size", default_font_size)
 	
 func _input(event):
 	if event.is_action_pressed("ui_cancel"):
@@ -112,11 +117,13 @@ func _physics_process(delta: float) -> void:
 	var movement_dir = (transform.basis * Vector3(input.x, 0, input.y)).normalized()
 	var on_floor: bool = is_on_floor()
 	var slide_vector: Vector3 = slope_dir * slide_accel
-	var on_slope: bool = prev_floor_normal.y >= slope_normal.y - 0.0001 and prev_floor_normal.y <= slope_normal.y + 0.0001 and prev_floor_normal.z >= slope_normal.z - 0.0001 and prev_floor_normal.z <= slope_normal.z + 0.0001
+	on_slope = prev_floor_normal.y >= slope_normal.y - 0.0001 and prev_floor_normal.y <= slope_normal.y + 0.0001 and prev_floor_normal.z >= slope_normal.z - 0.0001 and prev_floor_normal.z <= slope_normal.z + 0.0001
 	
 	if hp <= 0:
 		input_enabled = false
 		camera.fov = lerp(camera.fov, fov * 1.25, 0.1)
+		if on_slope:
+			score_label.add_theme_font_size_override("font_size", lerp(score_label.get_theme_font_size("font_size"), int(default_font_size*2.5), 0.8))
 		if animation.assigned_animation != "dying":
 			velocity = Vector3.ZERO
 			if not on_floor:
@@ -286,7 +293,7 @@ func update_score(amount: int):
 		score = 0
 	else:
 		score += amount
-	score_label.text = "\n   " + str(score)
+	score_label.text = "\n" + ("" if in_game else "   ")+ str(score)
 	
 func change_collision(enabled: bool) -> void:
 	for child in skeleton.get_children():
@@ -302,7 +309,6 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 	if body.name == "glass" and animation.current_animation == "runslide" and animation.current_animation_position >= 0.1 and animation.current_animation_position <= 0.4:
 		body.free()
 		get_parent().animation.play_backwards("slide_in")
-		update_score(0)
 		fade_and_change_scene("res://game.tscn")
 		
 func fade_and_change_scene(scene_path: String):

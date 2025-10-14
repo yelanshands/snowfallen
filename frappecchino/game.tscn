@@ -1332,7 +1332,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_j5wjh")
 shape = SubResource("ConvexPolygonShape3D_j5wjh")
 
 [node name="plane" type="MeshInstance3D" parent="Background/Slope1"]
-transform = Transform3D(0.97596246, -0.21793884, -1.1252155e-10, 0.21793884, 0.97596246, -3.134384e-09, 7.9292306e-10, 3.0345184e-09, 1, 0, 10.742676, 0)
+transform = Transform3D(1.4883428, -0.21793883, -1.2377609e-10, 0.3323567, 0.97596246, -3.4478231e-09, 1.2092075e-09, 3.0345184e-09, 1.1, 0, 10.742676, 0)
 visible = false
 mesh = SubResource("PlaneMesh_7jktm")
 
@@ -1353,7 +1353,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_j5wjh")
 shape = SubResource("ConvexPolygonShape3D_j5wjh")
 
 [node name="plane" type="MeshInstance3D" parent="Background/Slope2"]
-transform = Transform3D(0.97596246, -0.21793884, -1.1252155e-10, 0.21793884, 0.97596246, -3.134384e-09, 7.9292306e-10, 3.0345184e-09, 1, 0, 10.742676, 0)
+transform = Transform3D(1.4883428, -0.21793883, -1.2377609e-10, 0.3323567, 0.97596246, -3.4478231e-09, 1.2092075e-09, 3.0345184e-09, 1.1, 0, 10.742676, 0)
 visible = false
 mesh = SubResource("PlaneMesh_7jktm")
 
@@ -1374,7 +1374,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_j5wjh")
 shape = SubResource("ConvexPolygonShape3D_j5wjh")
 
 [node name="plane" type="MeshInstance3D" parent="Background/Slope3"]
-transform = Transform3D(0.97596246, -0.21793884, -1.1252155e-10, 0.21793884, 0.97596246, -3.134384e-09, 7.9292306e-10, 3.0345184e-09, 1, 0, 10.742676, 0)
+transform = Transform3D(1.4883428, -0.21793883, -1.2377609e-10, 0.3323567, 0.97596246, -3.4478231e-09, 1.2092075e-09, 3.0345184e-09, 1.1, 0, 10.742676, 0)
 visible = false
 mesh = SubResource("PlaneMesh_7jktm")
 
@@ -1395,7 +1395,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_j5wjh")
 shape = SubResource("ConvexPolygonShape3D_j5wjh")
 
 [node name="plane" type="MeshInstance3D" parent="Background/Slope4"]
-transform = Transform3D(0.97596246, -0.21793884, -1.1252155e-10, 0.21793884, 0.97596246, -3.134384e-09, 7.9292306e-10, 3.0345184e-09, 1, 0, 10.742676, 0)
+transform = Transform3D(1.4883428, -0.21793883, -1.2377609e-10, 0.3323567, 0.97596246, -3.4478231e-09, 1.2092075e-09, 3.0345184e-09, 1.1, 0, 10.742676, 0)
 visible = false
 mesh = SubResource("PlaneMesh_7jktm")
 
@@ -1416,7 +1416,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_j5wjh")
 shape = SubResource("ConvexPolygonShape3D_j5wjh")
 
 [node name="plane" type="MeshInstance3D" parent="Background/Slope5"]
-transform = Transform3D(0.97596246, -0.21793884, -1.1252155e-10, 0.21793884, 0.97596246, -3.134384e-09, 7.9292306e-10, 3.0345184e-09, 1, 0, 10.742676, 0)
+transform = Transform3D(1.4883428, -0.21793883, -1.2377609e-10, 0.3323567, 0.97596246, -3.4478231e-09, 1.2092075e-09, 3.0345184e-09, 1.1, 0, 10.742676, 0)
 visible = false
 mesh = SubResource("PlaneMesh_7jktm")
 
@@ -1437,7 +1437,7 @@ surface_material_override/0 = SubResource("StandardMaterial3D_j5wjh")
 shape = SubResource("ConvexPolygonShape3D_j5wjh")
 
 [node name="plane" type="MeshInstance3D" parent="Background/Slope6"]
-transform = Transform3D(0.97596246, -0.21793884, -1.1252155e-10, 0.21793884, 0.97596246, -3.134384e-09, 7.9292306e-10, 3.0345184e-09, 1, 0, 10.742676, 0)
+transform = Transform3D(1.4883428, -0.21793883, -1.2377609e-10, 0.3323567, 0.97596246, -3.4478231e-09, 1.2092075e-09, 3.0345184e-09, 1.1, 0, 10.742676, 0)
 visible = false
 mesh = SubResource("PlaneMesh_7jktm")
 

@@ -28,7 +28,7 @@ func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	enemy_planes = [enemy_plane1, enemy_plane2, enemy_plane3, enemy_plane4, enemy_plane5, enemy_plane6]
-	for index in range(1, enemy_planes.size()):
+	for index in range(0, 4):
 		spawn_wave(index)
 	
 	slopes = [slope1, slope2, slope3, slope4, slope5]
@@ -39,6 +39,11 @@ func _ready() -> void:
 	player.velocity = Vector3.ZERO
 	player.rotation.y = 0.0
 	player.input_enabled = false
+	player.bullet_speed = 2500.0
+	player.in_game = true
+	player.score_label.horizontal_alignment = HorizontalAlignment.HORIZONTAL_ALIGNMENT_CENTER
+	player.score_label.add_theme_font_size_override("font_size", player.default_font_size*1.25)
+	player.update_score(0)
 	
 	Input.action_press("sprint")
 	Input.action_release("sprint")
@@ -58,17 +63,19 @@ func _process(_delta: float) -> void:
 	else:
 		if player_pos.z > current_zloc:
 			var last_slope_pos = slopes[-1].position
-			var slope_index = int(str(slopes[0].name)[5])
+			var slope_index = int(str(slopes[0].name)[5]) - 1
 			
 			slopes[0].position.z = last_slope_pos.z + slope_mesh_size.x*2
 			slopes[0].position.y = last_slope_pos.y - slope_mesh_size.y*2
 			
+			for enemy in enemies[slope_index]:
+				enemy.queue_free()
 			enemies[slope_index].clear()
+			
+			spawn_wave((int(str(slopes[4].name)[5]))-1)
+			
 			slopes.append(slopes.pop_at(0))
 			current_zloc += slope_mesh_size.x*2
-			print(slope_index)
-			print(slopes[-1].name)
-			spawn_wave(slope_index)
 			
 		if dropping:
 			player.crosshair.set_size(Vector2(lerp(player.crosshair.size.x, player.crosshair_size, 0.15), lerp(player.crosshair.size.y, player.crosshair_size, 0.15)))
@@ -83,7 +90,7 @@ func spawn_wave(index: int) -> void:
 			var enemy = NPC.instantiate()
 			enemy.enemy_type = "snowshooter"
 			enemy.position = get_random_point_on_sloped_plane(enemy_planes[index])
-			enemy.rotation.y = randf_range(-150.0, 150.0)
+			enemy.rotation_degrees.y = randf_range(60.0, 120.0) + 90.0
 			enemy.plane_index = index
 			add_child(enemy)
 			

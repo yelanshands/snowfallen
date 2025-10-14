@@ -5,7 +5,7 @@ extends RayCast3D
 @onready var animation: AnimationPlayer = $AnimationPlayer
 @onready var hitcrosshair_cont: Control = player.get_node("Crosshair/HitContainer")
 
-@export var speed: float = 1400.0
+var speed: float
 
 var damage_amount := 25.0
 var crosshair_size: float
@@ -20,6 +20,7 @@ func _ready() -> void:
 	fov = player.fov
 	set_process(false)
 	animation.play("fade_in")
+	speed = player.bullet_speed
 	
 func _process(_delta: float) -> void:
 	hitcrosshair_cont.scale = Vector2(lerp(hitcrosshair_cont.scale.x, 0.8, 0.8), lerp(hitcrosshair_cont.scale.y, 0.8, 0.8))

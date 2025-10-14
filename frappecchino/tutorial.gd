@@ -44,6 +44,8 @@ func _ready() -> void:
 	player_respawn = player.global_position
 	fade_animation.play_backwards("fade_out")
 	
+	player.bullet_speed = 1400.0
+	
 	dialogue_box.visible = true
 	animation.play("slide_in")
 	streamDialogue($Player, area0text)
