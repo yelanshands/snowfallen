@@ -16,8 +16,11 @@ const Npc = preload("res://npc.tscn")
 @onready var timer: Timer =  $building/Node/DialogueTimer
 @onready var player: CharacterBody3D = $Player
 @onready var fade_animation: AnimationPlayer = $CanvasLayer/AnimationPlayer
+@onready var skip_animation: AnimationPlayer = $CanvasLayer/SkipAnimation
 
 @export var text_speed: float = 0.015
+
+var skipped: bool = false
 
 var slide1
 var slide2
@@ -45,12 +48,20 @@ func _ready() -> void:
 	fade_animation.play_backwards("fade_out")
 	
 	player.bullet_speed = 1400.0
+	skip_animation.play("skip_fade_out")
 	
 	dialogue_box.visible = true
 	animation.play("slide_in")
 	streamDialogue($Player, area0text)
 	
 func _process(_delta: float) -> void:
+	if Input.is_action_just_pressed("skip") and not skipped:
+		skipped = true
+		if skip_animation.current_animation_position < 3.25:
+			skip_animation.seek(3.25, true)
+			skip_animation.play_section()
+		player.fade_and_change_scene("res://game.tscn")
+	
 	if player.hp <= 0: 
 		if player.animation.assigned_animation == "dying":
 			if not player.animation.current_animation:

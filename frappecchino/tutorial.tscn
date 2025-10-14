@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://cuh2x5ayh8f80"]
+[gd_scene load_steps=54 format=3 uid="uid://cuh2x5ayh8f80"]
 
 [ext_resource type="PackedScene" uid="uid://daiyf82t58v7s" path="res://player.tscn" id="1_7n6eb"]
 [ext_resource type="Script" uid="uid://cg6s855jvgunl" path="res://tutorial.gd" id="1_ehuit"]
@@ -215,6 +215,71 @@ _data = {
 &"RESET": SubResource("Animation_n7ghd"),
 &"fade_out": SubResource("Animation_b26j0"),
 &"skip_fade_out": SubResource("Animation_y72e6")
+}
+
+[sub_resource type="Animation" id="Animation_vmw6g"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0, 0, 0, 0)]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Label:modulate")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_4hjyh"]
+resource_name = "fade_out"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("ColorRect:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0, 0, 0, 0), Color(0, 0, 0, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_bsk3x"]
+resource_name = "skip_fade_out"
+length = 4.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Label:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.75, 3.25, 4),
+"transitions": PackedFloat32Array(1, 1, 1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.78431374), Color(1, 1, 1, 0.78431374), Color(1, 1, 1, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_dl7dh"]
+_data = {
+&"RESET": SubResource("Animation_vmw6g"),
+&"fade_out": SubResource("Animation_4hjyh"),
+&"skip_fade_out": SubResource("Animation_bsk3x")
 }
 
 [node name="tutorial" type="Node3D"]
@@ -1004,6 +1069,20 @@ metadata/_edit_use_anchors_ = true
 libraries = {
 &"": SubResource("AnimationLibrary_nvl01")
 }
+
+[node name="SkipAnimation" type="AnimationPlayer" parent="CanvasLayer"]
+libraries = {
+&"": SubResource("AnimationLibrary_dl7dh")
+}
+
+[node name="Label" type="Label" parent="CanvasLayer"]
+offset_left = 709.0
+offset_top = 984.0
+offset_right = 1402.0
+offset_bottom = 1045.0
+theme_override_fonts/font = ExtResource("2_5mrt3")
+theme_override_font_sizes/font_size = 48
+text = "Press ENTER to skip tutorial."
 
 [connection signal="body_entered" from="building/Node/Area1" to="." method="_on_area_1_body_entered"]
 [connection signal="body_entered" from="building/Node/Area2" to="." method="_on_area_2_body_entered"]

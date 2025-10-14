@@ -122,7 +122,8 @@ func _physics_process(delta: float) -> void:
 	if hp <= 0:
 		input_enabled = false
 		camera.fov = lerp(camera.fov, fov * 1.25, 0.1)
-		if on_slope:
+		if in_game:
+			score_label.text = "\nyou died .\n" + str(score)
 			score_label.add_theme_font_size_override("font_size", lerp(score_label.get_theme_font_size("font_size"), int(default_font_size*2.5), 0.8))
 		if animation.assigned_animation != "dying":
 			velocity = Vector3.ZERO
