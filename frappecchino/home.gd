@@ -38,9 +38,9 @@ func _process(_delta):
 	buttonHovered(quit)
 	
 	if hitting:
-		hitcrosshair_cont.scale = Vector2(lerp(hitcrosshair_cont.scale.x, 0.8, 0.4), lerp(hitcrosshair_cont.scale.y, 0.8, 0.4))
-		
-	if hitcrosshair_cont.scale.x > 0.77:
+		hitcrosshair_cont.scale = Vector2(lerp(hitcrosshair_cont.scale.x, 0.8, 0.8), lerp(hitcrosshair_cont.scale.y, 0.8, 0.8))
+	
+	if hitcrosshair_cont.scale.x >= 0.79:
 		hitcrosshair_cont.scale = Vector2(0.0, 0.0)
 		hitting = false
 		

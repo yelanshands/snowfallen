@@ -4,9 +4,9 @@ extends CharacterBody3D
 @onready var camera: Camera3D = $SpringArmPivot/SpringArm3D/PlayerCamera
 @onready var big_crosshair_cont: CanvasLayer = $Crosshair
 @onready var crosshair_cont: MarginContainer = $Crosshair/MarginContainer
-@onready var crosshair: TextureRect = crosshair_cont.get_node("Crosshair")
+@onready var crosshair: TextureRect = $Crosshair/MarginContainer/Crosshair
 @onready var hitcrosshair_cont: Control = $Crosshair/HitContainer
-@onready var hitcrosshair: TextureRect = hitcrosshair_cont.get_node("HitCrosshair")
+@onready var hitcrosshair: TextureRect = $Crosshair/HitContainer/HitCrosshair
 @onready var audio: AudioStreamPlayer3D = $SpringArmPivot/SpringArm3D/PlayerCamera/Audio
 @onready var score_label: Label = $CanvasLayer/MarginContainer/ScoreContainer/Score
 @onready var animation: AnimationPlayer = $frappie/AnimationPlayer
@@ -23,6 +23,8 @@ extends CharacterBody3D
 @onready var quit_button: TextureButton = $CanvasLayer/MarginContainer/ScoreContainer/Buttons/quitButton
 @onready var crosshairs: CanvasLayer = $CrosshairMenu
 @onready var crosshair_margin: MarginContainer = $CrosshairMenu/MarginContainer
+@onready var hitmenu_cont: Control = $CrosshairMenu/HitContainer
+@onready var click: AudioStreamPlayer = $Click
 
 @export var fov: float = 75.0
 @export var friction: float = 0.25
@@ -67,11 +69,14 @@ var death_transform: float
 var on_slope: bool
 var default_font_size := 48
 var in_game: bool = false
+var button_pressed: bool = false
+var clicking: bool = false
 
 var head_bone: Node
 var upper_torso: Node
 
 signal on_ground
+signal clickfinished
 
 var max_hp := 300.0
 var hp := max_hp
@@ -89,17 +94,18 @@ func _ready() -> void:
 	score_label.add_theme_font_size_override("font_size", default_font_size)
 	
 func _input(event):
-	if event.is_action_pressed("ui_cancel"):
-		if not get_tree().paused:
-			Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
-			get_tree().paused = true
-			settings.visible = true
-			await settings.settingsclosed
-			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-	if event.is_action_pressed("left_click"):
-		if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
-			Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
-			get_viewport().set_input_as_handled()
+	if not buttons.visible:
+		if event.is_action_pressed("ui_cancel"):
+			if not get_tree().paused:
+				Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+				get_tree().paused = true
+				settings.visible = true
+				await settings.settingsclosed
+				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+		if event.is_action_pressed("left_click"):
+			if Input.mouse_mode != Input.MOUSE_MODE_CAPTURED:
+				Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
+				get_viewport().set_input_as_handled()
 
 func _process(_delta):
 	default_cam_sens = default_cam_sens_value * settings.mouse_sens_slider.value
@@ -117,6 +123,14 @@ func _process(_delta):
 		green.size.y = lerp(green.size.y, (((hp+hp_taken)/max_hp) * green.position.y)-1, 0.2)
 		red.size.y = lerp(red.size.y, 0.0, 0.2)
 	red.position.y = green.position.y - green.size.y - 1
+	
+	if clicking:
+		hitmenu_cont.scale = Vector2(lerp(hitmenu_cont.scale.x, 0.8, 0.8), lerp(hitmenu_cont.scale.y, 0.8, 0.8))
+	
+	if hitmenu_cont.scale.x >= 0.79:
+		hitmenu_cont.scale = Vector2(0.0, 0.0)
+		clicking = false
+		emit_signal("clickfinished")
 
 func _physics_process(delta: float) -> void:
 	var current_vel = velocity
@@ -133,6 +147,8 @@ func _physics_process(delta: float) -> void:
 			score_label.text = "\nyou died .\n" + str(score)
 			score_label.add_theme_font_size_override("font_size", lerp(score_label.get_theme_font_size("font_size"), int(default_font_size*2.5), 0.8))
 		if animation.assigned_animation != "dying":
+			if settings.visible:
+				settings.exit()
 			velocity = Vector3.ZERO
 			if not on_floor:
 				await on_ground
@@ -288,9 +304,9 @@ func _physics_process(delta: float) -> void:
 	
 func _unhandled_input(event):
 	if crosshairs.visible:
-		cam_sens = default_cam_sens/10
+		cam_sens = default_cam_sens/5
 	if event is InputEventMouseMotion:
-		if input_enabled:
+		if input_enabled or in_game:
 			rotation.y -= event.relative.x * cam_sens
 		elif hp <= 0:
 			death_transform += event.relative.x * cam_sens
@@ -324,7 +340,7 @@ func change_collision(enabled: bool) -> void:
 				for greatgrandchild in grandchild.get_children():
 					if greatgrandchild is CollisionShape3D:
 						greatgrandchild.disabled = not enabled
-
+						
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if body.name == "glass" and animation.current_animation == "runslide" and animation.current_animation_position >= 0.1 and animation.current_animation_position <= 0.4:
 		body.free()
@@ -335,3 +351,29 @@ func fade_and_change_scene(scene_path: String):
 	fade_animation.play("fade_out")
 	await fade_animation.animation_finished
 	get_tree().change_scene_to_file(scene_path)
+
+func _on_play_again_button_pressed() -> void:
+	play_again_button.disabled = true
+	clicking = true
+	click.play()
+	fade_animation.play("fade_out")
+	await fade_animation.animation_finished
+	get_tree().reload_current_scene()
+
+func _on_settings_button_pressed() -> void:
+	clicking = true
+	click.play()
+	await clickfinished
+	get_tree().paused = true
+	settings.visible = true
+	crosshairs.visible = false
+	await settings.settingsclosed
+	crosshairs.visible = true
+
+func _on_quit_button_pressed() -> void:
+	quit_button.disabled = true
+	clicking = true
+	click.play()
+	if not button_pressed:
+		button_pressed = true
+		fade_and_change_scene("res://home.tscn")

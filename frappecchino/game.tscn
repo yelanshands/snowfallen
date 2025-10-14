@@ -2,7 +2,6 @@
 
 [ext_resource type="Texture2D" uid="uid://ddqvntm0oc6d1" path="res://assets/models/structures/skyscraper_0.png" id="1_80nbo"]
 [ext_resource type="Script" uid="uid://csvim2fw7hoyd" path="res://game.gd" id="1_ryrav"]
-[ext_resource type="FontFile" uid="uid://c0ox2v115c0rl" path="res://assets/fonts/immortal/IMMORTAL.ttf" id="2_ryrav"]
 [ext_resource type="PackedScene" uid="uid://daiyf82t58v7s" path="res://player.tscn" id="3_fc0e3"]
 [ext_resource type="PackedScene" uid="uid://dhgsv5tanr7eu" path="res://assets/models/structures/snow.glb" id="6_j5wjh"]
 [ext_resource type="AudioStream" uid="uid://dxpcidya168dw" path="res://assets/audio/music.mp3" id="7_eow3j"]
@@ -937,6 +936,18 @@ tracks/1/keys = {
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
 }
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MarginContainer/ScoreContainer/Buttons:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
 
 [sub_resource type="Animation" id="Animation_b26j0"]
 resource_name = "fade_out"
@@ -969,9 +980,25 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_606se"]
+resource_name = "buttons_fade_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MarginContainer/ScoreContainer/Buttons:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nvl01"]
 _data = {
 &"RESET": SubResource("Animation_n7ghd"),
+&"buttons_fade_in": SubResource("Animation_606se"),
 &"fade_out": SubResource("Animation_b26j0"),
 &"skip_fade_out": SubResource("Animation_y72e6")
 }
@@ -1466,21 +1493,6 @@ stream = ExtResource("7_eow3j")
 volume_db = -10.0
 autoplay = true
 parameters/looping = true
-
-[node name="Node" type="Node" parent="."]
-
-[node name="Label3D" type="Label3D" parent="Node"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 162, 62)
-visible = false
-billboard = 1
-modulate = Color(0, 0, 0, 1)
-outline_modulate = Color(1, 1, 1, 0)
-text = "Gameplay is a work 
-in progress!
-Stay tuned :)"
-font = ExtResource("2_ryrav")
-font_size = 3500
-outline_size = 100
 
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 
