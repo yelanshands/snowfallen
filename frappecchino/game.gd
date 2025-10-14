@@ -56,8 +56,11 @@ func _process(_delta: float) -> void:
 	if player.hp <= 0: 
 		if player.animation.assigned_animation == "dying":
 			if not player.animation.current_animation:
-				queue_free()
-				get_tree().change_scene_to_file("res://home.tscn")
+				pass
+				#queue_free()
+				
+				#get_tree().reload_current_scene()
+					#get_tree().change_scene_to_file("res://home.tscn")
 		else:
 			player.emit_signal("on_ground")
 	else:
@@ -86,7 +89,7 @@ func _process(_delta: float) -> void:
 
 func spawn_wave(index: int) -> void:
 	if player.hp > 0:
-		for x in randi_range(1, 6):
+		for x in randi_range(2, 4):
 			var enemy = NPC.instantiate()
 			enemy.enemy_type = "snowshooter"
 			enemy.position = get_random_point_on_sloped_plane(enemy_planes[index])

@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=3 uid="uid://daiyf82t58v7s"]
+[gd_scene load_steps=33 format=3 uid="uid://daiyf82t58v7s"]
 
 [ext_resource type="Script" uid="uid://bwhyes7j5e77m" path="res://player.gd" id="1_onrkg"]
 [ext_resource type="PackedScene" uid="uid://bl4ue4lvsx2v2" path="res://pewpew.tscn" id="2_i3pqv"]
@@ -12,6 +12,7 @@
 [ext_resource type="FontFile" uid="uid://c0ox2v115c0rl" path="res://assets/fonts/immortal/IMMORTAL.ttf" id="7_dw050"]
 [ext_resource type="FontFile" uid="uid://b2n6a2bqt1rdk" path="res://assets/fonts/NotoSansSymbols-VariableFont_wght.ttf" id="8_b26j0"]
 [ext_resource type="Shader" uid="uid://2n826thxqqk" path="res://outline.gdshader" id="10_n7ghd"]
+[ext_resource type="Theme" uid="uid://sr8bi06fqgm8" path="res://UI.tres" id="13_606se"]
 [ext_resource type="Texture2D" uid="uid://d2xmifqrtmypq" path="res://assets/images/hitcrosshair.png" id="13_urp6f"]
 [ext_resource type="PackedScene" uid="uid://cqyjx3nirqmu4" path="res://settings.tscn" id="14_bwjto"]
 
@@ -49,6 +50,22 @@ shader_parameter/alpha_strength = 0.70000003325
 shader = ExtResource("6_b26j0")
 shader_parameter/alpha_strength = 0.7
 
+[sub_resource type="Gradient" id="Gradient_86xni"]
+colors = PackedColorArray(1, 1, 1, 0.784314, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_606se"]
+gradient = SubResource("Gradient_86xni")
+width = 165
+height = 100
+
+[sub_resource type="Gradient" id="Gradient_qq0qw"]
+colors = PackedColorArray(1, 1, 1, 0.196078, 1, 1, 1, 0)
+
+[sub_resource type="GradientTexture2D" id="GradientTexture2D_u1c27"]
+gradient = SubResource("Gradient_qq0qw")
+width = 165
+height = 100
+
 [sub_resource type="Animation" id="Animation_n7ghd"]
 length = 0.001
 tracks/0/type = "value"
@@ -70,6 +87,18 @@ tracks/1/path = NodePath("Label:modulate")
 tracks/1/interp = 1
 tracks/1/loop_wrap = true
 tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(1, 1, 1, 1)]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath("MarginContainer/ScoreContainer/Buttons:modulate")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
@@ -107,12 +136,36 @@ tracks/0/keys = {
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0)]
 }
 
+[sub_resource type="Animation" id="Animation_606se"]
+resource_name = "buttons_fade_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MarginContainer/ScoreContainer/Buttons:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nvl01"]
 _data = {
 &"RESET": SubResource("Animation_n7ghd"),
+&"buttons_fade_in": SubResource("Animation_606se"),
 &"fade_out": SubResource("Animation_b26j0"),
 &"skip_fade_out": SubResource("Animation_y72e6")
 }
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_606se"]
+shader = ExtResource("6_b26j0")
+shader_parameter/alpha_strength = 0.70000003325
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_u1c27"]
+shader = ExtResource("6_b26j0")
+shader_parameter/alpha_strength = 0.7
 
 [node name="Player" type="CharacterBody3D" groups=["attackable"]]
 collision_layer = 393
@@ -391,6 +444,74 @@ theme_override_font_sizes/font_size = 60
 text = "
    0"
 
+[node name="Buttons" type="VBoxContainer" parent="CanvasLayer/MarginContainer/ScoreContainer"]
+visible = false
+layout_mode = 2
+size_flags_horizontal = 4
+alignment = 1
+
+[node name="Spacer" type="Label" parent="CanvasLayer/MarginContainer/ScoreContainer/Buttons"]
+layout_mode = 2
+text = "
+"
+
+[node name="playAgainButton" type="TextureButton" parent="CanvasLayer/MarginContainer/ScoreContainer/Buttons"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_pressed = SubResource("GradientTexture2D_606se")
+texture_hover = SubResource("GradientTexture2D_u1c27")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/MarginContainer/ScoreContainer/Buttons/playAgainButton"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme = ExtResource("13_606se")
+theme_override_font_sizes/normal_font_size = 50
+text = "play again"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="settingsButton" type="TextureButton" parent="CanvasLayer/MarginContainer/ScoreContainer/Buttons"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_pressed = SubResource("GradientTexture2D_606se")
+texture_hover = SubResource("GradientTexture2D_u1c27")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/MarginContainer/ScoreContainer/Buttons/settingsButton"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme = ExtResource("13_606se")
+theme_override_font_sizes/normal_font_size = 50
+text = "settings"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="quitButton" type="TextureButton" parent="CanvasLayer/MarginContainer/ScoreContainer/Buttons"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 2
+mouse_default_cursor_shape = 2
+texture_pressed = SubResource("GradientTexture2D_606se")
+texture_hover = SubResource("GradientTexture2D_u1c27")
+
+[node name="RichTextLabel" type="RichTextLabel" parent="CanvasLayer/MarginContainer/ScoreContainer/Buttons/quitButton"]
+custom_minimum_size = Vector2(300, 100)
+layout_mode = 0
+offset_right = 100.0
+offset_bottom = 100.0
+mouse_filter = 2
+theme = ExtResource("13_606se")
+theme_override_font_sizes/normal_font_size = 50
+text = "home"
+horizontal_alignment = 1
+vertical_alignment = 1
+
 [node name="Header" type="VBoxContainer" parent="CanvasLayer/MarginContainer"]
 visible = false
 layout_mode = 2
@@ -441,6 +562,7 @@ color = Color(1, 0.3864046, 0.33298135, 1)
 one_shot = true
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
+visible = false
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -459,6 +581,56 @@ libraries = {
 process_mode = 2
 layer = 3
 visible = false
+
+[node name="CrosshairMenu" type="CanvasLayer" parent="."]
+layer = 5
+visible = false
+
+[node name="MarginContainer" type="MarginContainer" parent="CrosshairMenu"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="Crosshair" type="TextureRect" parent="CrosshairMenu/MarginContainer"]
+material = SubResource("ShaderMaterial_606se")
+clip_contents = true
+layout_mode = 2
+mouse_filter = 2
+texture = ExtResource("6_2hs0m")
+expand_mode = 1
+stretch_mode = 3
+
+[node name="HitContainer" type="Control" parent="CrosshairMenu"]
+clip_contents = true
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+rotation = 0.7853982
+scale = Vector2(1e-05, 1e-05)
+pivot_offset = Vector2(20, 20)
+mouse_filter = 2
+
+[node name="HitCrosshair" type="TextureRect" parent="CrosshairMenu/HitContainer"]
+material = SubResource("ShaderMaterial_u1c27")
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 40.0
+mouse_filter = 2
+texture = ExtResource("13_urp6f")
+expand_mode = 1
+stretch_mode = 3
 
 [connection signal="body_entered" from="frappie/Node/Armature/Skeleton3D/footcollider/Area3D" to="." method="_on_area_3d_body_entered"]
 

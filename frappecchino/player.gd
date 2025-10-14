@@ -2,6 +2,7 @@ extends CharacterBody3D
 
 @onready var spring_arm: SpringArm3D = $SpringArmPivot/SpringArm3D
 @onready var camera: Camera3D = $SpringArmPivot/SpringArm3D/PlayerCamera
+@onready var big_crosshair_cont: CanvasLayer = $Crosshair
 @onready var crosshair_cont: MarginContainer = $Crosshair/MarginContainer
 @onready var crosshair: TextureRect = crosshair_cont.get_node("Crosshair")
 @onready var hitcrosshair_cont: Control = $Crosshair/HitContainer
@@ -16,6 +17,12 @@ extends CharacterBody3D
 @onready var red: ColorRect = $CanvasLayer/Health/Red
 @onready var hp_timer: Timer = $CanvasLayer/Health/Timer
 @onready var settings: Node = $Settings
+@onready var buttons: VBoxContainer = $CanvasLayer/MarginContainer/ScoreContainer/Buttons
+@onready var play_again_button: TextureButton = $CanvasLayer/MarginContainer/ScoreContainer/Buttons/playAgainButton
+@onready var settings_button: TextureButton = $CanvasLayer/MarginContainer/ScoreContainer/Buttons/settingsButton
+@onready var quit_button: TextureButton = $CanvasLayer/MarginContainer/ScoreContainer/Buttons/quitButton
+@onready var crosshairs: CanvasLayer = $CrosshairMenu
+@onready var crosshair_margin: MarginContainer = $CrosshairMenu/MarginContainer
 
 @export var fov: float = 75.0
 @export var friction: float = 0.25
@@ -135,8 +142,18 @@ func _physics_process(delta: float) -> void:
 			animation.play_section("dying", 0.22, 4.4, 0.5)
 		elif animation.current_animation_position >= 0.6 and animation.speed_scale != 1.0:
 			animation.speed_scale = 1.0
-		elif animation.current_animation_position >= 3.4 and not fade_animation.current_animation:
-			fade_animation.play("fade_out")
+		elif ((animation.current_animation_position >= 3.4 or Input.is_action_just_pressed("left_click")) and (fade_animation.assigned_animation != "buttons_fade_in" and fade_animation.assigned_animation != "fade_out")):
+			if in_game:
+				input_enabled = false
+				big_crosshair_cont.visible = false
+				buttons.visible = true
+				crosshairs.visible = true
+				fade_animation.play("buttons_fade_in")
+				Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
+			else:
+				fade_animation.play("fade_out")
+		if crosshairs.visible:
+			crosshairs.transform.origin = crosshairs.transform.origin.lerp(get_viewport().get_mouse_position() - crosshair_margin.size/2.0, 0.3)
 			
 	if not on_floor:
 		in_air = true
@@ -270,6 +287,8 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 	
 func _unhandled_input(event):
+	if crosshairs.visible:
+		cam_sens = default_cam_sens/10
 	if event is InputEventMouseMotion:
 		if input_enabled:
 			rotation.y -= event.relative.x * cam_sens
