@@ -25,6 +25,7 @@ extends CharacterBody3D
 @onready var crosshair_margin: MarginContainer = $CrosshairMenu/MarginContainer
 @onready var hitmenu_cont: Control = $CrosshairMenu/HitContainer
 @onready var click: AudioStreamPlayer = $Click
+@onready var deadbg_animation: AnimationPlayer = $CanvasLayer/deadbg/AnimationPlayer
 
 @export var fov: float = 75.0
 @export var friction: float = 0.25
@@ -165,6 +166,7 @@ func _physics_process(delta: float) -> void:
 				buttons.visible = true
 				crosshairs.visible = true
 				fade_animation.play("buttons_fade_in")
+				deadbg_animation.play("darken")
 				Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 			else:
 				fade_animation.play("fade_out")

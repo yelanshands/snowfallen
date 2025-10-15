@@ -1,4 +1,4 @@
-[gd_scene load_steps=33 format=3 uid="uid://daiyf82t58v7s"]
+[gd_scene load_steps=36 format=3 uid="uid://daiyf82t58v7s"]
 
 [ext_resource type="Script" uid="uid://bwhyes7j5e77m" path="res://player.gd" id="1_onrkg"]
 [ext_resource type="PackedScene" uid="uid://bl4ue4lvsx2v2" path="res://pewpew.tscn" id="2_i3pqv"]
@@ -50,6 +50,42 @@ shader_parameter/alpha_strength = 0.70000003325
 shader = ExtResource("6_b26j0")
 shader_parameter/alpha_strength = 0.7
 
+[sub_resource type="Animation" id="Animation_u1c27"]
+resource_name = "darken"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(0.05490196, 0.011764706, 0.15686275, 0), Color(0.05490196, 0.011764706, 0.15686275, 0.78431374)]
+}
+
+[sub_resource type="Animation" id="Animation_op7ga"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:color")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Color(0.05490196, 0.011764706, 0.15686275, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_q13i1"]
+_data = {
+&"RESET": SubResource("Animation_op7ga"),
+&"darken": SubResource("Animation_u1c27")
+}
+
 [sub_resource type="Gradient" id="Gradient_86xni"]
 colors = PackedColorArray(1, 1, 1, 0.784314, 1, 1, 1, 0)
 
@@ -95,7 +131,7 @@ tracks/1/keys = {
 tracks/2/type = "value"
 tracks/2/imported = false
 tracks/2/enabled = true
-tracks/2/path = NodePath("MarginContainer/ScoreContainer/Buttons:modulate")
+tracks/2/path = NodePath("MarginContainer/ScoreContainer/hbox/Buttons:modulate")
 tracks/2/interp = 1
 tracks/2/loop_wrap = true
 tracks/2/keys = {
@@ -103,6 +139,21 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Color(1, 1, 1, 1)]
+}
+
+[sub_resource type="Animation" id="Animation_606se"]
+resource_name = "buttons_fade_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MarginContainer/ScoreContainer/hbox/Buttons:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="Animation" id="Animation_b26j0"]
@@ -134,21 +185,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_606se"]
-resource_name = "buttons_fade_in"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("MarginContainer/ScoreContainer/Buttons:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nvl01"]
@@ -427,6 +463,53 @@ stretch_mode = 3
 [node name="CanvasLayer" type="CanvasLayer" parent="."]
 layer = 2
 
+[node name="Health" type="Control" parent="CanvasLayer"]
+layout_mode = 3
+anchor_left = 0.2
+anchor_top = 0.6
+anchor_right = 0.22800002
+anchor_bottom = 0.82800007
+offset_right = -0.32000732
+offset_bottom = 3.7599487
+grow_vertical = 0
+mouse_filter = 2
+
+[node name="Green" type="ColorRect" parent="CanvasLayer/Health"]
+layout_mode = 0
+offset_left = 40.0
+offset_top = 250.0
+offset_right = 80.0
+offset_bottom = 500.0
+rotation = 3.1415927
+mouse_filter = 2
+color = Color(0.6509804, 0.99607843, 0.6862745, 1)
+
+[node name="Red" type="ColorRect" parent="CanvasLayer/Health"]
+layout_mode = 0
+offset_right = 40.0
+offset_bottom = 10.0
+mouse_filter = 2
+color = Color(1, 0.3864046, 0.33298135, 1)
+
+[node name="Timer" type="Timer" parent="CanvasLayer/Health"]
+one_shot = true
+
+[node name="deadbg" type="ColorRect" parent="CanvasLayer"]
+self_modulate = Color(0.054901958, 0.011764705, 0.15686274, 0.3215686)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+color = Color(0.05490196, 0.011764706, 0.15686275, 0)
+metadata/_edit_use_anchors_ = true
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="CanvasLayer/deadbg"]
+libraries = {
+&"": SubResource("AnimationLibrary_q13i1")
+}
+
 [node name="MarginContainer" type="MarginContainer" parent="CanvasLayer"]
 anchors_preset = 15
 anchor_right = 1.0
@@ -446,6 +529,7 @@ text = "
 
 [node name="hbox" type="HBoxContainer" parent="CanvasLayer/MarginContainer/ScoreContainer"]
 layout_mode = 2
+mouse_filter = 2
 
 [node name="Spacer" type="Label" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox"]
 layout_mode = 2
@@ -467,6 +551,7 @@ text = "
 [node name="playAgainButton" type="TextureButton" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox/Buttons"]
 custom_minimum_size = Vector2(500, 100)
 layout_mode = 2
+mouse_filter = 1
 mouse_default_cursor_shape = 2
 texture_pressed = SubResource("GradientTexture2D_606se")
 texture_hover = SubResource("GradientTexture2D_u1c27")
@@ -485,6 +570,7 @@ vertical_alignment = 1
 [node name="settingsButton" type="TextureButton" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox/Buttons"]
 custom_minimum_size = Vector2(500, 100)
 layout_mode = 2
+mouse_filter = 1
 mouse_default_cursor_shape = 2
 texture_pressed = SubResource("GradientTexture2D_606se")
 texture_hover = SubResource("GradientTexture2D_u1c27")
@@ -503,6 +589,7 @@ vertical_alignment = 1
 [node name="quitButton" type="TextureButton" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox/Buttons"]
 custom_minimum_size = Vector2(500, 100)
 layout_mode = 2
+mouse_filter = 1
 mouse_default_cursor_shape = 2
 texture_pressed = SubResource("GradientTexture2D_606se")
 texture_hover = SubResource("GradientTexture2D_u1c27")
@@ -525,7 +612,7 @@ text = "
 
 [node name="Leaderboard" type="ColorRect" parent="CanvasLayer/MarginContainer/ScoreContainer/hbox"]
 visible = false
-custom_minimum_size = Vector2(400, 400)
+custom_minimum_size = Vector2(400, 350)
 layout_mode = 2
 color = Color(0.6004277, 0.5828307, 1, 0.78431374)
 
@@ -603,34 +690,6 @@ theme_override_fonts/font = ExtResource("8_b26j0")
 theme_override_font_sizes/font_size = 140
 text = "⮝"
 horizontal_alignment = 1
-
-[node name="Health" type="Control" parent="CanvasLayer"]
-layout_mode = 3
-anchor_left = 0.2
-anchor_top = 0.6
-anchor_right = 0.22800002
-anchor_bottom = 0.82800007
-offset_right = -0.32000732
-offset_bottom = 3.7599487
-grow_vertical = 0
-
-[node name="Green" type="ColorRect" parent="CanvasLayer/Health"]
-layout_mode = 0
-offset_left = 40.0
-offset_top = 250.0
-offset_right = 80.0
-offset_bottom = 500.0
-rotation = 3.1415927
-color = Color(0.6509804, 0.99607843, 0.6862745, 1)
-
-[node name="Red" type="ColorRect" parent="CanvasLayer/Health"]
-layout_mode = 0
-offset_right = 40.0
-offset_bottom = 10.0
-color = Color(1, 0.3864046, 0.33298135, 1)
-
-[node name="Timer" type="Timer" parent="CanvasLayer/Health"]
-one_shot = true
 
 [node name="ColorRect" type="ColorRect" parent="CanvasLayer"]
 visible = false
