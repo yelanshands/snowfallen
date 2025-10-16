@@ -1,6 +1,7 @@
 extends RayCast3D
 
 @onready var remote_transform := RemoteTransform3D.new()
+@onready var tracer: MeshInstance3D = $MeshInstance3D/Tracer
 
 var speed: float = 1400.0
 var damage_amount := 25.0
@@ -13,6 +14,7 @@ func _physics_process(delta: float) -> void:
 	var current = collided
 	if is_colliding():
 		global_position = get_collision_point()
+		tracer.visible = false
 		set_physics_process(false)
 		#print(collided.name)
 		if collided.name == "head":

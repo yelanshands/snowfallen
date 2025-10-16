@@ -3,7 +3,7 @@
 [ext_resource type="Texture2D" uid="uid://c2c13op4axc7c" path="res://assets/models/phantom_0.png" id="1_4xxuh"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_4xxuh"]
-albedo_color = Color(0.1584723, 0.15847233, 0.1584723, 1)
+albedo_color = Color(0.19394687, 0.092156485, 0.008567175, 1)
 
 [sub_resource type="BoxMesh" id="BoxMesh_0gj4p"]
 material = SubResource("StandardMaterial3D_4xxuh")

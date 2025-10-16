@@ -24,9 +24,9 @@ func _process(_delta: float) -> void:
 		accuracy = enemy.accuracy
 		target = enemy.target
 	if enemy.animation.current_animation == "FiringRifle0" and enemy.animation.current_animation_position <= 0.5:
-		phantom_mat.albedo_color.v = lerp(phantom_mat.albedo_color.v, 10.0, 0.8)
+		phantom_mat.albedo_color.v = lerp(phantom_mat.albedo_color.v, 10.0, 0.5)
 	else:
-		phantom_mat.albedo_color.v = lerp(phantom_mat.albedo_color.v, 0.0, 0.6)
+		phantom_mat.albedo_color.v = lerp(phantom_mat.albedo_color.v, 1.0, 0.2)
 		
 	if enemy.animation.assigned_animation == "FiringRifle0" and not enemy.animation.current_animation:
 		enemy.animation.play("IdleAiming0", 0.5)
@@ -34,8 +34,8 @@ func _process(_delta: float) -> void:
 func fire() -> void:
 	if timer.is_stopped():
 		timer.start(fire_rate)
+		phantom_mat.albedo_color.v = 1.0
 		enemy.animation.play("FiringRifle0", 0.5)
-		phantom_mat.albedo_color.v = 0.0
 		var attack = bullet.instantiate()
 		attack.speed = speed
 		phantom.add_child(attack)

@@ -4,6 +4,7 @@ extends RayCast3D
 @onready var player: CharacterBody3D = get_parent().get_parent().get_parent().get_parent()
 @onready var animation: AnimationPlayer = $AnimationPlayer
 @onready var hitcrosshair_cont: Control = player.get_node("Crosshair/HitContainer")
+@onready var tracer: MeshInstance3D = $MeshInstance3D/Tracer
 
 var speed: float
 
@@ -38,6 +39,7 @@ func _physics_process(delta: float) -> void:
 	var current = collided
 	if is_colliding():
 		global_position = get_collision_point()
+		tracer.visible = false
 		set_physics_process(false)
 		if collided.name == "head":
 			damage_amount = 100

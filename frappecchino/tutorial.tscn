@@ -296,8 +296,8 @@ light_color = Color(0.52757543, 0.44108257, 0.9223667, 1)
 
 [node name="floor" type="StaticBody3D" parent="building"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0)
-collision_layer = 7
-collision_mask = 7
+collision_layer = 1031
+collision_mask = 1031
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="building/floor"]
 mesh = SubResource("BoxMesh_cgksj")
@@ -315,8 +315,8 @@ shape = SubResource("ConvexPolygonShape3D_yb1ct")
 
 [node name="ceiling" type="StaticBody3D" parent="building"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 40, 0)
-collision_layer = 7
-collision_mask = 7
+collision_layer = 1031
+collision_mask = 1031
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="building/ceiling"]
 mesh = SubResource("BoxMesh_cgksj")
@@ -333,8 +333,8 @@ transform = Transform3D(1, 0, 0, 0, 1.5, 0, 0, 0, 1, 0, 0, 0)
 shape = SubResource("ConvexPolygonShape3D_yb1ct")
 
 [node name="walls" type="StaticBody3D" parent="building"]
-collision_layer = 7
-collision_mask = 7
+collision_layer = 1031
+collision_mask = 1031
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="building/walls"]
 transform = Transform3D(40, 0, 0, 0, 1, 0, 0, 0, 1, -151, 20, 0)
@@ -417,8 +417,8 @@ transform = Transform3D(1.1, 0, 0, 0, 1, 0, 0, 0, 1, 250, 20, 0)
 shape = SubResource("ConvexPolygonShape3D_hu44a")
 
 [node name="innerwalls" type="StaticBody3D" parent="building"]
-collision_layer = 7
-collision_mask = 7
+collision_layer = 1031
+collision_mask = 1031
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="building/innerwalls"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 0.9, 54, 20, 26)

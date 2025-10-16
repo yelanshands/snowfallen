@@ -95,7 +95,6 @@ func _ready() -> void:
 	upper_torso = skeleton.get_node("uppertorso/body")
 	default_cam_sens = default_cam_sens_value * globals.settings_data.mouse_sens
 	score_label.add_theme_font_size_override("font_size", default_font_size)
-	pos = get_viewport().get_mouse_position()
 	
 func _input(event):
 	if not buttons.visible:
@@ -113,7 +112,6 @@ func _input(event):
 
 func _process(_delta):
 	default_cam_sens = default_cam_sens_value * settings.mouse_sens_slider.value
-	print(get_viewport().get_mouse_position())
 	
 	var camera_zrot = camera.global_rotation.z
 	if animation.current_animation == "runslide":
@@ -147,21 +145,23 @@ func _physics_process(delta: float) -> void:
 	
 	if hp <= 0:
 		input_enabled = false
-		#camera.fov = lerp(camera.fov, fov * 1.25, 0.1)
-		if in_game and not score_animation.assigned_animation:
-			score_animation.play("fade_in")
-			score_label.text = "\nyou died .\n" + str(score)
+		camera.fov = lerp(camera.fov, fov * 1.25, 0.1)
+		if in_game:
 			score_label.add_theme_font_size_override("font_size", lerp(score_label.get_theme_font_size("font_size"), int(default_font_size*2.5), 0.8))
 		if animation.assigned_animation != "dying":
 			if settings.visible:
 				settings.exit()
 			velocity = Vector3.ZERO
+			audio.stop()
 			if not on_floor:
 				await on_ground
 			animation.stop()
 			change_collision(false)
 			animation.speed_scale = 2.75
 			animation.play_section("dying", 0.22, 4.4, 0.5)
+			if in_game:
+				score_animation.play("fade_in")
+				score_label.text = "\nyou died .\n" + str(score)
 		elif animation.current_animation_position >= 0.6 and animation.speed_scale != 1.0:
 			animation.speed_scale = 1.0
 		elif ((animation.current_animation_position >= 3.4 or Input.is_action_just_pressed("left_click")) and (fade_animation.assigned_animation != "buttons_fade_in" and fade_animation.assigned_animation != "fade_out")):
@@ -317,6 +317,7 @@ func _unhandled_input(event):
 			rotation.y -= event.relative.x * cam_sens
 		elif hp <= 0:
 			death_transform -= event.relative.x * cam_sens
+			print(death_transform)
 			spring_arm.rotation.y = lerp(spring_arm.rotation.y, death_transform, 0.2)
 		
 		spring_arm.rotation.x -= event.relative.y * cam_sens
@@ -352,6 +353,7 @@ func _on_area_3d_body_entered(body: Node3D) -> void:
 	if body.name == "glass" and animation.current_animation == "runslide" and animation.current_animation_position >= 0.1 and animation.current_animation_position <= 0.4:
 		body.free()
 		get_parent().animation.play_backwards("slide_in")
+		audio.stop()
 		fade_and_change_scene("res://game.tscn")
 		
 func fade_and_change_scene(scene_path: String):
