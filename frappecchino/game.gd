@@ -28,7 +28,7 @@ func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	
 	enemy_planes = [enemy_plane1, enemy_plane2, enemy_plane3, enemy_plane4, enemy_plane5, enemy_plane6]
-	for index in range(0, 4):
+	for index in range(0, 3):
 		spawn_wave(index)
 	
 	slopes = [slope1, slope2, slope3, slope4, slope5]
@@ -75,7 +75,7 @@ func _process(_delta: float) -> void:
 				enemy.queue_free()
 			enemies[slope_index].clear()
 			
-			spawn_wave((int(str(slopes[4].name)[5]))-1)
+			spawn_wave((int(str(slopes[3].name)[5]))-1)
 			
 			slopes.append(slopes.pop_at(0))
 			current_zloc += slope_mesh_size.x*2

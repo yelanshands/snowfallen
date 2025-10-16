@@ -41,9 +41,9 @@ func _ready() -> void:
 		lock_in = 0.35 if enemy_type == "sharpshooter" else 0.6
 		fire_confidence = 0.005
 		accuracy = 0.0
-		detection_range = 3.0 if enemy_type == "sharpshooter" else 2.75
+		detection_range = 3.0 if enemy_type == "sharpshooter" else 2.25
 		focused = true
-		target = "head"
+		target = "head" if enemy_type == "sharpshooter" else "uppertorso"
 		bullet_speed = 2000.0
 	if focused:
 		attention_timer.one_shot = false

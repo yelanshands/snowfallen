@@ -24,7 +24,6 @@ tonemap_mode = 2
 glow_enabled = true
 fog_enabled = true
 fog_light_color = Color(0.22609633, 0.17157698, 0.38291568, 1)
-fog_density = 0.005
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_1ey7h"]
 albedo_color = Color(0.54, 0.632, 1, 1)
@@ -949,6 +948,21 @@ tracks/2/keys = {
 "values": [Color(1, 1, 1, 1)]
 }
 
+[sub_resource type="Animation" id="Animation_606se"]
+resource_name = "buttons_fade_in"
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("MarginContainer/ScoreContainer/Buttons:modulate")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
+}
+
 [sub_resource type="Animation" id="Animation_b26j0"]
 resource_name = "fade_out"
 tracks/0/type = "value"
@@ -978,21 +992,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 0,
 "values": [Color(1, 1, 1, 0), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0.5882353), Color(1, 1, 1, 0)]
-}
-
-[sub_resource type="Animation" id="Animation_606se"]
-resource_name = "buttons_fade_in"
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("MarginContainer/ScoreContainer/Buttons:modulate")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.5),
-"transitions": PackedFloat32Array(1, 1),
-"update": 0,
-"values": [Color(1, 1, 1, 0), Color(1, 1, 1, 1)]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_nvl01"]

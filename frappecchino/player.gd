@@ -26,6 +26,7 @@ extends CharacterBody3D
 @onready var hitmenu_cont: Control = $CrosshairMenu/HitContainer
 @onready var click: AudioStreamPlayer = $Click
 @onready var deadbg_animation: AnimationPlayer = $CanvasLayer/deadbg/AnimationPlayer
+@onready var score_animation: AnimationPlayer = $CanvasLayer/MarginContainer/ScoreContainer/Score/AnimationPlayer
 
 @export var fov: float = 75.0
 @export var friction: float = 0.25
@@ -82,6 +83,7 @@ signal clickfinished
 var max_hp := 300.0
 var hp := max_hp
 var hp_taken := 0.0
+var pos
 
 func _init():
 	floor_stop_on_slope = false
@@ -93,6 +95,7 @@ func _ready() -> void:
 	upper_torso = skeleton.get_node("uppertorso/body")
 	default_cam_sens = default_cam_sens_value * globals.settings_data.mouse_sens
 	score_label.add_theme_font_size_override("font_size", default_font_size)
+	pos = get_viewport().get_mouse_position()
 	
 func _input(event):
 	if not buttons.visible:
@@ -110,6 +113,7 @@ func _input(event):
 
 func _process(_delta):
 	default_cam_sens = default_cam_sens_value * settings.mouse_sens_slider.value
+	print(get_viewport().get_mouse_position())
 	
 	var camera_zrot = camera.global_rotation.z
 	if animation.current_animation == "runslide":
@@ -143,8 +147,9 @@ func _physics_process(delta: float) -> void:
 	
 	if hp <= 0:
 		input_enabled = false
-		camera.fov = lerp(camera.fov, fov * 1.25, 0.1)
-		if in_game:
+		#camera.fov = lerp(camera.fov, fov * 1.25, 0.1)
+		if in_game and not score_animation.assigned_animation:
+			score_animation.play("fade_in")
 			score_label.text = "\nyou died .\n" + str(score)
 			score_label.add_theme_font_size_override("font_size", lerp(score_label.get_theme_font_size("font_size"), int(default_font_size*2.5), 0.8))
 		if animation.assigned_animation != "dying":
@@ -161,15 +166,15 @@ func _physics_process(delta: float) -> void:
 			animation.speed_scale = 1.0
 		elif ((animation.current_animation_position >= 3.4 or Input.is_action_just_pressed("left_click")) and (fade_animation.assigned_animation != "buttons_fade_in" and fade_animation.assigned_animation != "fade_out")):
 			if in_game:
-				input_enabled = false
 				big_crosshair_cont.visible = false
 				buttons.visible = true
 				crosshairs.visible = true
 				fade_animation.play("buttons_fade_in")
-				deadbg_animation.play("darken")
 				Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 			else:
 				fade_animation.play("fade_out")
+		elif (animation.current_animation_position >= 2.4 or buttons.visible) and not deadbg_animation.assigned_animation:
+			deadbg_animation.play("darken")
 		if crosshairs.visible:
 			crosshairs.transform.origin = crosshairs.transform.origin.lerp(get_viewport().get_mouse_position() - crosshair_margin.size/2.0, 0.3)
 			
@@ -308,11 +313,11 @@ func _unhandled_input(event):
 	if crosshairs.visible:
 		cam_sens = default_cam_sens/5
 	if event is InputEventMouseMotion:
-		if input_enabled or in_game:
+		if input_enabled or (in_game and in_air):
 			rotation.y -= event.relative.x * cam_sens
 		elif hp <= 0:
-			death_transform += event.relative.x * cam_sens
-			spring_arm.rotation.y -= event.relative.x * cam_sens
+			death_transform -= event.relative.x * cam_sens
+			spring_arm.rotation.y = lerp(spring_arm.rotation.y, death_transform, 0.2)
 		
 		spring_arm.rotation.x -= event.relative.y * cam_sens
 		spring_arm.rotation.x = clamp(spring_arm.rotation.x, -PI/4, PI/3) 
