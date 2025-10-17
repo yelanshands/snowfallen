@@ -25,17 +25,17 @@ func _ready() -> void:
 func _process(_delta: float) -> void:
 	if firing:
 		phantom.rotation_degrees.x = lerp(phantom.rotation_degrees.x, phantom_origin.x - recoil_strength, 0.25)
-		phantom_mat.albedo_color.v = lerp(phantom_mat.albedo_color.v, 9.0, 0.7)
+		phantom_mat.albedo_color.v = lerp(phantom_mat.albedo_color.v, 10.0, 0.5)
 	else:
 		phantom.rotation_degrees.x = lerp(phantom.rotation_degrees.x, phantom_origin.x, 0.25)
-		phantom_mat.albedo_color.v = lerp(phantom_mat.albedo_color.v, 0.0, 0.2)
+		phantom_mat.albedo_color.v = lerp(phantom_mat.albedo_color.v, -2.0, 0.2)
 		pivot.global_position.y = lerp(pivot.global_position.y, player.head_bone.global_position.y, 0.15)
 		
 func _physics_process(_delta: float) -> void:
 	if Input.is_action_pressed("left_click") and player.input_enabled:
 		if timer.is_stopped():
 			timer.start(fire_rate)
-			phantom_mat.albedo_color.v = 0.0
+			phantom_mat.albedo_color.v = -2.0
 			if firing:
 				firing = false
 			else:

@@ -29,7 +29,7 @@ emission_texture = SubResource("GradientTexture2D_1xapl")
 
 [sub_resource type="RibbonTrailMesh" id="RibbonTrailMesh_gl7bs"]
 material = SubResource("StandardMaterial3D_t4vbm")
-size = 0.25
+size = 0.35
 sections = 2
 section_length = 18.8
 section_segments = 1

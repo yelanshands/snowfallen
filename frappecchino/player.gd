@@ -27,6 +27,8 @@ extends CharacterBody3D
 @onready var click: AudioStreamPlayer = $Click
 @onready var deadbg_animation: AnimationPlayer = $CanvasLayer/deadbg/AnimationPlayer
 @onready var score_animation: AnimationPlayer = $CanvasLayer/MarginContainer/ScoreContainer/Score/AnimationPlayer
+@onready var players: HBoxContainer = $CanvasLayer/MarginContainer/ScoreContainer/hbox/Leaderboard/vbox/bottom/Players
+@onready var leaderboard: ColorRect = $CanvasLayer/MarginContainer/ScoreContainer/hbox/Leaderboard
 
 @export var fov: float = 75.0
 @export var friction: float = 0.25
@@ -83,7 +85,7 @@ signal clickfinished
 var max_hp := 300.0
 var hp := max_hp
 var hp_taken := 0.0
-var pos
+var high_scores: Array
 
 func _init():
 	floor_stop_on_slope = false
@@ -95,6 +97,10 @@ func _ready() -> void:
 	upper_torso = skeleton.get_node("uppertorso/body")
 	default_cam_sens = default_cam_sens_value * globals.settings_data.mouse_sens
 	score_label.add_theme_font_size_override("font_size", default_font_size)
+	high_scores = globals.settings_data.high_scores
+	for entry_index in range(high_scores.size()):
+		players.get_node("Names/" + str(entry_index + 1)).text = high_scores[entry_index][0]
+		players.get_node("Scores/" + str(entry_index + 1)).text = str(high_scores[entry_index][1])
 	
 func _input(event):
 	if not buttons.visible:
@@ -162,6 +168,15 @@ func _physics_process(delta: float) -> void:
 			if in_game:
 				score_animation.play("fade_in")
 				score_label.text = "\nyou died .\n" + str(score)
+				leaderboard.visible = true
+				for entry_index in range(high_scores.size()):
+					if score > high_scores[entry_index][1]:
+						print("buh", entry_index)
+						var player_name = "habahbah"
+						globals.settings_data.high_scores[entry_index] = [player_name, score]
+						players.get_node("Names/" + str(entry_index + 1)).text = player_name
+						players.get_node("Scores/" + str(entry_index + 1)).text = str(score)
+						break
 		elif animation.current_animation_position >= 0.6 and animation.speed_scale != 1.0:
 			animation.speed_scale = 1.0
 		elif ((animation.current_animation_position >= 3.4 or Input.is_action_just_pressed("left_click")) and (fade_animation.assigned_animation != "buttons_fade_in" and fade_animation.assigned_animation != "fade_out")):
@@ -317,9 +332,7 @@ func _unhandled_input(event):
 			rotation.y -= event.relative.x * cam_sens
 		elif hp <= 0:
 			death_transform -= event.relative.x * cam_sens
-			print(death_transform)
 			spring_arm.rotation.y = lerp(spring_arm.rotation.y, death_transform, 0.2)
-		
 		spring_arm.rotation.x -= event.relative.y * cam_sens
 		spring_arm.rotation.x = clamp(spring_arm.rotation.x, -PI/4, PI/3) 
 
