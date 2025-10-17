@@ -141,7 +141,7 @@ mesh = SubResource("ArrayMesh_xxcha")
 skeleton = NodePath("")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="fov"]
-transform = Transform3D(2500, 0, 0, 0, 2500, 0, 0, 0, 2500, 0, 0, 0)
+transform = Transform3D(2500, 0, 0, 0, 2500, 0, 0, 0, 2500, 0, 0, -4)
 shape = SubResource("ConvexPolygonShape3D_kh24r")
 
 [node name="AttentionTimer" type="Timer" parent="."]

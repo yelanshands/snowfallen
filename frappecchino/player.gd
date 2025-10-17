@@ -29,6 +29,7 @@ extends CharacterBody3D
 @onready var score_animation: AnimationPlayer = $CanvasLayer/MarginContainer/ScoreContainer/Score/AnimationPlayer
 @onready var players: HBoxContainer = $CanvasLayer/MarginContainer/ScoreContainer/hbox/Leaderboard/vbox/bottom/Players
 @onready var leaderboard: ColorRect = $CanvasLayer/MarginContainer/ScoreContainer/hbox/Leaderboard
+@onready var leaderboard_animation: AnimationPlayer = $CanvasLayer/MarginContainer/ScoreContainer/hbox/Leaderboard/AnimationPlayer
 
 @export var fov: float = 75.0
 @export var friction: float = 0.25
@@ -98,9 +99,7 @@ func _ready() -> void:
 	default_cam_sens = default_cam_sens_value * globals.settings_data.mouse_sens
 	score_label.add_theme_font_size_override("font_size", default_font_size)
 	high_scores = globals.settings_data.high_scores
-	for entry_index in range(high_scores.size()):
-		players.get_node("Names/" + str(entry_index + 1)).text = high_scores[entry_index][0]
-		players.get_node("Scores/" + str(entry_index + 1)).text = str(high_scores[entry_index][1])
+	update_leaderboard()
 	
 func _input(event):
 	if not buttons.visible:
@@ -167,24 +166,24 @@ func _physics_process(delta: float) -> void:
 			animation.play_section("dying", 0.22, 4.4, 0.5)
 			if in_game:
 				score_animation.play("fade_in")
-				score_label.text = "\nyou died .\n" + str(score)
-				leaderboard.visible = true
-				for entry_index in range(high_scores.size()):
-					if score > high_scores[entry_index][1]:
-						print("buh", entry_index)
-						var player_name = "habahbah"
-						globals.settings_data.high_scores[entry_index] = [player_name, score]
-						players.get_node("Names/" + str(entry_index + 1)).text = player_name
-						players.get_node("Scores/" + str(entry_index + 1)).text = str(score)
-						break
 		elif animation.current_animation_position >= 0.6 and animation.speed_scale != 1.0:
 			animation.speed_scale = 1.0
 		elif ((animation.current_animation_position >= 3.4 or Input.is_action_just_pressed("left_click")) and (fade_animation.assigned_animation != "buttons_fade_in" and fade_animation.assigned_animation != "fade_out")):
 			if in_game:
+				score_label.text = "\nyou died .\n" + str(score)
+				for entry_index in range(high_scores.size()):
+					if score > high_scores[entry_index][1]:
+						var player_name = "frappie"
+						globals.settings_data.high_scores.insert(entry_index, [player_name, score])
+						globals.settings_data.high_scores.pop_back()
+						update_leaderboard()
+						break
 				big_crosshair_cont.visible = false
 				buttons.visible = true
 				crosshairs.visible = true
+				leaderboard.visible = true
 				fade_animation.play("buttons_fade_in")
+				leaderboard_animation.play("fade_in")
 				Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 			else:
 				fade_animation.play("fade_out")
@@ -350,7 +349,10 @@ func update_score(amount: int):
 		score = 0
 	else:
 		score += amount
-	score_label.text = "\n" + ("" if in_game else "   ")+ str(score)
+	if hp > 0:
+		score_label.text = "\n" + ("" if in_game else "   ")+ str(score)
+	elif in_game:
+		score_label.text = "\nyou died .\n" + str(score)
 	
 func change_collision(enabled: bool) -> void:
 	for child in skeleton.get_children():
@@ -361,6 +363,11 @@ func change_collision(enabled: bool) -> void:
 				for greatgrandchild in grandchild.get_children():
 					if greatgrandchild is CollisionShape3D:
 						greatgrandchild.disabled = not enabled
+						
+func update_leaderboard() -> void:
+	for entry_index in range(high_scores.size()):
+		players.get_node("Names/" + str(entry_index + 1)).text = high_scores[entry_index][0]
+		players.get_node("Scores/" + str(entry_index + 1)).text = str(high_scores[entry_index][1])
 						
 func _on_area_3d_body_entered(body: Node3D) -> void:
 	if body.name == "glass" and animation.current_animation == "runslide" and animation.current_animation_position >= 0.1 and animation.current_animation_position <= 0.4:
