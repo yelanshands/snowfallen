@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=4 uid="uid://ro3nbpeyv3v5"]
+[gd_scene load_steps=10 format=4 uid="uid://ro3nbpeyv3v5"]
 
 [ext_resource type="Script" uid="uid://4xkne2rhx8fr" path="res://npc.gd" id="1_xxcha"]
 [ext_resource type="PackedScene" uid="uid://b3fhkrqfgm6rc" path="res://enemi.tscn" id="2_xxcha"]
@@ -6,6 +6,10 @@
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_xxcha"]
 size = Vector3(0, 0, 0)
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_kh24r"]
+height = 25.0
+radius = 8.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u5t2e"]
 resource_name = "0.615686_0.811765_0.929412_0.000000_0.000000"
@@ -123,6 +127,14 @@ metadata/hp = 100
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("BoxShape3D_xxcha")
+
+[node name="aimassist" type="StaticBody3D" parent="."]
+collision_layer = 2048
+collision_mask = 2048
+
+[node name="aimassist" type="CollisionShape3D" parent="aimassist"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 12.5, 0)
+shape = SubResource("CylinderShape3D_kh24r")
 
 [node name="enemi" parent="." instance=ExtResource("2_xxcha")]
 

@@ -34,8 +34,8 @@ extends CharacterBody3D
 @export var friction: float = 0.25
 @export var slide_accel: float = 100.0
 @export var floor_snap: float = 10.0
-@export var sprint_length = 15.0
-@export var bullet_speed := 1400.0
+@export var sprint_length: float = 15.0
+@export var bullet_speed: float= 1400.0
 
 const footstep_stream = preload("res://assets/audio/concrete-footsteps-6752.mp3")
 const landing_stream = preload("res://assets/audio/land2-43790.mp3")
@@ -56,7 +56,6 @@ var crosshair_size = 48.0
 var crosshair_sprint = 32.0
 var crosshair_crouch = 128.0
 var crosshair_shooting = 80.0
-var target_cam_rotx = 0.0
 var target_cam_roty = 0.0
 var player_rot = 0.0
 var in_air = false
@@ -88,6 +87,10 @@ var hp_taken := 0.0
 var high_scores: Array
 
 var fov: float = 75.0
+var aim_assist: bool = true
+var target_aim: Vector3
+var target_enemy = null
+var target_dir: Vector3
 
 func _init():
 	floor_stop_on_slope = false
@@ -260,7 +263,7 @@ func _physics_process(delta: float) -> void:
 			camera.fov = lerp(camera.fov, fov * crouch_mult, 0.15)
 			crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_crouch, 0.1), lerp(crosshair.size.y, crosshair_crouch, 0.1)))
 		elif Input.is_action_pressed("left_click"):
-			cam_sens = default_cam_sens * crouch_mult
+			cam_sens = default_cam_sens * crouch_mult * ((crouch_mult*crouch_mult) if aim_assist else 1.0)
 			camera.fov = lerp(camera.fov, fov * shooting_mult, 0.15)
 			crosshair.set_size(Vector2(lerp(crosshair.size.x, crosshair_shooting, 0.15), lerp(crosshair.size.y, crosshair_shooting, 0.15)))
 		elif animation.current_animation != "runslide":
@@ -271,6 +274,28 @@ func _physics_process(delta: float) -> void:
 		
 		crosshair.position = Vector2(crosshair_cont.size.x/2.0-(crosshair.size.x/2.0), crosshair_cont.size.y/2.0-(crosshair.size.y/2.0))
 		
+		if aim_assist:
+			if Input.is_action_pressed("left_click"):
+				if not target_enemy:
+					var space_state = get_world_3d().direct_space_state
+					var query = PhysicsRayQueryParameters3D.create(camera.global_position, camera.global_position + camera.global_transform.basis.z * -1 * 1000.0, (1 << 11))
+					var result = space_state.intersect_ray(query)
+				
+					if result:
+						var collider = result.collider
+						if collider.name == "aimassist":
+							target_enemy = collider.get_owner()
+							target_dir = (target_enemy.global_position - camera.global_position).normalized()
+				else:
+					var target_pos = target_enemy.global_position
+					target_pos.y = rotation.y
+					look_at(target_pos)
+					rotate_y(deg_to_rad(180))
+					#spring_arm.rotation.y += lerp(spring_arm.rotation.y, atan2(target_dir.x, target_dir.z), 0.7)
+			else:
+				target_cam_roty = 0.0
+				target_enemy = null
+			
 		var lerp_vel = lerp(velocity, Vector3.ZERO, friction)
 		
 		if (not on_slope and (not input or animation.current_animation == "runslide")):
