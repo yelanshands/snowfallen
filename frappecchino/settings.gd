@@ -10,8 +10,11 @@ extends Node
 @onready var hitcrosshair_cont: Control = $Crosshair/HitContainer
 @onready var click: AudioStreamPlayer = $Click
 @onready var fade_animation = $CanvasLayer/AnimationPlayer
-@onready var mouse_sens_label: Label = $Control/MarginContainer/VBoxContainer/MouseSens/HBoxContainer2/Value
-@onready var mouse_sens_slider: HSlider = $Control/MarginContainer/VBoxContainer/MouseSens/HBoxContainer/MouseSensSlider
+@onready var mouse_sens_label: Label = $Control/MarginContainer/VBoxContainer/scroll/MouseSens/HBoxContainer2/Value
+@onready var mouse_sens_slider: HSlider = $Control/MarginContainer/VBoxContainer/scroll/MouseSens/HBoxContainer/MouseSensSlider
+@onready var fov_slider: HSlider = $Control/MarginContainer/VBoxContainer/scroll/fov/HBoxContainer/fov
+@onready var fov_label: Label = $Control/MarginContainer/VBoxContainer/scroll/fov/HBoxContainer2/Value
+
 #@onready var camera: Camera3D = $Background/SubViewportContainer/SubViewport/Camera3D
 
 var rot_x = 0
@@ -28,6 +31,7 @@ signal settingsclosed
 func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_HIDDEN)
 	mouse_sens_slider.value = globals.settings_data.mouse_sens
+	fov_slider.value = globals.settings_data.fov
 
 func _process(_delta) -> void:
 	if crosshairs.visible == true and Input.is_action_just_pressed("ui_cancel"):
@@ -71,3 +75,5 @@ func _on_quit_button_pressed():
 func _on_mouse_sens_slider_value_changed(value: float) -> void:
 	mouse_sens_label.text = str(mouse_sens_slider.value)
 	globals.settings_data.mouse_sens = mouse_sens_slider.value
+	fov_label.text = str(int(fov_slider.value))
+	globals.settings_data.fov = fov_slider.value

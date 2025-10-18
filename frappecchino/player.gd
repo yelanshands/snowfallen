@@ -31,7 +31,6 @@ extends CharacterBody3D
 @onready var leaderboard: ColorRect = $CanvasLayer/MarginContainer/ScoreContainer/hbox/Leaderboard
 @onready var leaderboard_animation: AnimationPlayer = $CanvasLayer/MarginContainer/ScoreContainer/hbox/Leaderboard/AnimationPlayer
 
-@export var fov: float = 75.0
 @export var friction: float = 0.25
 @export var slide_accel: float = 100.0
 @export var floor_snap: float = 10.0
@@ -88,6 +87,8 @@ var hp := max_hp
 var hp_taken := 0.0
 var high_scores: Array
 
+var fov: float = 75.0
+
 func _init():
 	floor_stop_on_slope = false
 	floor_snap_length = floor_snap
@@ -96,10 +97,11 @@ func _ready() -> void:
 	Input.set_mouse_mode(Input.MOUSE_MODE_CAPTURED)
 	head_bone = skeleton.get_node("mixamorigHeadTop_End")
 	upper_torso = skeleton.get_node("uppertorso/body")
-	default_cam_sens = default_cam_sens_value * globals.settings_data.mouse_sens
 	score_label.add_theme_font_size_override("font_size", default_font_size)
-	high_scores = globals.settings_data.high_scores
 	update_leaderboard()
+	high_scores = globals.settings_data.high_scores
+	default_cam_sens = default_cam_sens_value * globals.settings_data.mouse_sens
+	fov = globals.settings_data.fov
 	
 func _input(event):
 	if not buttons.visible:
@@ -117,6 +119,7 @@ func _input(event):
 
 func _process(_delta):
 	default_cam_sens = default_cam_sens_value * settings.mouse_sens_slider.value
+	fov = settings.fov_slider.value
 	
 	var camera_zrot = camera.global_rotation.z
 	if animation.current_animation == "runslide":

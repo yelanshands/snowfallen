@@ -101,6 +101,8 @@ _data = {
 
 [node name="Settings" type="CanvasLayer"]
 script = ExtResource("1_3j6r5")
+tween_intensity = null
+tween_duration = null
 settings_data = ExtResource("2_6mhpt")
 
 [node name="Control" type="Control" parent="."]
@@ -170,34 +172,39 @@ vertical_alignment = 1
 custom_minimum_size = Vector2(0, 200)
 layout_mode = 2
 
-[node name="MouseSens" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer"]
+[node name="scroll" type="VScrollBar" parent="Control/MarginContainer/VBoxContainer"]
 layout_mode = 2
 
-[node name="HBoxContainer2" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer/MouseSens"]
+[node name="MouseSens" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/scroll"]
+layout_mode = 0
+offset_right = 1280.0
+offset_bottom = 100.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer/scroll/MouseSens"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/MouseSens/HBoxContainer2"]
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/scroll/MouseSens/HBoxContainer2"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_3lj6o")
 theme_override_font_sizes/font_size = 36
 text = "mouse sensitivity  |  "
 
-[node name="Value" type="Label" parent="Control/MarginContainer/VBoxContainer/MouseSens/HBoxContainer2"]
+[node name="Value" type="Label" parent="Control/MarginContainer/VBoxContainer/scroll/MouseSens/HBoxContainer2"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_3lj6o")
 theme_override_font_sizes/font_size = 36
 text = "1.0"
 
-[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer/MouseSens"]
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer/scroll/MouseSens"]
 layout_mode = 2
 
-[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/MouseSens/HBoxContainer"]
+[node name="min" type="Label" parent="Control/MarginContainer/VBoxContainer/scroll/MouseSens/HBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_3lj6o")
 theme_override_font_sizes/font_size = 36
 text = "0.01  "
 
-[node name="MouseSensSlider" type="HSlider" parent="Control/MarginContainer/VBoxContainer/MouseSens/HBoxContainer"]
+[node name="MouseSensSlider" type="HSlider" parent="Control/MarginContainer/VBoxContainer/scroll/MouseSens/HBoxContainer"]
 modulate = Color(0.074750386, 0.42531613, 0.7030993, 1)
 custom_minimum_size = Vector2(700, 50)
 layout_mode = 2
@@ -207,11 +214,65 @@ step = 0.01
 value = 1.0
 scrollable = false
 
-[node name="Label2" type="Label" parent="Control/MarginContainer/VBoxContainer/MouseSens/HBoxContainer"]
+[node name="max" type="Label" parent="Control/MarginContainer/VBoxContainer/scroll/MouseSens/HBoxContainer"]
 layout_mode = 2
 theme_override_fonts/font = ExtResource("3_3lj6o")
 theme_override_font_sizes/font_size = 36
 text = "  2.0"
+
+[node name="spacer1" type="Label" parent="Control/MarginContainer/VBoxContainer/scroll"]
+layout_mode = 0
+offset_top = 100.0
+offset_right = 1280.0
+offset_bottom = 146.0
+theme_override_fonts/font = ExtResource("3_3lj6o")
+theme_override_font_sizes/font_size = 36
+
+[node name="fov" type="VBoxContainer" parent="Control/MarginContainer/VBoxContainer/scroll"]
+layout_mode = 0
+offset_top = 150.0
+offset_right = 1280.0
+offset_bottom = 250.0
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer/scroll/fov"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="Control/MarginContainer/VBoxContainer/scroll/fov/HBoxContainer2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_3lj6o")
+theme_override_font_sizes/font_size = 36
+text = "FOV  |  "
+
+[node name="Value" type="Label" parent="Control/MarginContainer/VBoxContainer/scroll/fov/HBoxContainer2"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_3lj6o")
+theme_override_font_sizes/font_size = 36
+text = "75"
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Control/MarginContainer/VBoxContainer/scroll/fov"]
+layout_mode = 2
+
+[node name="min" type="Label" parent="Control/MarginContainer/VBoxContainer/scroll/fov/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_3lj6o")
+theme_override_font_sizes/font_size = 36
+text = "30  "
+
+[node name="fov" type="HSlider" parent="Control/MarginContainer/VBoxContainer/scroll/fov/HBoxContainer"]
+modulate = Color(0.074750386, 0.42531613, 0.7030993, 1)
+custom_minimum_size = Vector2(700, 50)
+layout_mode = 2
+min_value = 30.0
+max_value = 110.0
+value = 75.0
+rounded = true
+scrollable = false
+
+[node name="max" type="Label" parent="Control/MarginContainer/VBoxContainer/scroll/fov/HBoxContainer"]
+layout_mode = 2
+theme_override_fonts/font = ExtResource("3_3lj6o")
+theme_override_font_sizes/font_size = 36
+text = "  110"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("5_y43lv")
@@ -291,4 +352,5 @@ libraries = {
 }
 
 [connection signal="pressed" from="Control/MarginContainer/VBoxContainer/HBoxContainer/quitButton" to="." method="_on_quit_button_pressed"]
-[connection signal="value_changed" from="Control/MarginContainer/VBoxContainer/MouseSens/HBoxContainer/MouseSensSlider" to="." method="_on_mouse_sens_slider_value_changed"]
+[connection signal="value_changed" from="Control/MarginContainer/VBoxContainer/scroll/MouseSens/HBoxContainer/MouseSensSlider" to="." method="_on_mouse_sens_slider_value_changed"]
+[connection signal="value_changed" from="Control/MarginContainer/VBoxContainer/scroll/fov/HBoxContainer/fov" to="." method="_on_mouse_sens_slider_value_changed"]
