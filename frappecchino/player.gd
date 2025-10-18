@@ -275,23 +275,22 @@ func _physics_process(delta: float) -> void:
 		crosshair.position = Vector2(crosshair_cont.size.x/2.0-(crosshair.size.x/2.0), crosshair_cont.size.y/2.0-(crosshair.size.y/2.0))
 		
 		if aim_assist:
+			var camera_pos = camera.global_position
 			if Input.is_action_pressed("left_click"):
 				if not target_enemy:
 					var space_state = get_world_3d().direct_space_state
-					var query = PhysicsRayQueryParameters3D.create(camera.global_position, camera.global_position + camera.global_transform.basis.z * -1 * 1000.0, (1 << 11))
+					var query = PhysicsRayQueryParameters3D.create(camera_pos, camera_pos + camera.global_transform.basis.z * -1 * 1000.0, (1 << 11))
 					var result = space_state.intersect_ray(query)
 				
 					if result:
 						var collider = result.collider
 						if collider.name == "aimassist":
 							target_enemy = collider.get_owner()
-							target_dir = (target_enemy.global_position - camera.global_position).normalized()
+							target_dir = (target_enemy.global_position - camera_pos).normalized()
 				else:
 					var target_pos = target_enemy.global_position
-					target_pos.y = rotation.y
-					look_at(target_pos)
-					rotate_y(deg_to_rad(180))
-					#spring_arm.rotation.y += lerp(spring_arm.rotation.y, atan2(target_dir.x, target_dir.z), 0.7)
+					var angle = atan2(target_pos.x - camera_pos.x, target_pos.z - camera_pos.z)
+					rotation.y = lerp(rotation.y, angle, 0.6)
 			else:
 				target_cam_roty = 0.0
 				target_enemy = null

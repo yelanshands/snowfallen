@@ -9,7 +9,7 @@ size = Vector3(0, 0, 0)
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_kh24r"]
 height = 25.0
-radius = 8.0
+radius = 10.0
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_u5t2e"]
 resource_name = "0.615686_0.811765_0.929412_0.000000_0.000000"
